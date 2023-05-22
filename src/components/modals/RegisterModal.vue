@@ -46,13 +46,24 @@
       />
       <ErrorMessage name="password" />
     </div>
-    <div>
+    <div class="space-y-8">
       <button
-        class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-6"
+        class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-2"
         type="submit"
       >
         Get started
       </button>
+
+      <div>
+        <a
+          href="http://localhost:8000/auth/google/redirect"
+          class="border border-white py-3 flex w-full items-center justify-center mx-auto"
+        >
+          <IconGoogle class="w-6 h-6 mr-2" />
+          Sign up with Google</a
+        >
+      </div>
+
       <p class="text-center mt-6">
         Already have an account? <a href="#" class="underline text-blue-600">Log in</a>
       </p>
@@ -62,8 +73,11 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import IconGoogle from '../icons/IconGoogle.vue'
 import { ref } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const name = ref('')
 const email = ref('')
@@ -81,10 +95,10 @@ const register = () => {
     })
     .then((res) => {
       console.log(res)
+      router.push({ name: 'activation' })
     })
     .catch((err) => {
       console.log(err.response)
-      console.log(err.response.data)
     })
 }
 </script>

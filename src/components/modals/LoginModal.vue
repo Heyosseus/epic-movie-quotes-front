@@ -32,13 +32,22 @@
 
       <a href="#" class="underline text-blue-600">Forgot password</a>
     </div>
-    <div>
+    <div class="space-y-8">
       <button
         class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-6"
         type="submit"
       >
         Sign in
       </button>
+      <div>
+        <a
+          href="http://localhost:8000/auth/google/redirect"
+          class="border border-white py-3 flex w-full items-center justify-center mx-auto"
+        >
+          <IconGoogle class="w-6 h-6 mr-2" />
+          Sign in with Google</a
+        >
+      </div>
       <p class="text-center mt-6">
         Already have an account? <a href="#" class="underline text-blue-600">Sign up</a>
       </p>
