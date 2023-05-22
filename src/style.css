@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'geo';
+  src: url(./assets/fonts/Helvetica_Neue_GEO.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'eng';
+  src: url(./assets/fonts/Helvetica_Neue_ENG.ttf) format('truetype');
+  font-weight: bold;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'eng', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    color: white;
+}
