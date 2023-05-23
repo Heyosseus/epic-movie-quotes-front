@@ -9,10 +9,7 @@
               <option value="" class="">Eng</option>
               <option value="">Ka</option>
             </select>
-            <button
-              class="py-2 px-6 bg-red-700 text-white rounded-md"
-              @click="isRegisterModalOpen = true"
-            >
+            <button class="py-2 px-6 bg-red-700 text-white rounded-md" @click="naviageToRegister">
               Sign up
             </button>
             <div class="relative">
@@ -25,14 +22,14 @@
                     class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
                     ref="registerModal"
                   >
-                    <RegisterModal />
+                    <router-view />
                   </div>
                 </div>
               </teleport>
             </div>
             <button
               class="py-2 px-6 bg-transparent border border-white rounded-md"
-              @click="isLoginModalOpen = true"
+              @click="navigateToLogin"
             >
               Log in
             </button>
@@ -46,7 +43,7 @@
                     class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
                     ref="modalRef"
                   >
-                    <LoginModal />
+                    <router-view />
                   </div>
                 </div>
               </teleport>
@@ -89,10 +86,21 @@
 </template>
 
 <script setup>
-import LoginModal from '@/components/modals/LoginModal.vue'
-import RegisterModal from '@/components/modals/RegisterModal.vue'
 import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const navigateToLogin = () => {
+  isLoginModalOpen.value = true
+  router.push('/login')
+}
+
+const naviageToRegister = () => {
+  isRegisterModalOpen.value = true
+  router.push('/register')
+}
 
 const modalRef = ref(null)
 
@@ -102,10 +110,12 @@ const isRegisterModalOpen = ref(false)
 
 onClickOutside(modalRef, () => {
   isLoginModalOpen.value = false
+  router.push('/')
 })
 
 onClickOutside(registerModal, () => {
   isRegisterModalOpen.value = false
+  router.push('/')
 })
 </script>
 
