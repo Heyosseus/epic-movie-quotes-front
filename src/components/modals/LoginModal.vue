@@ -57,6 +57,7 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import IconGoogle from '../icons/IconGoogle.vue'
 import { ref } from 'vue'
 import axios from 'axios'
 
