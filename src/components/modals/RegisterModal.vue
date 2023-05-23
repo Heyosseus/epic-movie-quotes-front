@@ -10,8 +10,9 @@
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
         placeholder="At least 3 & max.15 lower case characters"
         v-model="name"
+        rules="required|min:3|max:15|lowercase"
       />
-      <ErrorMessage name="email" />
+      <ErrorMessage name="name" class="text-red-500 text-sm font-normal"/>
     </div>
     <div class="flex flex-col w-96">
       <label for="">Email</label>
@@ -21,8 +22,9 @@
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
         placeholder="Enter your email"
         v-model="email"
+        rules="required|email"
       />
-      <ErrorMessage name="email" />
+      <ErrorMessage name="email" class="text-red-500 text-sm font-normal"/>
     </div>
     <div class="flex flex-col">
       <label for="">Password</label>
@@ -32,8 +34,9 @@
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
         placeholder="Password"
         v-model="password"
+        rules="required|min:8"
       />
-      <ErrorMessage name="password" />
+      <ErrorMessage name="password" class="text-red-500 text-sm font-normal"/>
     </div>
     <div class="flex flex-col">
       <label for="">Password confirmation</label>
@@ -43,8 +46,9 @@
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
         placeholder="Confirm Password"
         v-model="password_confirmation"
+        rules="required|confirmed:password"
       />
-      <ErrorMessage name="password" />
+      <ErrorMessage name="password_confirmation" class="text-red-500 text-sm font-normal"/>
     </div>
     <div class="space-y-8">
       <button
