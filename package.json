@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vee-validate/i18n": "^4.9.5",
+    "@vee-validate/rules": "^4.9.5",
     "@vueuse/core": "^10.1.2",
     "axios": "^1.2.0-alpha.1",
     "pinia": "^2.0.36",
