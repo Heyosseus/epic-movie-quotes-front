@@ -5,7 +5,8 @@ import ThankYouView from '@/views/ThankYouView.vue'
 import NewsFeedView from '@/views/NewsFeedView.vue'
 import LoginModal from '@/components/modals/LoginModal.vue'
 import RegisterModal from '@/components/modals/RegisterModal.vue'
-
+import ErrorView from '@/views/errors/ErrorView.vue'
+import ForbiddenView from '@/views/errors/ForbiddenView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,7 +39,13 @@ const router = createRouter({
       path: '/news-feed',
       name: 'news-feed',
       component: NewsFeedView
-    }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: ErrorView
+    },
+    { path: '/forbidden', name: 'forbidden', component: ForbiddenView }
   ]
 })
 
