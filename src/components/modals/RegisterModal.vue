@@ -10,9 +10,9 @@
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
         placeholder="At least 3 & max.15 lower case characters"
         v-model="name"
-        rules="required|min:3|max:15|lowercase"
+        rules="required|min_for_name:3|max:15|lowercase"
       />
-      <ErrorMessage name="name" class="text-red-500 text-sm font-normal"/>
+      <ErrorMessage name="name" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="flex flex-col w-96">
       <label for="">Email</label>
@@ -24,31 +24,41 @@
         v-model="email"
         rules="required|email"
       />
-      <ErrorMessage name="email" class="text-red-500 text-sm font-normal"/>
+      <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="flex flex-col">
       <label for="">Password</label>
-      <Field
-        type="password"
-        name="password"
-        class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
-        placeholder="Password"
-        v-model="password"
-        rules="required|min:8"
-      />
-      <ErrorMessage name="password" class="text-red-500 text-sm font-normal"/>
+      <div class="relative">
+        <Field
+          v-bind:type="showPassword ? 'text' : 'password'"
+          name="password"
+          class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
+          placeholder="Password"
+          v-model="password"
+          rules="required|min:8"
+        />
+        <IconShowPassword class="absolute right-2 top-3" @click="showPassword = !showPassword" />
+      </div>
+
+      <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="flex flex-col">
       <label for="">Password confirmation</label>
-      <Field
-        type="password"
-        name="password_confirmation"
-        class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
-        placeholder="Confirm Password"
-        v-model="password_confirmation"
-        rules="required|confirmed:password"
-      />
-      <ErrorMessage name="password_confirmation" class="text-red-500 text-sm font-normal"/>
+      <div class="relative">
+        <Field
+          v-bind:type="showPasswordConfirmation ? 'text' : 'password'"
+          name="password_confirmation"
+          class="py-2 px-2 rounded-md outline-0 text-black w-full font-normal bg-[#CED4DA]"
+          placeholder="Confirm Password"
+          v-model="password_confirmation"
+          rules="required|confirmed:password"
+        />
+        <IconShowPassword
+          class="absolute right-2 top-3"
+          @click="showPasswordConfirmation = !showPasswordConfirmation"
+        />
+      </div>
+      <ErrorMessage name="password_confirmation" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="space-y-8">
       <button
@@ -69,7 +79,7 @@
       </div>
 
       <p class="text-center mt-6">
-        Already have an account? <a href="#" class="underline text-blue-600">Log in</a>
+        Already have an account? <a href="/login" class="underline text-blue-600">Log in</a>
       </p>
     </div>
   </Form>
@@ -78,15 +88,27 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconGoogle from '../icons/IconGoogle.vue'
+import IconShowPassword from '../icons/IconShowPassword.vue'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { defineProps } from 'vue'
+
+defineProps({
+  isRegisterModalOpen: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const router = useRouter()
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const password_confirmation = ref('')
+const showPassword = ref(false)
+const showPasswordConfirmation = ref(false)
 
 const register = () => {
   console.log(email.value, password.value)
