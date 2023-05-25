@@ -23,7 +23,10 @@
               <label for="">Remember me</label>
             </div>
 
-            <a href="#" class="underline text-blue-600">Forgot password</a>
+            <div class="underline text-blue-600" @click="navigateToForgotPassword">
+              Forgot password
+            </div>
+            >
           </div>
           <div>
             <button
@@ -43,6 +46,12 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const navigateToForgotPassword = () => {
+  router.push('/forgot-password')
+}
 </script>
 
 <style></style>

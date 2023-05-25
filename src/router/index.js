@@ -7,6 +7,11 @@ import LoginModal from '@/components/modals/LoginModal.vue'
 import RegisterModal from '@/components/modals/RegisterModal.vue'
 import ErrorView from '@/views/errors/ErrorView.vue'
 import ForbiddenView from '@/views/errors/ForbiddenView.vue'
+import ForgotPassword from '@/components/modals/forgot_password/ForgotPassword.vue'
+import ResetPassword from '@/components/modals/forgot_password/ResetPassword.vue'
+import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.vue'
+import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
+import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,7 +50,27 @@ const router = createRouter({
       name: 'not-found',
       component: ErrorView
     },
-    { path: '/forbidden', name: 'forbidden', component: ForbiddenView }
+    { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
+    {
+      path: '/forgot-password',
+      component: ForgotPassword
+    },
+    {
+      path: '/reset-password',
+      component: ResetPassword
+    },
+    {
+      path: '/update-password',
+      component: UpdatePassword
+    },
+    {
+      path: '/success',
+      component: SuccessModal
+    },
+    {
+      path: '/link-expired',
+      component: LinkExpired
+    }
   ]
 })
 
