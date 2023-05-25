@@ -53,22 +53,27 @@ const router = createRouter({
     { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
     {
       path: '/forgot-password',
+      name: 'forgot-password',
       component: ForgotPassword
     },
     {
       path: '/reset-password',
+      name: 'reset-password',
       component: ResetPassword
     },
     {
       path: '/update-password',
+      name: 'update-password',
       component: UpdatePassword
     },
     {
       path: '/success',
+      name: 'success',
       component: SuccessModal
     },
     {
       path: '/link-expired',
+      name: 'link-expired',
       component: LinkExpired
     }
   ]

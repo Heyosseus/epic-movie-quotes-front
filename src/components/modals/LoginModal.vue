@@ -36,7 +36,7 @@
         <label for="">Remember me</label>
       </div>
 
-      <a href="#" class="underline text-blue-600">Forgot password</a>
+      <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
     </div>
     <div class="space-y-8">
       <button

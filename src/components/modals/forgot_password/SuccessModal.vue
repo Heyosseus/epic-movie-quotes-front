@@ -12,6 +12,7 @@
           <p class="text-sm text-center mt-6">Your password changed successfully</p>
           <button
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-96 items-center justify-center mx-auto mt-12 "
+            @click="goToLogin"
           >
             Log in
           </button>
@@ -20,3 +21,11 @@
     </teleport>
   </div>
 </template>
+<script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const goToLogin = () => {
+  router.push('/login');
+};
+</script>

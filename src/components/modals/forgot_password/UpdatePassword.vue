@@ -11,7 +11,7 @@
           <p class="text-sm text-center mt-6">
             Your new password must be different from <br />previous used passwords
           </p>
-          <Form class="w-full space-y-4">
+          <Form class="w-full space-y-4" @submit="resetPassword">
             <div class="flex flex-col">
               <label for="">Password</label>
               <div class="relative">
@@ -40,7 +40,7 @@
                   class="py-2 px-2 rounded-md outline-0 text-black w-full font-normal bg-[#CED4DA]"
                   placeholder="Confirm Password"
                   v-model="password_confirmation"
-                  rules="required|confirmed:password"
+                  
                 />
                 <IconShowPassword
                   class="absolute right-2 top-3"
@@ -49,12 +49,13 @@
               </div>
               <ErrorMessage name="password_confirmation" class="text-red-500 text-sm font-normal" />
             </div>
+            <button
+              class="py-2.5 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
+              type="submit"
+            >
+              Reset password
+            </button>
           </Form>
-          <button
-            class="py-2.5 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
-          >
-            Reset password
-          </button>
 
           <div class="flex items-center justify-center space-x-4">
             <IconArrowBack />
@@ -69,8 +70,31 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import IconShowPassword from '@/components/icons/IconShowPassword.vue'
-
+import axios from 'axios'
 import { ref } from 'vue'
-const password = ref('')
-const password_confirmation = ref('')
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const password = ref(null)
+const password_confirmation = ref(null)
+
+const showPassword = ref(false)
+
+const showPasswordConfirmation = ref(false)
+
+const resetPassword = () => {
+  console.log(password.value, password_confirmation.value)
+  axios
+    .post('http://localhost:8000/api/reset-password', {
+      password: password.value,
+      password_confirmation: password_confirmation.value
+    })
+    .then((res) => {
+      console.log(res)
+      router.push({ name: 'success' })
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
+}
 </script>
