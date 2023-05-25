@@ -1,9 +1,10 @@
 import { defineRule } from 'vee-validate'
-import { required, email, min, max, alpha } from '@vee-validate/rules'
+import { required, email, min, max, alpha} from '@vee-validate/rules'
 
 defineRule('required', required)
 defineRule('email', email)
 defineRule('min', min)
+defineRule('min_for_name', min)
 defineRule('max', max)
 defineRule('alpha', alpha)
 

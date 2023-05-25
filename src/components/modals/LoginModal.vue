@@ -8,21 +8,27 @@
         type="email"
         name="email"
         class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
+        :class="{ 'text-red-500': errors.email }"
         placeholder="Enter your email"
         v-model="email"
+        rules="required|email"
       />
-      <ErrorMessage name="email" />
+      <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="flex flex-col">
       <label for="">Password</label>
-      <Field
-        type="password"
-        name="password"
-        class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
-        placeholder="Password"
-        v-model="password"
-      />
-      <ErrorMessage name="password" />
+      <div class="relative">
+        <Field
+          v-bind:type="showPassword ? 'text' : 'password'"
+          name="password"
+          class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
+          placeholder="Password"
+          v-model="password"
+          rules="required|min:8"
+        />
+        <IconShowPassword class="absolute right-2 top-3" @click="showPassword = !showPassword" />
+      </div>
+      <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
     </div>
     <div class="flex justify-between">
       <div class="space-x-2">
@@ -49,7 +55,8 @@
         >
       </div>
       <p class="text-center mt-6">
-        Already have an account? <a href="#" class="underline text-blue-600">Sign up</a>
+        Already have an account?
+        <a href="/register" class="underline text-blue-600" @click="openRegisterModal">Sign up</a>
       </p>
     </div>
   </Form>
@@ -57,10 +64,27 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import { useField } from 'vee-validate'
 import IconGoogle from '../icons/IconGoogle.vue'
 import { ref } from 'vue'
 import axios from 'axios'
+import IconShowPassword from '../icons/IconShowPassword.vue'
 
+// import { defineProps } from 'vue'
+
+// const { props, emit } = defineProps({
+//   isRegisterModalOpen: {
+//     type: Boolean,
+//     default: false
+//   }
+// })
+
+// const openRegisterModal = () => {
+//   emit('update:isRegisterModalOpen', true)
+// }
+
+const { errors } = useField()
+const showPassword = ref(false)
 const email = ref('')
 const password = ref('')
 
@@ -70,11 +94,11 @@ const getToken = async () => {
 }
 
 const login = async () => {
-  await getToken();
+  await getToken()
   axios
     .post('http://localhost:8000/api/login', {
       email: email.value,
-      password: password.value,
+      password: password.value
     })
     .then((res) => {
       console.log(res)

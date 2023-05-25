@@ -12,6 +12,7 @@
           <p class="text-md text-center mt-6">Your account has been activated.</p>
           <button
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
+            @click="navigateToNewsFeed"
           >
             Go to news feed
           </button>
@@ -20,3 +21,11 @@
     </teleport>
   </div>
 </template>
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const navigateToNewsFeed = () => {
+  router.push({ name: 'news-feed' })
+}
+</script>

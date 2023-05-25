@@ -22,7 +22,7 @@
                     class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
                     ref="registerModal"
                   >
-                    <router-view />
+                    <router-view v-model:is-register-modal-open="isRegisterModalOpen" />
                   </div>
                 </div>
               </teleport>
@@ -58,6 +58,7 @@
         </h1>
         <button
           class="py-3 px-6 bg-red-700 text-white rounded-md w-40 flex items-center justify-center mx-auto mt-4"
+          @click="navigateToLogin"
         >
           Get started
         </button>
