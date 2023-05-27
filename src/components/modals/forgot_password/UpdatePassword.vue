@@ -17,11 +17,12 @@
               <div class="relative">
                 <Field
                   v-bind:type="showPassword ? 'text' : 'password'"
-                  name="password"
+                  name="update_password"
                   class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
                   placeholder="Password"
                   v-model="update_password"
                   rules="required|min:8"
+                  ref="password"
                 />
                 <IconShowPassword
                   class="absolute right-2 top-3"
@@ -31,17 +32,16 @@
 
               <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
             </div>
-
-            <!-- <div class="flex flex-col">
+            <div class="flex flex-col">
               <label for="">Confirm Password</label>
               <div class="relative">
                 <Field
                   v-bind:type="showPasswordConfirmation ? 'text' : 'password'"
-                  name="password_confirmation"
+                  name="update_password_confirmation"
                   class="py-2 px-2 rounded-md outline-0 text-black w-full font-normal bg-[#CED4DA]"
                   placeholder="Confirm Password"
                   v-model="update_password_confirmation"
-                  rules="confirmed:update_password"
+                  rules="required|confirmed:password"
                 />
                 <IconShowPassword
                   class="absolute right-2 top-3"
@@ -49,7 +49,7 @@
                 />
               </div>
               <ErrorMessage name="password_confirmation" class="text-red-500 text-sm font-normal" />
-            </div> -->
+            </div>
             <button
               class="py-2.5 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
               type="submit"
@@ -87,7 +87,8 @@ const resetPassword = () => {
   console.log(update_password.value, update_password_confirmation.value)
   axios
     .put('http://localhost:8000/api/reset-password', {
-      password: update_password.value
+      password: update_password.value,
+      password_confirmation: update_password_confirmation.value
     })
     .then((res) => {
       console.log(res)
