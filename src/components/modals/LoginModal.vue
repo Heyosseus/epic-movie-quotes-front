@@ -115,7 +115,7 @@ onMounted(() => {
 
 const login = () => {
   axios
-    .post('http://localhost:8000/api/login', {
+    .post('http://localhost:8000/api/login', { 
       email: email.value,
       password: password.value
     })
