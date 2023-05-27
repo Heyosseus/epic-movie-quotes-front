@@ -17,6 +17,7 @@
           <a
             href="https://mail.google.com/mail/u/0/#inbox"
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
+            target="_blank"
           >
             Go to my email
           </a>
