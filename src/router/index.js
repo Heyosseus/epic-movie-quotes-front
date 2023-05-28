@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import Activation from '@/views/ActivationView.vue'
 import ThankYouView from '@/views/ThankYouView.vue'
 import NewsFeedView from '@/views/NewsFeedView.vue'
+import MovieListView from '@/views/MovieListView.vue'
 import LoginModal from '@/components/modals/LoginModal.vue'
 import RegisterModal from '@/components/modals/RegisterModal.vue'
 import ErrorView from '@/views/errors/ErrorView.vue'
@@ -75,6 +76,11 @@ const router = createRouter({
       path: '/link-expired',
       name: 'link-expired',
       component: LinkExpired
+    },
+    {
+      path: '/movie-list',
+      name: 'movie-list',
+      component: MovieListView
     }
   ]
 })
