@@ -4,7 +4,7 @@
     <div class="bg-[#181624] h-screen">
       <div class="flex">
         <BaseSidebar />
-        <SearchBar />
+        <AddMovie />
       </div>
     </div>
   </div>
@@ -13,5 +13,5 @@
 <script setup>
 import BaseHeader from '@/components/BaseHeader.vue'
 import BaseSidebar from '@/components/BaseSidebar.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import AddMovie from '@/components/AddMovie.vue';
 </script>
