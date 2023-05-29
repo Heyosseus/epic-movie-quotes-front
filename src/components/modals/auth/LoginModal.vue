@@ -78,10 +78,10 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useField } from 'vee-validate'
-import IconGoogle from '../icons/IconGoogle.vue'
+import IconGoogle from '../../icons/IconGoogle.vue'
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
-import IconShowPassword from '../icons/IconShowPassword.vue'
+import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 

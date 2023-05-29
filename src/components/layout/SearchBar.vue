@@ -26,7 +26,7 @@
 </template>
 <script setup>
 import IconPencil from '@/components/icons/IconPencil.vue'
-import IconSearch from './icons/IconSearch.vue'
+import IconSearch from '../icons/IconSearch.vue'
 import { ref } from 'vue'
 
 const showSearchBar = ref(false)

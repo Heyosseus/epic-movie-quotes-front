@@ -98,8 +98,8 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import IconGoogle from '../icons/IconGoogle.vue'
-import IconShowPassword from '../icons/IconShowPassword.vue'
+import IconGoogle from '../../icons/IconGoogle.vue'
+import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'

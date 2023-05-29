@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import BaseHeader from '@/components/BaseHeader.vue'
-import BaseSidebar from '@/components/BaseSidebar.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import BaseHeader from '@/components/layout/BaseHeader.vue'
+import BaseSidebar from '@/components/layout/BaseSidebar.vue'
+import SearchBar from '@/components/layout/SearchBar.vue'
 </script>

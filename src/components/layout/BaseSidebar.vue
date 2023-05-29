@@ -29,8 +29,8 @@
 <script setup>
 import IconActiveHome from '@/components/icons/IconActiveHome.vue'
 import IconMovieList from '@/components/icons/IconMovieList.vue'
-import IconHome from './icons/IconHome.vue'
-import IconActiveMovieList from './icons/IconActiveMovieList.vue'
+import IconHome from '../icons/IconHome.vue'
+import IconActiveMovieList from '../icons/IconActiveMovieList.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
