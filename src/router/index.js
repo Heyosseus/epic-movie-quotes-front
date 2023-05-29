@@ -23,10 +23,12 @@ const router = createRouter({
       children: [
         {
           path: '/login',
+          name: 'login',
           component: LoginModal
         },
         {
           path: '/register',
+          name: 'register',
           component: RegisterModal
         }
       ]

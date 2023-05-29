@@ -6,7 +6,7 @@
         <IconSearch />
         <input
           type="text"
-          class="bg-[#181624] outline-0 w-36 flex items-center justify-center px-2"
+          class="bg-transparent outline-0 w-36 flex items-center justify-center px-2"
           placeholder="Search by"
         />
       </div>

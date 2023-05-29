@@ -16,30 +16,22 @@
 import IconNotification from '@/components/icons/IconNotification.vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { getCookie } from '../../config/axios/helpers'
 
 const router = useRouter()
 
-function getCookie(name) {
-  var nameEQ = name + '='
-  var cookies = document.cookie.split(';')
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i]
-    while (cookie.charAt(0) == ' ') cookie = cookie.substring(1, cookie.length)
-    if (cookie.indexOf(nameEQ) == 0) return cookie.substring(nameEQ.length, cookie.length)
-  }
-  return null
-}
-
 const logout = () => {
   const token = getCookie('token')
-  axios
-    .post('http://localhost:8000/api/logout', null, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(() => {
-      window.location.href = '/'
-    })
+  if (token)
+    axios
+      .post('http://localhost:8000/api/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        router.push({ name: 'home' })
+      })
+ 
 }
 </script>
