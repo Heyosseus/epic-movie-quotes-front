@@ -13,6 +13,7 @@ import ResetPassword from '@/components/modals/forgot_password/ResetPassword.vue
 import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.vue'
 import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
 import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
+import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -82,7 +83,14 @@ const router = createRouter({
     {
       path: '/movie-list',
       name: 'movie-list',
-      component: MovieListView
+      component: MovieListView,
+      children: [
+        {
+          path: '/add-movie',
+          name: 'add-movie',
+          component: AddMovieModal
+        }
+      ]
     }
   ]
 })
