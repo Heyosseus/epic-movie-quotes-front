@@ -14,17 +14,7 @@
             </button>
             <div class="relative">
               <teleport to="body">
-                <div
-                  class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
-                  v-if="isRegisterModalOpen"
-                >
-                  <div
-                    class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
-                    ref="registerModal"
-                  >
-                    <router-view v-model:is-register-modal-open="isRegisterModalOpen" />
-                  </div>
-                </div>
+                <router-view />
               </teleport>
             </div>
             <button
@@ -35,17 +25,7 @@
             </button>
             <div class="relative">
               <teleport to="body">
-                <div
-                  class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
-                  v-if="isLoginModalOpen"
-                >
-                  <div
-                    class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
-                    ref="modalRef"
-                  >
-                    <router-view />
-                  </div>
-                </div>
+                <router-view />
               </teleport>
             </div>
           </div>
