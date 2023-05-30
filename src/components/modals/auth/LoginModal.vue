@@ -79,12 +79,13 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useField } from 'vee-validate'
 import IconGoogle from '../../icons/IconGoogle.vue'
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
+import { ref } from 'vue'
+// import axios from 'axios'
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
-
-import { getCookie, setCookie } from '../../../config/axios/helpers'
+import AxiosInstance from '@/config/axios/index'
+// import { getCookie } from '../../../config/axios/helpers'
+// import { setCookie } from '../../../config/axios/helpers'
 const router = useRouter()
 
 const { errors } = useField()
@@ -92,30 +93,15 @@ const showPassword = ref(false)
 const email = ref('')
 const password = ref('')
 
-onMounted(() => {
-  axios
-    .get('http://127.0.0.1:8000/api/user', {
-      headers: {
-        Authorization: 'Bearer ' + getCookie('token')
-      }
-    })
-    .then(() => {
-      router.push({ name: 'news-feed' })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-})
+const login = async () => {
+  await AxiosInstance.get('/sanctum/csrf-cookie').then(() => {})
 
-const login = () => {
-  axios
-    .post('http://localhost:8000/api/login', {
-      email: email.value,
-      password: password.value
-    })
+  await AxiosInstance.post('/api/login', {
+    email: email.value,
+    password: password.value
+  })
     .then((res) => {
       console.log(res)
-      setCookie('token', res.data.token, 1)
       router.push({ name: 'news-feed' })
     })
     .catch((err) => {
@@ -123,5 +109,7 @@ const login = () => {
       console.log(err.response)
       console.log(err.response.data)
     })
+
+  await AxiosInstance.get('/api/user').then(() => {})
 }
 </script>
