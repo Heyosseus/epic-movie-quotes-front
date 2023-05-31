@@ -14,24 +14,18 @@
 
 <script setup>
 import IconNotification from '@/components/icons/IconNotification.vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { getCookie } from '../../config/axios/helpers'
-
+import AxiosInstance from '@/config/axios/index'
 const router = useRouter()
 
 const logout = () => {
-  const token = getCookie('token')
-  if (token)
-    axios
-      .post('http://localhost:8000/api/logout', null, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(() => {
-        router.push({ name: 'home' })
-      })
- 
+AxiosInstance.post('/api/logout')
+  .then((res) => {
+    console.log(res)
+    router.push({ name: 'home' })
+  })
+  .catch((err) => {
+    console.log(err.response)
+  })
 }
 </script>
