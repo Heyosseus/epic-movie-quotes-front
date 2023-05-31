@@ -14,6 +14,9 @@ import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.v
 import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
 import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
 import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
+
+
+import TestView from '@/views/TestView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -91,6 +94,11 @@ const router = createRouter({
           component: AddMovieModal
         }
       ]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: TestView
     }
   ]
 })
