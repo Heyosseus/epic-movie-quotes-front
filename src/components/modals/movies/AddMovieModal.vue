@@ -10,7 +10,7 @@
             <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
-          <Form class="flex flex-col mt-6" @submit="addMovie">
+          <Form class="flex flex-col mt-6" @submit="addMovie" enctype="multipart/form-data">
             <Field
               name="title_en "
               class="border border-gray-500 bg-transparent w-form mt-6 px-2 py-3 rounded-md"
@@ -121,7 +121,8 @@ import { Form, Field } from 'vee-validate'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { ref } from 'vue'
-import axiosInstance from '../../../config/axios'
+// import axiosInstance from '../../../config/axios'
+import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -135,28 +136,24 @@ const genre = ref('')
 const release_date = ref('')
 const image = ref(null)
 
-// const uploadImage = () => {
-//   const formData = new FormData()
-//   formData.append('image', image.value)
+// const imageFileSelected = (e) => {
+//   image.value = e.target.files[0]
 //   console.log(image.value)
 // }
 
 const addMovie = () => {
-  const data = {
-    title_en: title_en.value,
-    title_ka: title_ka.value,
-    director_en: director_en.value,
-    director_ka: director_ka.value,
-    description_en: description_en.value,
-    description_ka: description_ka.value,
-    genre: genre.value,
-    release_date: release_date.value,
-    image: image.value
-  }
-  // const formData = new FormData()
-  // formData.append('image', image.value)
-  axiosInstance
-    .post('/api/add-movies', data)
+  const formData = new FormData()
+  formData.append('poster', image.value)
+  formData.append('title_en', title_en.value)
+  formData.append('title_ka', title_ka.value)
+  formData.append('director_en', director_en.value)
+  formData.append('director_ka', director_ka.value)
+  formData.append('description_en', description_en.value)
+  formData.append('description_ka', description_ka.value)
+  formData.append('genre', genre.value)
+  formData.append('release_date', release_date.value)
+  axios
+    .post('http://localhost:8000/api/add-movies', formData)
     .then((res) => {
       console.log(res)
       router.push({ name: 'movie-list' })
