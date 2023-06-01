@@ -80,12 +80,11 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useField } from 'vee-validate'
 import IconGoogle from '../../icons/IconGoogle.vue'
 import { ref } from 'vue'
-// import axios from 'axios'
+
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
-// import { getCookie } from '../../../config/axios/helpers'
-// import { setCookie } from '../../../config/axios/helpers'
+
 const router = useRouter()
 
 const { errors } = useField()
@@ -110,6 +109,12 @@ const login = async () => {
       console.log(err.response.data)
     })
 
-  await AxiosInstance.get('/api/user').then(() => {})
+  await AxiosInstance.get('/api/user')
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
 }
 </script>

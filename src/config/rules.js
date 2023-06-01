@@ -1,5 +1,5 @@
 import { defineRule } from 'vee-validate'
-import { required, email, min, max, alpha, min_value, max_value} from '@vee-validate/rules'
+import { required, email, min, max, alpha, min_value, max_value } from '@vee-validate/rules'
 
 defineRule('required', required)
 defineRule('email', email)
@@ -17,6 +17,13 @@ defineRule('lowercase', (value) => {
   return true
 })
 defineRule('confirmed', (value, [target]) => {
+  if (value !== target) {
+    return 'This field confirmation does not match'
+  }
+  return true
+})
+
+defineRule('update_confirmed', (value, [target]) => {
   if (value !== target) {
     return 'This field confirmation does not match'
   }
