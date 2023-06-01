@@ -4,7 +4,7 @@
     <div class="bg-[#181624] min-h-screen">
       <div class="flex">
         <BaseSidebar />
-        <div class="w-full px-16 pr-56">
+        <div class="w-full px-16 pr-56" v-if="!show">
           <div class="flex items-center w-full justify-between mt-8 pl-4">
             <h1 class="text-lg w-full mt-10">My list of movies ({{ movies.length }})</h1>
             <Form method="GET" @keydown.enter.prevent="handleSearch">
@@ -25,7 +25,7 @@
           <div class="mt-20" v-if="movies.length > 0">
             <div class="flex flex-wrap">
               <div v-for="movie in movies" :key="movie.id" class="w-1/3 pl-6 mb-8">
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center" @click="redirectToMovie(movie.id)">
                   <img
                     :src="getImages(movie.poster)"
                     alt=""
@@ -54,9 +54,18 @@ import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import AddMovie from '@/components/layout/AddMovie.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
+
 const search = ref('')
 const movies = ref([])
+const show = ref(false)
+const router = useRouter()
+
+const redirectToMovie = (id) => {
+  router.push(`/movie/${id}`)
+  show.value = !show.value
+}
 
 const handleSearch = () => {
   axios
