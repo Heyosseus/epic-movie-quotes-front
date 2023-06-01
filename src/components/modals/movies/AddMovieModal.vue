@@ -36,14 +36,16 @@
             >
             </Field>
             <Field
-              type="date"
+              type="number"
               name="date"
               class="border border-gray-500 bg-transparent w-form mt-6 px-2 py-3 rounded-md"
               placeholder="წელი/Year"
               v-model="release_date"
-              rules="required"
+              rules="required|min_value:1860|max_value:2099"
+              step="10"
             >
             </Field>
+            <ErrorMessage name="date" />
             <Field
               type="text"
               name="director_en"
@@ -117,7 +119,7 @@
   </div>
 </template>
 <script setup>
-import { Form, Field } from 'vee-validate'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { ref } from 'vue'
@@ -135,11 +137,6 @@ const description_ka = ref('')
 const genre = ref('')
 const release_date = ref('')
 const image = ref(null)
-
-// const imageFileSelected = (e) => {
-//   image.value = e.target.files[0]
-//   console.log(image.value)
-// }
 
 const addMovie = () => {
   const formData = new FormData()
