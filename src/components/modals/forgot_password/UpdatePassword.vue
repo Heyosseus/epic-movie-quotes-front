@@ -84,7 +84,6 @@ const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 
 const resetPassword = () => {
-  console.log(update_password.value, update_password_confirmation.value)
   axios
     .put('http://localhost:8000/api/reset-password', {
       password: update_password.value,
