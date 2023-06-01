@@ -34,7 +34,6 @@
                   <div class="flex space-x-4 mr-auto mt-4 mb-10">
                     <h1 class="uppercase">{{ movie.title.en }}</h1>
                     <p class="">({{ movie.release_date }})</p>
-                    <p>{{ movie.genre }}</p>
                   </div>
                 </div>
               </div>
