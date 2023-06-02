@@ -15,6 +15,8 @@ import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
 import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
 import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
 import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
+import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
+import ProfileModal from '@/components/modals/ProfileModal.vue'
 
 import TestView from '@/views/TestView.vue'
 const router = createRouter({
@@ -84,6 +86,11 @@ const router = createRouter({
       component: LinkExpired
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileModal
+    },
+    {
       path: '/movie-list',
       name: 'movie-list',
       component: MovieListView,
@@ -103,7 +110,14 @@ const router = createRouter({
     {
       path: '/movie/:id',
       name: 'description',
-      component: MovieDescriptionView
+      component: MovieDescriptionView,
+      children: [
+        {
+          path: '/add-quote/:id',
+          name: 'add-quote',
+          component: AddQuoteModal
+        }
+      ]
     }
   ]
 })

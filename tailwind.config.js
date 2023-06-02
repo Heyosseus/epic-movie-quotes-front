@@ -7,10 +7,15 @@ export const theme = {
       modal: '#222030',
       headerBg: '#24222F',
       search: '#CED4DA',
-      movie: '#11101A',
+      movie: '#11101A'
     },
     width: {
-      form: '688px'
+      form: '688px',
+      profile: '1200px'
+    },
+    height: {
+      posterHeight: '441px',
+      thumbnailHeight: '141px',
     },
     fontFamily: {
       geo: ['geo', 'sans-serif'],
