@@ -1,11 +1,17 @@
 <template>
   <div class="px-16" v-if="user">
     <div class="flex justify-between w-64 pt-12">
-      <div v-if="user.profile_picture">
-        <img :src="user.profile_picture" alt="" class="object-fit w-20 rounded-full" />
-      </div>
-      <div v-else>
-        <img src="@/assets/images/profile.jpg" alt="profile" class="object-fit w-20 rounded-full" />
+      <div>
+        <div v-if="user && user.profile_picture">
+          <img :src="getImages(user.profile_picture)" alt="" class="object-fit w-20 rounded-full" />
+        </div>
+        <div v-else>
+          <img
+            src="@/assets/images/profile.jpg"
+            alt="profile"
+            class="object-fit w-20 rounded-full"
+          />
+        </div>
       </div>
       <div>
         <h1 class="text-xl">{{ user.name }}</h1>
@@ -62,6 +68,10 @@ if (window.location.pathname === '/news-feed') {
 
 if (window.location.pathname === '/movie-list') {
   activeMovieList.value = !activeMovieList.value
+}
+
+const getImages = (poster) => {
+  return `http://localhost:8000/storage/${poster}`
 }
 onMounted(() => {
   AxiosInstance.get('/api/user')
