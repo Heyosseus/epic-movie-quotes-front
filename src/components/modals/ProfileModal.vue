@@ -99,7 +99,7 @@
             </Form>
           </div>
           <div class="space-x-4 ml-auto mt-10">
-            <button class="bg-transparent">Cancel</button>
+            <router-link to="/news-feed" class="bg-transparent" >Cancel</router-link>
 
             <button class="bg-red-700 py-3 px-4 rounded" @click="updateProfile">
               Save changes
@@ -118,7 +118,6 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import AxiosInstance from '@/config/axios/index'
-
 
 const user = ref(null)
 const editUsername = ref(false)

@@ -1,34 +1,34 @@
 <template>
-  <div>
+  <div class="overflow-x-hidden">
     <BaseHeader />
     <div class="bg-[#181624] min-h-screen">
-      <div class="flex">
-        <BaseSidebar />
-        <div class="p-20 px-32">
-          <div class="text-2xl">Movie description</div>
-          <div v-if="movie" class="w-full mb-8 mt-10">
-            <div class="flex space-x-12 w-full">
-              <div class="w-form h-posterHeight">
+      <div class="flex-col lg:flex lg:flex-row">
+        <BaseSidebar class="hidden sm:block" />
+        <div class="flex-col lg:justify-between p-4 md:p-20 md:px-32">
+          <div class="hidden sm:block text-2xl">Movie description</div>
+          <div v-if="movie" class="w-full mb-8 sm:mt-10 ">
+            <div class="flex flex-col md:flex-row space-x-0 md:space-x-12 w-full">
+              <div class="w-full h-[240px] rounded sm:w-form sm:h-posterHeight">
                 <img
                   :src="getImages(movie.poster)"
                   alt=""
-                  class="w-full h-full object-contain rounded-md "
+                  class="w-full sm:w-full h-full object-contain rounded-md"
                 />
               </div>
 
               <div>
                 <div class="flex flex-col">
-                  <div class="flex space-x-4 mr-auto mb-10 mt-4 text-[#DDCCAA]">
-                    <div class="flex space-x-80 items-center">
-                      <div class="flex space-x-2 text-xl">
-                        <h1 class="uppercase">{{ movie.title.en }}</h1>
-                        <p class="">({{ movie.release_date }})</p>
-                      </div>
-                      <div class="flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer">
-                        <IconEdit />
-                        <div class="w-[1px] bg-gray-400"></div>
-                        <IconTrash />
-                      </div>
+                  <div class="flex space-x-12 items-center mr-auto mb-10 mt-4 text-[#DDCCAA]">
+                    <div class="flex space-x-2 text-xl">
+                      <h1 class="uppercase">{{ movie.title.en }}</h1>
+                      <p class="">({{ movie.release_date }})</p>
+                    </div>
+                    <div
+                      class="hidden sm:flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer"
+                    >
+                      <IconEdit />
+                      <div class="w-[1px] bg-gray-400"></div>
+                      <IconTrash />
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg">
@@ -46,10 +46,14 @@
           </div>
           <!-- quotes -->
           <div>
-            <div class="flex items-center space-x-8 mt-20 ">
-              <h1 v-if="quotes" class="text-xl">Quotes total ({{ quotes.length }})</h1>
-              <h1 v-else class="text-xl">No quotes yet</h1>
-              <div class="bg-red-600 px-4 py-3 rounded flex items-center space-x-4">
+            <div class="flex items-center lg:space-x-12 mt-20">
+              <h1 v-if="quotes" class="hidden sm:block text-sm lg:text-xl">
+                Quotes total ({{ quotes.length }})
+              </h1>
+              <h1 v-else class="hidden sm:block text-xl">No quotes yet</h1>
+              <div
+                class="px-2 py-2 bg-red-600 sm:w-48 sm:text-lg sm:bg-red-600 md:px-4 md:py-3 rounded flex items-center space-x-2"
+              >
                 <IconAddMovie />
                 <button class="" v-if="movie">
                   <router-link :to="{ name: 'add-quote', params: { id: movie.id } }"
@@ -60,7 +64,11 @@
               </div>
             </div>
             <div v-if="quotes" class="w-form mt-10">
-              <div v-for="quote in quotes" :key="quote.id" class="space-y-6 mt-16 bg-movie px-6 py-8 w-[800px] rounded-xl">
+              <div
+                v-for="quote in quotes"
+                :key="quote.id"
+                class="space-y-6 mt-16 bg-movie px-6 py-8 w-[800px] rounded-xl"
+              >
                 <div class="flex items-center space-x-12 break-words relative">
                   <img
                     :src="getImages(quote.thumbnail)"
@@ -68,9 +76,9 @@
                     class="w-60 h-thumbnailHeight object-contain rounded-md"
                   />
                   <p class="italic text-gray-400">"{{ quote.body }}"</p>
-                  <IconDots class="absolute top-1 right-2"/>
+                  <IconDots class="absolute top-1 right-2" />
                 </div>
-                <div class="h-[1px] w-form bg-gray-600  mt-6"></div>
+                <div class="h-[1px] w-form bg-gray-600 mt-6"></div>
               </div>
             </div>
           </div>
@@ -90,7 +98,6 @@ import IconTrash from '@/components/icons/IconTrash.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import IconAddMovie from '@/components/icons/IconAddMovie.vue'
 import IconDots from '@/components/icons/IconDots.vue'
-
 
 const movie = ref(null)
 const quotes = ref(null)

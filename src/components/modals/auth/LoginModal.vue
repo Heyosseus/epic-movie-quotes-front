@@ -1,15 +1,11 @@
 <template>
-  <div
-    class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
-  >
-    <div
-      class="flex flex-col px-20 pt-6 pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
-    >
-      <h1 class="text-xl">Log in to your account</h1>
+  <div class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg">
+    <div class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4">
+      <h1 class="text-xl md:text-2xl">Log in to your account</h1>
       <p class="text-sm text-gray-500">Welcome back! Please enter your details.</p>
       <Form class="flex flex-col space-y-4" @submit="login">
-        <div class="flex flex-col w-96">
-          <label for="">Email</label>
+        <div class="flex flex-col w-full md:w-96">
+          <label for="email">Email</label>
           <Field
             type="email"
             name="email"
@@ -22,7 +18,7 @@
           <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
         </div>
         <div class="flex flex-col">
-          <label for="">Password</label>
+          <label for="password">Password</label>
           <div class="relative">
             <Field
               v-bind:type="showPassword ? 'text' : 'password'"
@@ -32,19 +28,15 @@
               v-model="password"
               rules="required|min:8"
             />
-            <IconShowPassword
-              class="absolute right-2 top-3"
-              @click="showPassword = !showPassword"
-            />
+            <IconShowPassword class="absolute right-2 top-3" @click="showPassword = !showPassword" />
           </div>
           <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
         </div>
         <div class="flex justify-between">
           <div class="space-x-2">
             <Field type="checkbox" name="remember" />
-            <label for="">Remember me</label>
+            <label for="remember">Remember me</label>
           </div>
-
           <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
         </div>
         <div class="space-y-8">
@@ -60,14 +52,12 @@
               class="border border-white py-3 flex w-full items-center justify-center mx-auto"
             >
               <IconGoogle class="w-6 h-6 mr-2" />
-              Sign in with Google</a
-            >
+              Sign in with Google
+            </a>
           </div>
           <p class="text-center mt-6">
             Already have an account?
-            <a href="/register" class="underline text-blue-600" @click="openRegisterModal"
-              >Sign up</a
-            >
+            <a href="/register" class="underline text-blue-600" @click="openRegisterModal">Sign up</a>
           </p>
         </div>
       </Form>

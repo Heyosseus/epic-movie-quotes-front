@@ -49,6 +49,7 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 
+
 const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
