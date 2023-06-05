@@ -14,6 +14,10 @@ import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.v
 import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
 import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
 import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
+import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
+import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
+import ProfileModal from '@/components/modals/ProfileModal.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -81,6 +85,11 @@ const router = createRouter({
       component: LinkExpired
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileModal
+    },
+    {
       path: '/movie-list',
       name: 'movie-list',
       component: MovieListView,
@@ -89,6 +98,18 @@ const router = createRouter({
           path: '/add-movie',
           name: 'add-movie',
           component: AddMovieModal
+        }
+      ]
+    },
+    {
+      path: '/movie/:id',
+      name: 'description',
+      component: MovieDescriptionView,
+      children: [
+        {
+          path: '/add-quote/:id',
+          name: 'add-quote',
+          component: AddQuoteModal
         }
       ]
     }

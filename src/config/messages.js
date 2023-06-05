@@ -16,7 +16,8 @@ configure({
         min_for_name: 'This field must be at least 3 characters',
         max: 'This field must be less than 15 characters',
         alpha: 'This field may only contain alphabetic characters',
-        confirmed: 'Password confirmation does not match'
+        confirmed: 'Password confirmation does not match',
+        min_value: 'no film before 1860 year'
       },
       names: {}
     },
@@ -29,7 +30,8 @@ configure({
         min_for_name: ' ველი უნდა შედგებოდეს მინიმუმ 3 სიმბოლოსგან',
         max: ' ველი უნდა შედგებოდეს 15 სიმბოლოსგან',
         alpha: 'სახელის ველი უნდა შეიცავდეს მხოლოდ ანბანის ასოებს',
-        confirmed: 'პაროლი არ ემთხვევა'
+        confirmed: 'პაროლი არ ემთხვევა',
+        min_value: 'ფილმი არ არსებობდა 1860 წლამდე'
       },
       names: {
         email: 'იმეილი',

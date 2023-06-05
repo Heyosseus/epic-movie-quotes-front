@@ -5,11 +5,11 @@
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg"
       >
         <div
-          class="flex flex-col p-20 px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
+          class="flex flex-col p-8 md:p-20 lg:px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
         >
-          <h1 class="text-4xl">Forgot password?</h1>
-          <p class="text-sm text-center mt-6">
-            Enter the email and we’ll send an email with <br />instructions to reset your password
+          <h1 class="text-2xl md:text-4xl">Forgot password?</h1>
+          <p class="text-sm md:text-base text-center mt-6">
+            Enter the email and we’ll send an email with instructions to reset your password
           </p>
           <Form class="flex flex-col w-full" @submit="recoveryPassword">
             <label for="email">Email</label>
@@ -17,12 +17,12 @@
               type="email"
               name="email"
               placeholder="Enter your email"
-              class="py-2.5 px-2 mt-2 rounded-md bg-[#CED4DA] text-black"
+              class="py-2 px-4 md:py-2.5 md:px-2 mt-2 rounded-md bg-[#CED4DA] text-black"
               v-model="email"
             />
             <ErrorMessage name="email" class="text-red-500" />
             <button
-              class="py-2.5 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
+              class="py-2 px-6 md:py-2.5 md:px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
               type="submit"
             >
               Send instructions
@@ -30,7 +30,7 @@
           </Form>
           <div class="flex items-center justify-center space-x-4">
             <IconArrowBack @click="navigateToLogin" />
-            <p class="text-[#6C757D]" @click="navigateToLogin">back to log in</p>
+            <p class="text-[#6C757D] cursor-pointer" @click="navigateToLogin">back to log in</p>
           </div>
         </div>
       </div>
@@ -51,8 +51,9 @@ const navigateToLogin = () => {
 }
 
 const recoveryPassword = () => {
+  const backendUrl = import.meta.env.BACKEND_URL
   axios
-    .post('http://localhost:8000/api/forgot-password', {
+    .post(`${backendUrl}/api/forgot-password`, {
       email: email.value
     })
     .then((res) => {

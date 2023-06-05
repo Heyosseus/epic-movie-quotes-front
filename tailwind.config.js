@@ -8,9 +8,15 @@ export const theme = {
       headerBg: '#24222F',
       search: '#CED4DA',
       movie: '#11101A',
+      field: '#CED4DA',
     },
     width: {
-      form: '688px'
+      form: '688px',
+      profile: '1200px'
+    },
+    height: {
+      posterHeight: '441px',
+      thumbnailHeight: '141px',
     },
     fontFamily: {
       geo: ['geo', 'sans-serif'],
