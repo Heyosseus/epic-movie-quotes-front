@@ -99,7 +99,7 @@
             </Form>
           </div>
           <div class="space-x-4 ml-auto mt-10">
-            <router-link to="/news-feed" class="bg-transparent" >Cancel</router-link>
+            <router-link to="/news-feed" class="bg-transparent">Cancel</router-link>
 
             <button class="bg-red-700 py-3 px-4 rounded" @click="updateProfile">
               Save changes
@@ -119,6 +119,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import AxiosInstance from '@/config/axios/index'
 
+
 const user = ref(null)
 const editUsername = ref(false)
 const placeholderName = ref(null)
@@ -132,9 +133,9 @@ const new_email = ref(null)
 const profile_password = ref(null)
 
 const getImages = (poster) => {
-  return `http://localhost:8000/storage/${poster}`
+  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
+  return `${backendStorageURL}/${poster}`
 }
-
 const updateProfile = () => {
   const formData = new FormData()
   formData.append('profile_picture', picture.value)

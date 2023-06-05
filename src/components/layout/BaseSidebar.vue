@@ -31,7 +31,7 @@
 
     <div
       class="flex items-center justify-between w-60 text-center text-lg mt-8 cursor-pointer"
-      @click="navigateToMOvieList"
+      @click="navigateToMovieList"
     >
       <IconMovieList v-if="activeMovieList" />
       <IconActiveMovieList v-else />
@@ -49,13 +49,12 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 
-
 const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
 const user = ref(null)
 
-const navigateToMOvieList = () => {
+const navigateToMovieList = () => {
   router.push('/movie-list')
 }
 
@@ -72,7 +71,8 @@ if (window.location.pathname === '/movie-list') {
 }
 
 const getImages = (poster) => {
-  return `http://localhost:8000/storage/${poster}`
+  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
+  return `${backendStorageURL}/${poster}`
 }
 onMounted(() => {
   AxiosInstance.get('/api/user')
