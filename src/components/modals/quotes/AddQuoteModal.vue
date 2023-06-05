@@ -13,31 +13,36 @@
           <h1>Rati Rukhadze</h1>
           <!-- ---------------------------------------- -->
           <div v-if="movie" class="w-full mb-4 sm:mb-8 mt-5 sm:mt-10">
-            <div class="flex space-x-3  items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-12 w-full">
+            <div
+              class="flex space-x-3 items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-12 w-full"
+            >
               <img :src="getImages(movie.poster)" alt="" class="w-36 sm:w-80 rounded-md" />
-     
-                <div class="flex flex-col">
-                  <div class="flex space-x-4 mr-auto mb-4 sm:mb-10 mt-2 sm:mt-4 text-[#DDCCAA]">
-                    <div class="flex space-x-2">
-                      <h1 class="uppercase text-sm lg:text-lg">{{ movie.title.en }}</h1>
-                      <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
-                    </div>
-                  </div>
-                  <div class="flex space-x-4">
-                    <p class="text-gray-400 text-sm lg:text-lg">Genre:</p>
-                    <p class="text-white text-sm lg:text-lg">{{ movie.genre }}</p>
-                  </div>
-                  <div class="flex space-x-4 mt-2 sm:mt-6">
-                    <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
-                    <p class="text-white text-sm lg:text-lg">{{ movie.director }}</p>
+
+              <div class="flex flex-col">
+                <div class="flex space-x-4 mr-auto mb-4 sm:mb-10 mt-2 sm:mt-4 text-[#DDCCAA]">
+                  <div class="flex space-x-2">
+                    <h1 class="uppercase text-sm lg:text-lg">{{ movie.title.en }}</h1>
+                    <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
                   </div>
                 </div>
-         
+                <div class="flex space-x-4">
+                  <p class="text-gray-400 text-sm lg:text-lg">Genre:</p>
+                  <p class="text-white text-sm lg:text-lg">{{ movie.genre }}</p>
+                </div>
+                <div class="flex space-x-4 mt-2 sm:mt-6">
+                  <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
+                  <p class="text-white text-sm lg:text-lg">{{ movie.director }}</p>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- ----------------------------------------- -->
-          <Form class="flex flex-col w-full mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
+          <Form
+            class="flex flex-col w-full mt-4 sm:mt-6"
+            @submit="addMovie"
+            enctype="multipart/form-data"
+          >
             <Field
               as="textarea"
               type="text"
@@ -82,7 +87,7 @@
               >
               </Field>
             </label>
-              <label
+            <label
               class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
             >
               <IconPhoto class="inline-block" />
@@ -140,8 +145,9 @@ const addMovie = () => {
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
 
+  const backendUrl = import.meta.env.BACKEND_URL
   axios
-    .post('http://localhost:8000/api/add-quotes', formData)
+    .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
       console.log(res)
       router.back()
@@ -163,6 +169,7 @@ onMounted(() => {
 })
 
 const getImages = (poster) => {
-  return `http://localhost:8000/storage/${poster}`
+  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
+  return `${backendStorageURL}/${poster}`
 }
 </script>

@@ -1,8 +1,12 @@
 <template>
   <div class="relative">
     <teleport to="body">
-      <div class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg">
-        <div class="flex flex-col p-8 md:p-20 lg:px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8">
+      <div
+        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg"
+      >
+        <div
+          class="flex flex-col p-8 md:p-20 lg:px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
+        >
           <h1 class="text-2xl md:text-4xl">Forgot password?</h1>
           <p class="text-sm md:text-base text-center mt-6">
             Enter the email and we’ll send an email with instructions to reset your password
@@ -47,8 +51,9 @@ const navigateToLogin = () => {
 }
 
 const recoveryPassword = () => {
+  const backendUrl = import.meta.env.BACKEND_URL
   axios
-    .post('http://localhost:8000/api/forgot-password', {
+    .post(`${backendUrl}/api/forgot-password`, {
       email: email.value
     })
     .then((res) => {

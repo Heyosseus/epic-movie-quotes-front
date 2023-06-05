@@ -6,7 +6,7 @@
       >
         <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto ">Add Movie</h1>
+            <h1 class="text-2xl mx-auto">Add Movie</h1>
             <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
@@ -158,8 +158,10 @@ const addMovie = () => {
   formData.append('description_ka', description_ka.value)
   formData.append('genre', genre.value)
   formData.append('release_date', release_date.value)
+
+  const backendUrl = import.meta.env.BACKEND_URL
   axios
-    .post('http://localhost:8000/api/add-movies', formData)
+    .post(`${backendUrl}/api/add-movies`, formData)
     .then((res) => {
       console.log(res)
       router.push({ name: 'movie-list' })

@@ -96,9 +96,9 @@ const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 
 const resetPassword = () => {
-  console.log(update_password.value, password_confirmation.value)
+  const backendUrl = import.meta.env.BACKEND_URL
   axios
-    .put('http://localhost:8000/api/reset-password', {
+    .put(`${backendUrl}/api/reset-password`, {
       password: update_password.value,
       email: email.value
     })
