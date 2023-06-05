@@ -2,7 +2,11 @@
   <div
     class="bg-headerBg flex flex-col sm:flex-row justify-between items-center px-6 sm:px-14 py-2 sm:py-5"
   >
-    <h1 class="hidden sm:block text-[#DDCCAA] uppercase cursor-pointer" @click="router.push('/')">movie quotes</h1>
+    <router-link
+      :to="{ name: 'home' }"
+      class="hidden sm:block text-[#DDCCAA] uppercase cursor-pointer"
+      >movie quotes</router-link
+    >
     <div class="flex items-center justify-between w-full sm:w-64 sm:mt-0">
       <IconMenu class="block sm:hidden" />
       <div class="flex items-center sm:justify-between sm:w-80">

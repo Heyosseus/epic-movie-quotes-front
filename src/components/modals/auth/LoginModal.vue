@@ -1,6 +1,10 @@
 <template>
-  <div class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg">
-    <div class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4">
+  <div
+    class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+  >
+    <div
+      class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+    >
       <h1 class="text-xl md:text-2xl">Log in to your account</h1>
       <p class="text-sm text-gray-500">Welcome back! Please enter your details.</p>
       <Form class="flex flex-col space-y-4" @submit="login">
@@ -28,7 +32,10 @@
               v-model="password"
               rules="required|min:8"
             />
-            <IconShowPassword class="absolute right-2 top-3" @click="showPassword = !showPassword" />
+            <IconShowPassword
+              class="absolute right-2 top-3"
+              @click="showPassword = !showPassword"
+            />
           </div>
           <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
         </div>
@@ -57,7 +64,12 @@
           </div>
           <p class="text-center mt-6">
             Already have an account?
-            <a href="/register" class="underline text-blue-600" @click="openRegisterModal">Sign up</a>
+            <router-link
+              :to="{ name: 'register' }"
+              class="underline text-blue-600"
+              @click="openRegisterModal"
+              >Sign up</router-link
+            >
           </p>
         </div>
       </Form>
