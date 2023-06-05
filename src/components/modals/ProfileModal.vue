@@ -40,7 +40,7 @@
                 <Field
                   type="text"
                   name="username"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-[#CED4DA] placeholder-gray-700"
+                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-field placeholder-gray-700"
                   :placeholder="placeholderName"
                 >
                 </Field>
@@ -51,7 +51,7 @@
                 <Field
                   type="text"
                   name="new_username"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-[#CED4DA] placeholder-gray-400"
+                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field placeholder-gray-400"
                   placeholder="New username"
                   v-model="new_username"
                   rules="required"
@@ -65,7 +65,7 @@
                 <Field
                   type="email"
                   name="profile_email"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-[#CED4DA] placeholder-gray-700"
+                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-field placeholder-gray-700"
                   :placeholder="placeholderEmail"
                 >
                 </Field>
@@ -76,7 +76,7 @@
                 <Field
                   type="text"
                   name="new_email"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-[#CED4DA] placeholder-gray-400"
+                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field placeholder-gray-400"
                   placeholder="New email"
                   v-model="new_email"
                   rules="required"
@@ -90,7 +90,7 @@
                 <Field
                   type="password"
                   name="profile_password"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-[#CED4DA]"
+                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field"
                 >
                 </Field>
               </div>

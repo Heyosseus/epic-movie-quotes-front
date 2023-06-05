@@ -13,7 +13,7 @@
           <Field
             type="email"
             name="email"
-            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
+            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
             :class="{ 'text-red-500': errors.email }"
             placeholder="Enter your email"
             v-model="email"
@@ -27,7 +27,7 @@
             <Field
               v-bind:type="showPassword ? 'text' : 'password'"
               name="password"
-              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
+              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
               placeholder="Password"
               v-model="password"
               rules="required|min:8"

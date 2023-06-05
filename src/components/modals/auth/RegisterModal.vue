@@ -9,7 +9,7 @@
           <Field
             type="text"
             name="name"
-            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
+            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
             placeholder="At least 3 & max.15 lowercase characters"
             v-model="name"
             rules="required|min_for_name:3|max:15|lowercase"
@@ -21,7 +21,7 @@
           <Field
             type="email"
             name="email"
-            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-[#CED4DA]"
+            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
             placeholder="Enter your email"
             v-model="email"
             rules="required|email"
@@ -34,7 +34,7 @@
             <Field
               v-bind:type="showPassword ? 'text' : 'password'"
               name="password"
-              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
+              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
               placeholder="Password"
               v-model="password"
               rules="required|min:8"
@@ -49,7 +49,7 @@
             <Field
               v-bind:type="showPasswordConfirmation ? 'text' : 'password'"
               name="password_confirmation"
-              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
+              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
               placeholder="Confirm Password"
               v-model="password_confirmation"
               rules="required|confirmed:password"

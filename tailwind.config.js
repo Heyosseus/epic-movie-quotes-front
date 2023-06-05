@@ -7,7 +7,8 @@ export const theme = {
       modal: '#222030',
       headerBg: '#24222F',
       search: '#CED4DA',
-      movie: '#11101A'
+      movie: '#11101A',
+      field: '#CED4DA',
     },
     width: {
       form: '688px',
