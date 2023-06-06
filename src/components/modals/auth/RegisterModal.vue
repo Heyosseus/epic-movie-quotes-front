@@ -3,11 +3,11 @@
     class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
   >
     <div
-      class="flex flex-col px-6 pt-6 pb-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+      class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
     >
       <h1 class="text-xl md:text-2xl text-center">Create an account</h1>
       <p class="text-sm text-gray-500 text-center">Start your journey</p>
-      <Form class="flex flex-col space-y-4" @submit="register">
+      <Form class="flex flex-col space-y-4 md:w-96" @submit="register">
         <div class="flex flex-col">
           <label for="name">Name</label>
           <Field
@@ -97,9 +97,9 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconGoogle from '../../icons/IconGoogle.vue'
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { defineProps } from 'vue'
+import AxiosInstance from '@/config/axios/index'
 
 defineProps({
   isRegisterModalOpen: {
@@ -118,14 +118,13 @@ const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 
 const register = () => {
-  const backendUrl = import.meta.env.BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/register`, {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      password_confirmation: password_confirmation.value
-    })
+  // const backendUrl = import.meta.env.BACKEND_URL
+  AxiosInstance.post(`/api/register`, {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    password_confirmation: password_confirmation.value
+  })
     .then((res) => {
       console.log(res)
       router.push({ name: 'activation' })
