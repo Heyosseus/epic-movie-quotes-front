@@ -146,9 +146,9 @@ const addMovie = () => {
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
 
-  // const backendUrl = import.meta.env.BACKEND_URL
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`http://localhost:8000/api/add-quotes`, formData)
+    .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
       console.log(res)
       router.back()

@@ -55,7 +55,7 @@
           </button>
           <div>
             <a
-              href="http://localhost:8000/auth/google/redirect"
+              :href="`${backendUrl}/auth/google/redirect`"
               class="border border-white py-3 flex w-full items-center justify-center mx-auto"
             >
               <IconGoogle class="w-6 h-6 mr-2" />
@@ -88,6 +88,7 @@ import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 
 const router = useRouter()
+const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
 const { errors } = useField()
 const showPassword = ref(false)

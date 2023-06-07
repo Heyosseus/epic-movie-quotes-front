@@ -159,9 +159,9 @@ const addMovie = () => {
   formData.append('genre', genre.value)
   formData.append('release_date', release_date.value)
 
-  // const backendUrl = import.meta.env.BACKEND_URL
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`http://localhost:8000/api/add-movies`, formData)
+    .post(`${backendUrl}/api/add-movies`, formData)
     .then((res) => {
       console.log(res)
       router.push({ name: 'movie-list' })

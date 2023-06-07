@@ -42,7 +42,7 @@ const handleShow = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/quotes/1}}`)
+  AxiosInstance.get(`/api/quotes/0}}`)
     .then((response) => {
       quotes.value = response.data.quote
     })

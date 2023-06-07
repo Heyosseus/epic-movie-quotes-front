@@ -141,9 +141,9 @@ const updateProfile = () => {
   formData.append('name', new_username.value)
   formData.append('email', new_email.value)
   formData.append('password', profile_password.value)
-  // const backendUrl = import.meta.env.BACKEND_URL
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`http://localhost:8000/api/profile`, formData)
+    .post(`${backendUrl}/api/profile`, formData)
     .then((res) => {
       console.log(res.data)
       router.push({ name: 'news-feed' })

@@ -11,21 +11,15 @@
         Sorry, but you don't have permission to access this page
       </p>
     </div>
-    <button
+    <router-link
+      :to="{ name: 'home' }"
       class="py-2 px-6 bg-red-700 text-white rounded flex items-center justify-center mx-auto mt-6"
-      @click="navigateToHome"
     >
       Return home
-    </button>
+    </router-link>
   </div>
 </template>
 <script setup>
 import IconGendalf from '@/components/icons/IconGendalf.vue'
 import IconUnion from '../../components/icons/IconUnion.vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-
-const navigateToHome = () => {
-  router.push('/')
-}
 </script>

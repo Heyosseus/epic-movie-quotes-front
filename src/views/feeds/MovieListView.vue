@@ -88,8 +88,9 @@ const handleSearch = () => {
 }
 
 const getMovies = () => {
+  const backendURL = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .get('http://localhost:8000/api/movies')
+    .get(`${backendURL}/api/movies`)
     .then((res) => {
       console.log(res.data)
       movies.value = res.data.movie
@@ -104,6 +105,7 @@ onMounted(() => {
 })
 
 const getImages = (poster) => {
-  return `http://localhost:8000/storage/${poster}`
+  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
+  return `${backendStorageURL}/${poster}`
 }
 </script>
