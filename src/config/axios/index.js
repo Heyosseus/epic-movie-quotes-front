@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true
 const axiosInstance = axios.create({
-  baseURL: 'https://epic-movie-quotes-api.rati-rukhadze.redberryinternship.ge',
+  baseURL: 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',

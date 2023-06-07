@@ -95,7 +95,7 @@ const email = ref('')
 const password = ref('')
 
 const login = async () => {
-  await AxiosInstance.get('/sanctum/csrf-cookie').then(() => {})
+  await AxiosInstance.get('/sanctum/csrf-cookie')
 
   await AxiosInstance.post('/api/login', {
     email: email.value,
@@ -112,8 +112,8 @@ const login = async () => {
     })
 
   await AxiosInstance.get('/api/user')
-    .then((res) => {
-      console.log(res)
+    .then(() => {
+      console.log('user retrieved successfully')
     })
     .catch((err) => {
       console.log(err.response)
