@@ -51,7 +51,7 @@ const navigateToLogin = () => {
 }
 
 const recoveryPassword = () => {
-  const backendUrl = import.meta.env.BACKEND_URL
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/forgot-password`, {
       email: email.value

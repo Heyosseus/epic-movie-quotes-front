@@ -2,7 +2,9 @@
   <div class="flex mt-10 ml-40 justify-between w-[921px]">
     <div class="flex bg-headerBg py-3 px-6 space-x-4 h-14 items-center w-full">
       <IconPencil />
-      <p class="text-search">Write new quote</p>
+      <router-link :to="{ name: 'add-quote', params: { id: 0 } }" class="text-search"
+        >Write new quote</router-link
+      >
     </div>
     <form action="" class="h-16 ml-10 mt-3 w-[1840px]" v-if="showSearchBar">
       <div class="flex">
@@ -27,13 +29,25 @@
 <script setup>
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import AxiosInstance from '../../config/axios'
 
 const showSearchBar = ref(false)
 const showButton = ref(true)
+const quotes = ref(null)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
   showButton.value = !showButton.value
 }
+
+onMounted(() => {
+  AxiosInstance.get(`/api/quotes/0}}`)
+    .then((response) => {
+      quotes.value = response.data.quote
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+})
 </script>

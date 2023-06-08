@@ -77,7 +77,7 @@
           </button>
           <div>
             <a
-              href="http://localhost:8000/auth/google/redirect"
+              :href="`${backendUrl}/auth/google/redirect`"
               class="border border-white py-3 flex w-full items-center justify-center mx-auto"
             >
               <IconGoogle class="w-6 h-6 mr-2" />
@@ -109,7 +109,7 @@ defineProps({
 })
 
 const router = useRouter()
-
+const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 const name = ref('')
 const email = ref('')
 const password = ref('')
@@ -118,7 +118,6 @@ const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 
 const register = () => {
-  // const backendUrl = import.meta.env.BACKEND_URL
   AxiosInstance.post(`/api/register`, {
     name: name.value,
     email: email.value,

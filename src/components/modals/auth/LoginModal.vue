@@ -55,7 +55,7 @@
           </button>
           <div>
             <a
-              href="http://localhost:8000/auth/google/redirect"
+              :href="`${backendUrl}/auth/google/redirect`"
               class="border border-white py-3 flex w-full items-center justify-center mx-auto"
             >
               <IconGoogle class="w-6 h-6 mr-2" />
@@ -88,6 +88,7 @@ import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 
 const router = useRouter()
+const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
 const { errors } = useField()
 const showPassword = ref(false)
@@ -95,7 +96,7 @@ const email = ref('')
 const password = ref('')
 
 const login = async () => {
-  await AxiosInstance.get('/sanctum/csrf-cookie').then(() => {})
+  await AxiosInstance.get('/sanctum/csrf-cookie')
 
   await AxiosInstance.post('/api/login', {
     email: email.value,
@@ -112,8 +113,8 @@ const login = async () => {
     })
 
   await AxiosInstance.get('/api/user')
-    .then((res) => {
-      console.log(res)
+    .then(() => {
+      console.log('user retrieved successfully')
     })
     .catch((err) => {
       console.log(err.response)
