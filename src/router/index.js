@@ -17,6 +17,7 @@ import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
 import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
 import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
+import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,10 +49,22 @@ const router = createRouter({
       name: 'thank-you',
       component: ThankYouView
     },
+    // {
+    //   path: '/menu',
+    //   name: 'menu',
+    //   component: MenuSidebar
+    // },
     {
       path: '/news-feed',
       name: 'news-feed',
-      component: NewsFeedView
+      component: NewsFeedView,
+      children: [
+        {
+          path: '/menu',
+          name: 'menu',
+          component: MenuSidebar
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)*',

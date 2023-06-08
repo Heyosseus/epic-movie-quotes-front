@@ -16,16 +16,16 @@ defineRule('lowercase', (value) => {
   }
   return true
 })
+
 defineRule('confirmed', (value, [target]) => {
   if (value !== target) {
-    return 'This field confirmation does not match'
+    return 'confirmation does not match'
   }
   return true
 })
-
 defineRule('update_confirmed', (value, [target]) => {
   if (value !== target) {
-    return 'This field confirmation does not match'
+    return 'confirmation does not match'
   }
   return true
 })

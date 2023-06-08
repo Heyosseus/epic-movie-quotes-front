@@ -1,6 +1,8 @@
 <template>
-  <div class="flex mt-10 ml-40 justify-between w-[921px]">
-    <div class="flex bg-headerBg py-3 px-6 space-x-4 h-14 items-center w-full">
+  <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 lg:ml-40 justify-between lg:w-[921px]">
+    <div
+      class="w-full sm:bg-transparent  flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
+    >
       <IconPencil />
       <router-link :to="{ name: 'add-quote', params: { id: 0 } }" class="text-search"
         >Write new quote</router-link
@@ -18,7 +20,7 @@
 
       <div class="h-[1px] bg-[#EFEFEF4D] w-full mt-4"></div>
     </form>
-    <div class="flex items-center h-14 ml-4" @click="handleShow" v-if="showButton">
+    <div class="hidden sm:flex items-center h-14 ml-4" @click="handleShow" v-if="showButton">
       <IconSearch />
       <button class="bg-[#181624] h-14 w-28 rounded-full flex items-center justify-center">
         <p class="text-search">Search by</p>
