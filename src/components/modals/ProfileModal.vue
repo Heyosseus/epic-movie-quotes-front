@@ -2,56 +2,63 @@
   <div>
     <BaseHeader />
     <div class="bg-[#181624] min-h-screen">
-      <div class="flex">
+      <div class="flex flex-col items-center lg:flex lg:flex-row lg:items-start">
         <BaseSidebar />
-        <div class="py-12 px-20 w-profile flex flex-col">
+        <div class="py-4 px-0 lg:py-12 lg:px-20 lg:w-profile flex flex-col">
           <p class="text-xl">My profile</p>
           <div class="relative"></div>
-          <div class="bg-movie w-[800px] px-36 py-20 flex flex-col mt-20 ml-auto">
+          <div
+            class="w-fit px-0 py-10 lg:bg-movie lg:w-[800px] lg:px-36 lg:py-20 flex flex-col mt-20 ml-auto"
+          >
             <div v-if="user" class="absolute top-40">
               <img
                 :src="getImages(user.profile_picture)"
                 alt=""
                 v-if="user.profile_picture"
-                class="object-contain w-40 ml-44 rounded-full"
+                class="object-contain w-40 lg:ml-44 rounded-full"
               />
               <div v-else>
                 <img
                   src="@/assets/images/profile.jpg"
                   alt=""
-                  class="object-contain w-40 ml-44 rounded-full"
+                  class="object-contain w-40 ml-20 lg:ml-44 rounded-full"
                 />
               </div>
             </div>
 
-            <Form class="flex flex-col mt-6" @submit="addMovie" enctype="multipart/form-data">
+            <Form
+              class="w-full flex flex-col mt-6"
+              @submit="addMovie"
+              enctype="multipart/form-data"
+            >
               <label for="fileInput" class="relative py-2 text-white rounded cursor-pointer">
-                <span class="flex justify-center mt-4">Upload new photo</span>
+                <span class="flex justify-center mt-16 text-xl lg:mt-4">Upload new photo</span>
                 <Field
                   name="fileInput"
                   id="fileInput"
                   type="file"
-                  class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                  class="w-full absolute top-0 left-0 lg:w-full h-full opacity-0 cursor-pointer"
                   v-model="picture"
                 />
               </label>
-              <label for="username">Username</label>
+              <label for="username" class="mt-8 lg:mt-10">Username</label>
               <div class="flex space-x-3">
                 <Field
                   type="text"
                   name="username"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-field placeholder-gray-700"
+                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field lg:placeholder-gray-700"
                   :placeholder="placeholderName"
                 >
                 </Field>
                 <button class="" @click="editUsername = true">Edit</button>
               </div>
-              <div v-if="editUsername" class="flex flex-col">
+              <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
+              <div v-if="editUsername" class="hidden sm:flex flex-col">
                 <label for="new_username" class="mt-6">New username</label>
                 <Field
                   type="text"
                   name="new_username"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field placeholder-gray-400"
+                  class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
                   placeholder="New username"
                   v-model="new_username"
                   rules="required"
@@ -65,18 +72,20 @@
                 <Field
                   type="email"
                   name="profile_email"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-full text-black font-normal bg-field placeholder-gray-700"
+                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field lg:placeholder-gray-700"
                   :placeholder="placeholderEmail"
                 >
                 </Field>
                 <button @click="editEmail = true">Edit</button>
               </div>
-              <div v-if="editEmail" class="flex flex-col">
+              <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
+
+              <div v-if="editEmail" class="hidden sm:flex flex-col">
                 <label for="new_email" class="mt-6">New email</label>
                 <Field
                   type="text"
                   name="new_email"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field placeholder-gray-400"
+                  class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
                   placeholder="New email"
                   v-model="new_email"
                   rules="required"
@@ -90,10 +99,11 @@
                 <Field
                   type="password"
                   name="profile_password"
-                  class="py-3 px-2 rounded mt-2 outline-0 w-[466px] text-black font-normal bg-field"
+                  class="w-20 py-3 px-2 rounded mt-2 bg-transparent text-white outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
                 >
                 </Field>
               </div>
+              <div class="block h-[1px] bg-gray-400 lg:hidden"></div>
 
               <ErrorMessage name="quote_ka" class="text-red-600" />
             </Form>

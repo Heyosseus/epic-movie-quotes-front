@@ -63,22 +63,22 @@
                 <router-view />
               </div>
             </div>
-            <div v-if="quotes" class="w-form mt-10">
+            <div v-if="quotes" class="lg:w-form mt-10">
               <div
                 v-for="quote in quotes"
                 :key="quote.id"
-                class="space-y-6 mt-16 bg-movie px-6 py-8 w-[800px] rounded-xl"
+                class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl"
               >
-                <div class="flex items-center space-x-12 break-words relative">
+                <div class="flex items-center space-x-2 break-words relative w-fit">
                   <img
                     :src="getImages(quote.thumbnail)"
                     alt=""
-                    class="w-60 h-thumbnailHeight object-contain rounded-md"
+                    class="w-44 h-thumbnailHeight object-contain rounded-md"
                   />
                   <p class="italic text-gray-400">"{{ quote.body }}"</p>
                   <IconDots class="absolute top-1 right-2" />
                 </div>
-                <div class="h-[1px] w-form bg-gray-600 mt-6"></div>
+                <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
               </div>
             </div>
           </div>

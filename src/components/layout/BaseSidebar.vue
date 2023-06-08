@@ -1,5 +1,5 @@
 <template>
-  <div class="px-16" v-if="user">
+  <div class="hidden px-16 sm:block" v-if="user">
     <div class="flex justify-between w-64 pt-12">
       <div>
         <div v-if="user && user.profile_picture">
@@ -38,6 +38,7 @@
       <p class="">List of Movies</p>
     </div>
   </div>
+
   <div v-else>Loading...</div>
 </template>
 <script setup>

@@ -59,7 +59,7 @@
               class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
               placeholder="Confirm Password"
               v-model="password_confirmation"
-              rules="required|confirmed:password"
+              rules="required|confirmed:@password"
             />
             <IconShowPassword
               class="absolute right-2 top-3"

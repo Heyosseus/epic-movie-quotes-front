@@ -8,7 +8,8 @@
       >movie quotes</router-link
     >
     <div class="flex items-center justify-between w-full sm:w-64 sm:mt-0">
-      <IconMenu class="block sm:hidden" />
+      <IconMenu class="block sm:hidden" @click="showMenu" />
+      <router-link :to="{ name: 'menu' }"> </router-link>
       <div class="flex items-center sm:justify-between sm:w-80">
         <IconNotification class="mt-2" />
         <select
@@ -32,9 +33,14 @@
 <script setup>
 import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
+
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 const router = useRouter()
+
+const showMenu = () => {
+  router.push({ name: 'menu' })
+}
 
 const logout = () => {
   AxiosInstance.post('/api/logout')
