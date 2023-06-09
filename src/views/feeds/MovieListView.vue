@@ -35,7 +35,7 @@
                   <img
                     :src="getImages(movie.poster)"
                     alt=""
-                    class="rounded-2xl object-fit h-64 md:h-96 mr-auto"
+                    class="rounded-2xl object-fit h-64 md:h-96 mr-auto cursor-pointer"
                   />
                   <div class="flex space-x-2 md:space-x-4 mr-auto mt-2 md:mt-4 mb-4 md:mb-10">
                     <h1 class="uppercase">{{ movie.title.en }}</h1>

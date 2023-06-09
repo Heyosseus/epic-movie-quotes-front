@@ -30,7 +30,7 @@
             </Field>
             <ErrorMessage name="title_ka" class="text-red-600 mt-2" />
 
-            <Field
+            <!-- <Field
               name="genre"
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="ჟანრი"
@@ -38,8 +38,30 @@
               rules="required"
             >
             </Field>
-            <ErrorMessage name="genre" class="text-red-600 mt-2" />
+            <ErrorMessage name="genre" class="text-red-600 mt-2" /> -->
 
+            <div
+              class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md"
+            >
+              <select
+                name="genres"
+                id=""
+                class="bg-transparent py-2 sm:w-32 outline-0 text-white bg-genre px-3 rounded"
+                v-model="selectedGenre"
+                @change="selectedGenreData"
+              >
+                <option v-for="genre in genres" :key="genre.id" class="py-2 mt-2 bg-slate-900">
+                  {{ JSON.parse(genre.name).en }}
+                </option>
+              </select>
+              <div
+                v-for="item in selected"
+                :key="item.id"
+                class="text-white bg-genre px-3 rounded items-center flex"
+              >
+                {{ item.value }}
+              </div>
+            </div>
             <Field
               type="number"
               name="date"
@@ -131,11 +153,12 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 // import axiosInstance from '../../../config/axios'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
+//-----------------------------------
 const router = useRouter()
 const title_en = ref('')
 const title_ka = ref('')
@@ -143,9 +166,20 @@ const director_en = ref('')
 const director_ka = ref('')
 const description_en = ref('')
 const description_ka = ref('')
-const genre = ref('')
+// const genre = ref('')
 const release_date = ref('')
 const image = ref(null)
+
+const genres = ref(null)
+const selectedGenre = ref(null)
+const selected = ref([])
+
+const selectedGenreData = () => {
+  console.log(selectedGenre.value)
+  if (selectedGenre.value) {
+    selected.value.push({ id: Date.now(), value: selectedGenre.value })
+  }
+}
 
 const addMovie = () => {
   const formData = new FormData()
@@ -156,7 +190,7 @@ const addMovie = () => {
   formData.append('director_ka', director_ka.value)
   formData.append('description_en', description_en.value)
   formData.append('description_ka', description_ka.value)
-  formData.append('genre', genre.value)
+  formData.append('genre', JSON.stringify(selected.value))
   formData.append('release_date', release_date.value)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
@@ -170,4 +204,11 @@ const addMovie = () => {
       console.log(err.response.data)
     })
 }
+
+onMounted(async () => {
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
+  const res = await axios.get(`${backendUrl}/api/genres`)
+  genres.value = res.data.genres
+  console.log(genres.value)
+})
 </script>

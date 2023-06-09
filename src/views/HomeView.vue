@@ -7,9 +7,9 @@
         <nav class="flex justify-between items-center ">
           <h1 class="text-[12px] uppercase text-primary font-extrabold lg:text-lg ">movie quotes</h1>
           <div class="flex justify-between w-56 sm:w-80">
-            <select name="" id="" class="bg-transparent w-12 sm:w-14">
-              <option value="" class="">Eng</option>
-              <option value="">Ka</option>
+            <select name="" id="" class="bg-transparent w-12 sm:w-14 outline-0">
+              <option value="" class="bg-black">Eng</option>
+              <option value="" class="bg-black">Ka</option>
             </select>
             <button
               class="py-2 px-4 text-sm  sm:px-6 bg-red-700 text-white rounded-md"

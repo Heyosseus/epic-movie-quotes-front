@@ -12,7 +12,7 @@
                 <img
                   :src="getImages(movie.poster)"
                   alt=""
-                  class="w-full sm:w-full h-full object-contain rounded-md"
+                  class="w-full sm:w-full h-full object-contain rounded-md cursor-pointer"
                 />
               </div>
 
@@ -32,8 +32,13 @@
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg">
-                    <p class="text-gray-400">Genre:</p>
-                    <p class="text-white">{{ movie.genre }}</p>
+                    <div
+                      v-for="item in genre"
+                      :key="item.id"
+                      class="text-white bg-genre py-1 px-3 rounded"
+                    >
+                      {{ item.value }}
+                    </div>
                   </div>
                   <div class="flex space-x-4 text-lg mt-6">
                     <p class="text-gray-400">Director:</p>
@@ -69,7 +74,7 @@
                 :key="quote.id"
                 class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl"
               >
-                <div class="flex items-center space-x-2 break-words relative w-fit">
+                <div class="flex items-center space-x-2 break-words relative w-fit lg:w-full">
                   <img
                     :src="getImages(quote.thumbnail)"
                     alt=""
@@ -104,12 +109,15 @@ const quotes = ref(null)
 const router = useRouter()
 const route = useRoute()
 const movieId = route.params.id
+const genre = ref(null)
 
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movie.value = response.data.movie
+      genre.value = JSON.parse(response.data.movie.genre)
+      console.log(genre.value)
     })
     .catch((error) => {
       console.error(error)

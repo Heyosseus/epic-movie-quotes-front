@@ -26,12 +26,17 @@
                   </div>
                 </div>
                 <div class="flex space-x-4">
-                  <p class="text-gray-400 text-sm lg:text-lg">Genre:</p>
-                  <p class="text-white text-sm lg:text-lg">{{ movie.genre }}</p>
+                  <div
+                    v-for="item in genre"
+                    :key="item.id"
+                    class="text-white bg-genre py-1 px-3 rounded"
+                  >
+                    {{ item.value }}
+                  </div>
                 </div>
                 <div class="flex space-x-4 mt-2 sm:mt-6">
                   <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
-                  <p class="text-white text-sm lg:text-lg">{{ movie.director }}</p>
+                  <p class="text-white text-sm lg:text-lg">{{ JSON.parse(movie.director).en }}</p>
                 </div>
               </div>
             </div>
@@ -135,7 +140,7 @@ const movie = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-
+const genre = ref(null)
 const image = ref(null)
 
 const addMovie = () => {
@@ -163,6 +168,7 @@ onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movie.value = response.data.movie
+      genre.value = JSON.parse(response.data.movie.genre)
     })
     .catch((error) => {
       console.error(error)
