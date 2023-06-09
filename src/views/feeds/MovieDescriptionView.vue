@@ -37,9 +37,9 @@
                   </div>
                   <div class="flex space-x-4 text-lg mt-6">
                     <p class="text-gray-400">Director:</p>
-                    <p class="text-white">{{ movie.director }}</p>
+                    <p class="text-white">{{ JSON.parse(movie.director).en }}</p>
                   </div>
-                  <p class="mt-10 break-words w-form">{{ movie.description }}</p>
+                  <p class="mt-10 break-words w-form">{{ JSON.parse(movie.description).en }}</p>
                 </div>
               </div>
             </div>
