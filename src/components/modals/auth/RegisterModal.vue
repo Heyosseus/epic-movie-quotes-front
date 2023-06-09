@@ -117,8 +117,9 @@ const password_confirmation = ref('')
 const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 
-const register = () => {
-  AxiosInstance.post(`/api/register`, {
+const register = async () => {
+  await AxiosInstance.get('/sanctum/csrf-cookie')
+  await AxiosInstance.post(`/api/register`, {
     name: name.value,
     email: email.value,
     password: password.value,
