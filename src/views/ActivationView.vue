@@ -10,7 +10,7 @@
           <img src="@/assets/images/send.png" alt="" class="mt-10" />
           <h1 class="text-2xl md:text-3xl text-center">Thank you!</h1>
           <p class="text-sm md:text-base text-center mt-6">
-            Please check your email and follow the instructions to activate your account. Go to my
+            Please check your email and follow the instructions to <br/> activate your account. Go to my
             email
           </p>
           <a
