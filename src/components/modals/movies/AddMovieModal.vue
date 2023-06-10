@@ -10,6 +10,23 @@
             <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
+          <div v-if="user" class="flex items-center mt-6 space-x-4">
+            <div v-if="user.profile_picture">
+              <img
+                :src="getImages(user.profile_picture)"
+                alt=""
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <div v-else>
+              <img
+                src="@/assets/images/profile.jpg"
+                alt="profile"
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <h1>{{ user.name }}</h1>
+          </div>
           <Form class="flex flex-col mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
             <Field
               name="title_en"
@@ -154,11 +171,10 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { onMounted, ref } from 'vue'
-// import axiosInstance from '../../../config/axios'
+import AxiosInstance from '../../../config/axios'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-
-//-----------------------------------
+const user = ref(null)
 const router = useRouter()
 const title_en = ref('')
 const title_ka = ref('')
@@ -210,5 +226,15 @@ onMounted(async () => {
   const res = await axios.get(`${backendUrl}/api/genres`)
   genres.value = res.data.genres
   console.log(genres.value)
+})
+
+onMounted(() => {
+  AxiosInstance.get(`/api/user`)
+    .then((res) => {
+      user.value = res.data
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
 })
 </script>

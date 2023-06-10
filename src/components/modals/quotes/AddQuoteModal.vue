@@ -10,7 +10,23 @@
             <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
-          <h1>Rati Rukhadze</h1>
+          <div v-if="user" class="flex items-center mt-6 space-x-4">
+            <div v-if="user.profile_picture">
+              <img
+                :src="getImages(user.profile_picture)"
+                alt=""
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <div v-else>
+              <img
+                src="@/assets/images/profile.jpg"
+                alt="profile"
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <h1>{{ user.name }}</h1>
+          </div>
           <!-- ---------------------------------------- -->
           <div v-if="movie" class="w-full mb-4 sm:mb-8 mt-5 sm:mt-10">
             <div
@@ -142,6 +158,7 @@ const quote_en = ref('')
 const quote_ka = ref('')
 const genre = ref(null)
 const image = ref(null)
+const user = ref(null)
 
 const addMovie = () => {
   const formData = new FormData()
@@ -179,4 +196,14 @@ const getImages = (poster) => {
   const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
   return `${backendStorageURL}/${poster}`
 }
+
+onMounted(() => {
+  AxiosInstance.get(`/api/user`)
+    .then((res) => {
+      user.value = res.data
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
+})
 </script>
