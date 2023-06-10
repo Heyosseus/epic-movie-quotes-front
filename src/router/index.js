@@ -18,6 +18,7 @@ import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
 import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
+import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,6 +124,11 @@ const router = createRouter({
           path: '/add-quote/:id',
           name: 'add-quote',
           component: AddQuoteModal
+        },
+        {
+          path: '/update-movie/:id',
+          name: 'update-movie',
+          component: UpdateQuoteModal
         }
       ]
     }
