@@ -129,7 +129,7 @@ const getImages = (poster) => {
   return `${backendStorageURL}/${poster}`
 }
 onMounted(() => {
-  AxiosInstance.get(`/api/quotes/${movieId}}`)
+  AxiosInstance.get(`/api/quotes/${movieId}`)
     .then((response) => {
       quotes.value = response.data.quote
     })

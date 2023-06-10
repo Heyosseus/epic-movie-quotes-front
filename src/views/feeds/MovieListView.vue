@@ -47,7 +47,6 @@
           </div>
           <div v-else>
             <h1 class="text-2xl text-center mt-32">No movie yet</h1>
-            <!-- Updated margin top class -->
           </div>
         </div>
       </div>

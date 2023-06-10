@@ -51,7 +51,7 @@
                 @change="selectedGenreData"
               >
                 <option v-for="genre in genres" :key="genre.id" class="py-2 mt-2 bg-slate-900">
-                  {{ JSON.parse(genre.name).en }}
+                  {{ genre.name.en }}
                 </option>
               </select>
               <div
