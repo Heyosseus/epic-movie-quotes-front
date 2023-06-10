@@ -26,9 +26,11 @@
                     <div
                       class="hidden sm:flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer"
                     >
-                      <IconEdit />
+                      <router-link :to="{ name: 'update-movie' }">
+                        <IconEdit />
+                      </router-link>
                       <div class="w-[1px] bg-gray-400"></div>
-                      <IconTrash />
+                      <IconTrash @click="handleDelete" />
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg">
@@ -103,6 +105,7 @@ import IconTrash from '@/components/icons/IconTrash.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import IconAddMovie from '@/components/icons/IconAddMovie.vue'
 import IconDots from '@/components/icons/IconDots.vue'
+// import UpdateMovieModal from '@/components/modals/UpdateMovieModal.vue'
 
 const movie = ref(null)
 const quotes = ref(null)
@@ -137,4 +140,15 @@ onMounted(() => {
       console.error(error)
     })
 })
+
+const handleDelete = () => {
+  AxiosInstance.delete(`/api/movies/${movieId}`)
+    .then((response) => {
+      console.log(response)
+      router.push({ name: 'movie-list' })
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 </script>
