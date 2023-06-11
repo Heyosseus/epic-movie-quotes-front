@@ -26,7 +26,7 @@
                     <div
                       class="hidden sm:flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer"
                     >
-                      <router-link :to="{ name: 'update-movie' }">
+                      <router-link :to="{ name: 'update-quote' }">
                         <IconEdit />
                       </router-link>
                       <div class="w-[1px] bg-gray-400"></div>

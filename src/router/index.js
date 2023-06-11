@@ -154,8 +154,8 @@ const router = createRouter({
           component: AddQuoteModal
         },
         {
-          path: '/update-movie/:id',
-          name: 'update-movie',
+          path: '/update-quote/:id',
+          name: 'update-quote',
           component: UpdateQuoteModal
         }
       ]

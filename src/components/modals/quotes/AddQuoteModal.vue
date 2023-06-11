@@ -4,7 +4,7 @@
       <div
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
             <IconClose class="ml-auto" />
@@ -151,6 +151,7 @@ import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
+import { onClickOutside } from '@vueuse/core'
 
 const router = useRouter()
 const movie = ref(null)
@@ -160,6 +161,11 @@ const quote_ka = ref('')
 const genre = ref(null)
 const image = ref(null)
 const user = ref(null)
+const modalRef = ref(null)
+
+onClickOutside(modalRef, () => {
+  router.back()
+})
 
 const addMovie = () => {
   const formData = new FormData()
@@ -192,7 +198,6 @@ onMounted(() => {
       console.error(error)
     })
 })
-
 
 onMounted(() => {
   AxiosInstance.get(`/api/user`)

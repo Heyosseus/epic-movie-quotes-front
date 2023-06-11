@@ -4,7 +4,7 @@
       <div
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
-        <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8">
+        <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto">Add Movie</h1>
             <IconClose class="ml-auto" />
@@ -174,6 +174,8 @@ import { onMounted, ref } from 'vue'
 import AxiosInstance from '../../../config/axios'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { onClickOutside } from '@vueuse/core'
+
 const user = ref(null)
 const router = useRouter()
 const title_en = ref('')
@@ -189,6 +191,11 @@ const image = ref(null)
 const genres = ref(null)
 const selectedGenre = ref(null)
 const selected = ref([])
+const modalRef = ref(null)
+
+onClickOutside(modalRef, () => {
+  router.back()
+})
 
 const selectedGenreData = () => {
   console.log(selectedGenre.value)

@@ -1,79 +1,84 @@
 <template>
-  <div
-    class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
-  >
-    <div
-      class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
-    >
-      <h1 class="text-xl md:text-2xl">Log in to your account</h1>
-      <p class="text-sm text-gray-500">Welcome back! Please enter your details.</p>
-      <Form class="flex flex-col space-y-4" @submit="login">
-        <div class="flex flex-col w-full md:w-96">
-          <label for="email">Email</label>
-          <Field
-            type="email"
-            name="email"
-            class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
-            :class="{ 'text-red-500': errors.email }"
-            placeholder="Enter your email"
-            v-model="email"
-            rules="required|email"
-          />
-          <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
+  <div class="relative">
+    <teleport to="body">
+      <div
+        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+      >
+        <div
+          class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          ref="modalRef"
+        >
+          <h1 class="text-xl md:text-2xl">Log in to your account</h1>
+          <p class="text-sm text-gray-500">Welcome back! Please enter your details.</p>
+          <Form class="flex flex-col space-y-4" @submit="login">
+            <div class="flex flex-col w-full md:w-96">
+              <label for="email">Email</label>
+              <Field
+                type="email"
+                name="email"
+                class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
+                :class="{ 'text-red-500': errors.email }"
+                placeholder="Enter your email"
+                v-model="email"
+                rules="required|email"
+              />
+              <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
+            </div>
+            <div class="flex flex-col">
+              <label for="password">Password</label>
+              <div class="relative">
+                <Field
+                  v-bind:type="showPassword ? 'text' : 'password'"
+                  name="password"
+                  class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
+                  placeholder="Password"
+                  v-model="password"
+                  rules="required|min:8"
+                />
+                <IconShowPassword
+                  class="absolute right-2 top-3"
+                  @click="showPassword = !showPassword"
+                />
+              </div>
+              <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
+            </div>
+            <div class="flex justify-between">
+              <div class="space-x-2">
+                <Field type="checkbox" name="remember" />
+                <label for="remember">Remember me</label>
+              </div>
+              <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
+            </div>
+            <div class="space-y-8">
+              <button
+                class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-6"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <div>
+                <a
+                  :href="`${backendUrl}/auth/google/redirect`"
+                  class="border border-white py-3 flex w-full items-center justify-center mx-auto"
+                >
+                  <IconGoogle class="w-6 h-6 mr-2" />
+                  Sign in with Google
+                </a>
+              </div>
+              <p class="text-center mt-6">
+                Already have an account?
+                <router-link
+                  :to="{ name: 'register' }"
+                  class="underline text-blue-600"
+                  @click="openRegisterModal"
+                  >Sign up</router-link
+                >
+              </p>
+            </div>
+          </Form>
         </div>
-        <div class="flex flex-col">
-          <label for="password">Password</label>
-          <div class="relative">
-            <Field
-              v-bind:type="showPassword ? 'text' : 'password'"
-              name="password"
-              class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
-              placeholder="Password"
-              v-model="password"
-              rules="required|min:8"
-            />
-            <IconShowPassword
-              class="absolute right-2 top-3"
-              @click="showPassword = !showPassword"
-            />
-          </div>
-          <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
-        </div>
-        <div class="flex justify-between">
-          <div class="space-x-2">
-            <Field type="checkbox" name="remember" />
-            <label for="remember">Remember me</label>
-          </div>
-          <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
-        </div>
-        <div class="space-y-8">
-          <button
-            class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-6"
-            type="submit"
-          >
-            Sign in
-          </button>
-          <div>
-            <a
-              :href="`${backendUrl}/auth/google/redirect`"
-              class="border border-white py-3 flex w-full items-center justify-center mx-auto"
-            >
-              <IconGoogle class="w-6 h-6 mr-2" />
-              Sign in with Google
-            </a>
-          </div>
-          <p class="text-center mt-6">
-            Already have an account?
-            <router-link
-              :to="{ name: 'register' }"
-              class="underline text-blue-600"
-              @click="openRegisterModal"
-              >Sign up</router-link
-            >
-          </p>
-        </div>
-      </Form>
-    </div>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -86,7 +91,7 @@ import { useAuthStore } from '@/stores/auth'
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
-
+import { onClickOutside } from '@vueuse/core'
 const router = useRouter()
 const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
@@ -96,7 +101,11 @@ const email = ref('')
 const password = ref('')
 
 const authStore = useAuthStore()
+const modalRef = ref(null)
 
+onClickOutside(modalRef, () => {
+  router.push({ name: 'home' })
+})
 const login = async () => {
   await AxiosInstance.get('/sanctum/csrf-cookie')
 
