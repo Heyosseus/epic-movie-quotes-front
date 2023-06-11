@@ -82,7 +82,7 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useField } from 'vee-validate'
 import IconGoogle from '../../icons/IconGoogle.vue'
 import { ref } from 'vue'
-
+import { useAuthStore } from '@/stores/auth'
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
@@ -95,6 +95,8 @@ const showPassword = ref(false)
 const email = ref('')
 const password = ref('')
 
+const authStore = useAuthStore()
+
 const login = async () => {
   await AxiosInstance.get('/sanctum/csrf-cookie')
 
@@ -105,6 +107,7 @@ const login = async () => {
     .then((res) => {
       console.log(res)
       router.push({ name: 'news-feed' })
+      authStore.setIsUserAuthenticated(true)
     })
     .catch((err) => {
       console.log(email.value, password.value)

@@ -33,11 +33,13 @@
 <script setup>
 import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
-
+import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 const router = useRouter()
+// import axios from 'axios'
 
+const authStore = useAuthStore()
 const showMenu = () => {
   router.push({ name: 'menu' })
 }
@@ -47,9 +49,21 @@ const logout = () => {
     .then((res) => {
       console.log(res)
       router.push({ name: 'home' })
+      authStore.setIsUserAuthenticated(false)
     })
     .catch((err) => {
       console.log(err.response)
     })
 }
+
+AxiosInstance.get('/api/check-session').then((response) => {
+  const isSessionActive = response.data.isSessionActive
+  console.log(isSessionActive)
+  if (isSessionActive) {
+    authStore.setIsUserAuthenticated(true)
+  } else {
+    authStore.setIsUserAuthenticated(false)
+    router.push({ name: 'session-expired' })
+  }
+})
 </script>
