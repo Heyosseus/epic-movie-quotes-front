@@ -62,6 +62,7 @@ import AddMovie from '@/components/layout/AddMovie.vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
+import { getImages } from '@/config/axios/helpers'
 
 const search = ref('')
 const movies = ref([])
@@ -103,8 +104,5 @@ onMounted(() => {
   getMovies()
 })
 
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
+
 </script>

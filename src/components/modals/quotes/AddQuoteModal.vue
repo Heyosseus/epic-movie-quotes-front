@@ -150,6 +150,7 @@ import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { getImages } from '@/config/axios/helpers'
 
 const router = useRouter()
 const movie = ref(null)
@@ -192,10 +193,6 @@ onMounted(() => {
     })
 })
 
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
 
 onMounted(() => {
   AxiosInstance.get(`/api/user`)

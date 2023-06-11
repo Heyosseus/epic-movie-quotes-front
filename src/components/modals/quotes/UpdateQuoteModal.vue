@@ -83,6 +83,8 @@ import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
+import { getImages } from '@/config/axios/helpers'
+
 
 const router = useRouter()
 const route = useRoute()
@@ -133,8 +135,4 @@ onMounted(() => {
       console.log(err.response)
     })
 })
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
 </script>

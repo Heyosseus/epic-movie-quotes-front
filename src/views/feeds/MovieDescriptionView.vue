@@ -105,6 +105,7 @@ import IconTrash from '@/components/icons/IconTrash.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import IconAddMovie from '@/components/icons/IconAddMovie.vue'
 import IconDots from '@/components/icons/IconDots.vue'
+import { getImages } from '@/config/axios/helpers'
 // import UpdateMovieModal from '@/components/modals/UpdateMovieModal.vue'
 
 const movie = ref(null)
@@ -127,10 +128,6 @@ onMounted(() => {
     })
 })
 
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
 onMounted(() => {
   AxiosInstance.get(`/api/quotes/${movieId}`)
     .then((response) => {
