@@ -7,7 +7,6 @@
         <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto">Add Movie</h1>
-            <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -168,7 +167,6 @@
 </template>
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { onMounted, ref } from 'vue'
 import AxiosInstance from '../../../config/axios'
