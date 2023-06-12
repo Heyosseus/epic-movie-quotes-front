@@ -13,11 +13,28 @@ import ResetPassword from '@/components/modals/forgot_password/ResetPassword.vue
 import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.vue'
 import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
 import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
+import SessionExpired from '@/components/modals/forgot_password/SessionExpired.vue'
 import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
 import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
 import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
+import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
+
+import { useAuthStore } from '@/stores/auth.js'
+
+const authGuard = (to, from, next) => {
+  const authStore = useAuthStore()
+  const isUserAuthenticated = authStore.getIsUserAuthenticated
+
+  if (to.path === '/login') {
+    next()
+  } else if (isUserAuthenticated) {
+    next()
+  } else {
+    next('/login')
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,6 +75,7 @@ const router = createRouter({
       path: '/news-feed',
       name: 'news-feed',
       component: NewsFeedView,
+      beforeEnter: authGuard,
       children: [
         {
           path: '/menu',
@@ -75,17 +93,20 @@ const router = createRouter({
     {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: ForgotPassword
+      component: ForgotPassword,
+      beforeEnter: authGuard
     },
     {
       path: '/reset-password',
       name: 'reset-password',
-      component: ResetPassword
+      component: ResetPassword,
+      beforeEnter: authGuard
     },
     {
       path: '/update-password',
       name: 'update-password',
-      component: UpdatePassword
+      component: UpdatePassword,
+      beforeEnter: authGuard
     },
     {
       path: '/success',
@@ -98,14 +119,21 @@ const router = createRouter({
       component: LinkExpired
     },
     {
+      path: '/session-expired',
+      name: 'session-expired',
+      component: SessionExpired
+    },
+    {
       path: '/profile',
       name: 'profile',
+      beforeEnter: authGuard,
       component: ProfileModal
     },
     {
       path: '/movie-list',
       name: 'movie-list',
       component: MovieListView,
+      beforeEnter: authGuard,
       children: [
         {
           path: '/add-movie',
@@ -118,11 +146,17 @@ const router = createRouter({
       path: '/movie/:id',
       name: 'description',
       component: MovieDescriptionView,
+      beforeEnter: authGuard,
       children: [
         {
           path: '/add-quote/:id',
           name: 'add-quote',
           component: AddQuoteModal
+        },
+        {
+          path: '/update-quote/:id',
+          name: 'update-quote',
+          component: UpdateQuoteModal
         }
       ]
     }

@@ -4,13 +4,28 @@
       <div
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
-            <IconClose class="ml-auto" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
-          <h1>Rati Rukhadze</h1>
+          <div v-if="user" class="flex items-center mt-6 space-x-4">
+            <div v-if="user.profile_picture">
+              <img
+                :src="getImages(user.profile_picture)"
+                alt=""
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <div v-else>
+              <img
+                src="@/assets/images/profile.jpg"
+                alt="profile"
+                class="object-fit w-20 rounded-full"
+              />
+            </div>
+            <h1>{{ user.name }}</h1>
+          </div>
           <!-- ---------------------------------------- -->
           <div v-if="movie" class="w-full mb-4 sm:mb-8 mt-5 sm:mt-10">
             <div
@@ -26,12 +41,17 @@
                   </div>
                 </div>
                 <div class="flex space-x-4">
-                  <p class="text-gray-400 text-sm lg:text-lg">Genre:</p>
-                  <p class="text-white text-sm lg:text-lg">{{ movie.genre }}</p>
+                  <div
+                    v-for="item in genre"
+                    :key="item.id"
+                    class="text-white bg-genre py-1 px-3 rounded"
+                  >
+                    {{ item.value }}
+                  </div>
                 </div>
                 <div class="flex space-x-4 mt-2 sm:mt-6">
                   <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
-                  <p class="text-white text-sm lg:text-lg">{{ movie.director }}</p>
+                  <p class="text-white text-sm lg:text-lg">{{ JSON.parse(movie.director).en }}</p>
                 </div>
               </div>
             </div>
@@ -123,20 +143,27 @@
 </template>
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import IconClose from '@/components/icons/IconClose.vue'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { getImages } from '@/config/axios/helpers'
+import { onClickOutside } from '@vueuse/core'
 
 const router = useRouter()
 const movie = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-
+const genre = ref(null)
 const image = ref(null)
+const user = ref(null)
+const modalRef = ref(null)
+
+onClickOutside(modalRef, () => {
+  router.back()
+})
 
 const addMovie = () => {
   const formData = new FormData()
@@ -163,14 +190,20 @@ onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movie.value = response.data.movie
+      genre.value = JSON.parse(response.data.movie.genre)
     })
     .catch((error) => {
       console.error(error)
     })
 })
 
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
+onMounted(() => {
+  AxiosInstance.get(`/api/user`)
+    .then((res) => {
+      user.value = res.data
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
+})
 </script>

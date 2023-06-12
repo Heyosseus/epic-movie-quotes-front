@@ -18,3 +18,8 @@ export function setCookie(name, value, minutes) {
   }
   document.cookie = name + '=' + value + expires + '; path=/'
 }
+
+export const getImages = (poster) => {
+  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
+  return `${backendStorageURL}/${poster}`
+}

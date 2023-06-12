@@ -35,7 +35,7 @@
                   <img
                     :src="getImages(movie.poster)"
                     alt=""
-                    class="rounded-2xl object-fit h-64 md:h-96 mr-auto"
+                    class="rounded-2xl object-fit h-64 md:h-96 mr-auto cursor-pointer"
                   />
                   <div class="flex space-x-2 md:space-x-4 mr-auto mt-2 md:mt-4 mb-4 md:mb-10">
                     <h1 class="uppercase">{{ movie.title.en }}</h1>
@@ -47,7 +47,6 @@
           </div>
           <div v-else>
             <h1 class="text-2xl text-center mt-32">No movie yet</h1>
-            <!-- Updated margin top class -->
           </div>
         </div>
       </div>
@@ -63,6 +62,7 @@ import AddMovie from '@/components/layout/AddMovie.vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
+import { getImages } from '@/config/axios/helpers'
 
 const search = ref('')
 const movies = ref([])
@@ -104,8 +104,5 @@ onMounted(() => {
   getMovies()
 })
 
-const getImages = (poster) => {
-  const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
-  return `${backendStorageURL}/${poster}`
-}
+
 </script>
