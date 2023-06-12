@@ -56,7 +56,7 @@
               >
                 Sign in
               </button>
-              <div>
+              <div @click="authStore.setIsGoogleAuthenticated(true)">
                 <a
                   :href="`${backendUrl}/auth/google/redirect`"
                   class="border border-white py-3 flex w-full items-center justify-center mx-auto"

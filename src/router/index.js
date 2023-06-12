@@ -26,10 +26,11 @@ import { useAuthStore } from '@/stores/auth.js'
 const authGuard = (to, from, next) => {
   const authStore = useAuthStore()
   const isUserAuthenticated = authStore.getIsUserAuthenticated
+  const isGoogleAuthenticated = authStore.getIsGoogleAuthenticated
 
   if (to.path === '/login') {
     next()
-  } else if (isUserAuthenticated) {
+  } else if (isUserAuthenticated || isGoogleAuthenticated) {
     next()
   } else {
     next('/login')
