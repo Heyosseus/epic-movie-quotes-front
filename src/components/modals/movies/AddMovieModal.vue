@@ -67,7 +67,7 @@
                 @change="selectedGenreData"
               >
                 <option v-for="genre in genres" :key="genre.id" class="py-2 mt-2 bg-slate-900">
-                  {{ genre.name.en }}
+                  {{ JSON.parse(genre.name).en }}
                 </option>
               </select>
               <div
@@ -187,6 +187,7 @@ const release_date = ref('')
 const image = ref(null)
 
 const genres = ref(null)
+const genres_id = ref([])
 const selectedGenre = ref(null)
 const selected = ref([])
 const modalRef = ref(null)
@@ -198,11 +199,24 @@ onClickOutside(modalRef, () => {
 const selectedGenreData = () => {
   console.log(selectedGenre.value)
   if (selectedGenre.value) {
-    selected.value.push({ id: Date.now(), value: selectedGenre.value })
+    selected.value.push({ value: selectedGenre.value })
   }
 }
 
+AxiosInstance.post('/api/add-genres', {
+  genres: genres_id.value
+})
+  .then((res) => {
+    console.log(res.data.movies)
+    console.log('genres added')
+  })
+  .catch((err) => {
+    console.log(err.response)
+  })
+
 const addMovie = () => {
+  console.log(genres.value)
+  
   const formData = new FormData()
   formData.append('poster', image.value)
   formData.append('title_en', title_en.value)
@@ -211,9 +225,10 @@ const addMovie = () => {
   formData.append('director_ka', director_ka.value)
   formData.append('description_en', description_en.value)
   formData.append('description_ka', description_ka.value)
-  formData.append('genre', JSON.stringify(selected.value))
+  formData.append('genre', JSON.stringify(genres_id.value))
   formData.append('release_date', release_date.value)
 
+  console.log(formData)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/add-movies`, formData)
@@ -230,6 +245,7 @@ onMounted(async () => {
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   const res = await axios.get(`${backendUrl}/api/genres`)
   genres.value = res.data.genres
+  genres_id.value = res.data.genres.map((genre) => genre.id)
   console.log(genres.value)
 })
 
