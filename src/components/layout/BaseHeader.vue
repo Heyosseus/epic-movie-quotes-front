@@ -60,9 +60,6 @@ AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive
   const isGoogleAuthenticated = response.data.isGoogleAuthenticated
 
-  console.log(isSessionActive)
-  console.log(isGoogleAuthenticated)
-
   if (isSessionActive && isGoogleAuthenticated) {
     authStore.setIsUserAuthenticated(true)
   } else {

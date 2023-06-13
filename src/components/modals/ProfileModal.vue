@@ -30,6 +30,7 @@
               class="w-full flex flex-col mt-6"
               @submit="addMovie"
               enctype="multipart/form-data"
+              v-if="user"
             >
               <label for="fileInput" class="relative py-2 text-white rounded cursor-pointer">
                 <span class="flex justify-center mt-16 text-xl lg:mt-4">Upload new photo</span>
@@ -43,13 +44,11 @@
               </label>
               <label for="username" class="mt-8 lg:mt-10">Username</label>
               <div class="flex space-x-3">
-                <Field
-                  type="text"
-                  name="username"
-                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field lg:placeholder-gray-700"
-                  :placeholder="placeholderName"
+                <div
+                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
                 >
-                </Field>
+                  <p class="text-white lg:text-black">{{ user.name }}</p>
+                </div>
                 <button class="" @click="editUsername = true">Edit</button>
               </div>
               <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
@@ -69,13 +68,11 @@
 
               <label for="profile_email" class="mt-6">Email</label>
               <div class="flex space-x-3">
-                <Field
-                  type="email"
-                  name="profile_email"
-                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field lg:placeholder-gray-700"
-                  :placeholder="placeholderEmail"
+                <div
+                  class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
                 >
-                </Field>
+                  <p class="text-white lg:text-black">{{ user.email }}</p>
+                </div>
                 <button @click="editEmail = true">Edit</button>
               </div>
               <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
@@ -131,8 +128,6 @@ import AxiosInstance from '@/config/axios/index'
 
 const user = ref(null)
 const editUsername = ref(false)
-const placeholderName = ref(null)
-const placeholderEmail = ref(null)
 const editEmail = ref(false)
 const router = useRouter()
 const picture = ref(null)
@@ -154,8 +149,7 @@ const updateProfile = () => {
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/profile`, formData)
-    .then((res) => {
-      console.log(res.data)
+    .then(() => {
       router.push({ name: 'news-feed' })
     })
     .catch((err) => {
@@ -167,9 +161,6 @@ onMounted(() => {
   AxiosInstance.get('/api/user')
     .then((res) => {
       user.value = res.data
-      placeholderName.value = res.data.name
-      placeholderEmail.value = res.data.email
-      console.log(res.data)
     })
     .catch((err) => {
       console.log(err.response)
