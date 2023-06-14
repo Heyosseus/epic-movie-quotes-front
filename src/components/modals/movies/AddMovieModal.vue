@@ -45,17 +45,6 @@
             >
             </Field>
             <ErrorMessage name="title_ka" class="text-red-600 mt-2" />
-
-            <!-- <Field
-              name="genre"
-              class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
-              placeholder="ჟანრი"
-              v-model="genre"
-              rules="required"
-            >
-            </Field>
-            <ErrorMessage name="genre" class="text-red-600 mt-2" /> -->
-
             <div
               class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md"
             >
@@ -66,7 +55,12 @@
                 v-model="selectedGenre"
                 @change="selectedGenreData"
               >
-                <option v-for="genre in genres" :key="genre.id" class="py-2 mt-2 bg-slate-900">
+                <option
+                  v-for="genre in genres"
+                  :key="genre.id"
+                  :value="genre.id"
+                  class="py-2 mt-2 bg-slate-900"
+                >
                   {{ JSON.parse(genre.name).en }}
                 </option>
               </select>
@@ -75,7 +69,7 @@
                 :key="item.id"
                 class="text-white bg-genre px-3 rounded items-center flex"
               >
-                {{ item.value }}
+                {{ item }}
               </div>
             </div>
             <Field
@@ -182,7 +176,6 @@ const director_en = ref('')
 const director_ka = ref('')
 const description_en = ref('')
 const description_ka = ref('')
-// const genre = ref('')
 const release_date = ref('')
 const image = ref(null)
 
@@ -199,24 +192,24 @@ onClickOutside(modalRef, () => {
 const selectedGenreData = () => {
   console.log(selectedGenre.value)
   if (selectedGenre.value) {
-    selected.value.push({ value: selectedGenre.value })
+    selected.value.push(selectedGenre.value)
+    console.log(selected.value)
   }
 }
 
-AxiosInstance.post('/api/add-genres', {
-  genres: genres_id.value
-})
-  .then((res) => {
-    console.log(res.data.movies)
-    console.log('genres added')
-  })
-  .catch((err) => {
-    console.log(err.response)
-  })
-
 const addMovie = () => {
-  console.log(genres.value)
-  
+  AxiosInstance.post('/api/add-genres', {
+    genres: selected.value
+  })
+    .then((res) => {
+      console.log(res.data.movies)
+      console.log('genres added')
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
+  console.log(genres_id.value)
+
   const formData = new FormData()
   formData.append('poster', image.value)
   formData.append('title_en', title_en.value)
@@ -225,7 +218,7 @@ const addMovie = () => {
   formData.append('director_ka', director_ka.value)
   formData.append('description_en', description_en.value)
   formData.append('description_ka', description_ka.value)
-  formData.append('genre', JSON.stringify(genres_id.value))
+  formData.append('genre', JSON.stringify(selected.value))
   formData.append('release_date', release_date.value)
 
   console.log(formData)
@@ -246,7 +239,6 @@ onMounted(async () => {
   const res = await axios.get(`${backendUrl}/api/genres`)
   genres.value = res.data.genres
   genres_id.value = res.data.genres.map((genre) => genre.id)
-  console.log(genres.value)
 })
 
 onMounted(() => {

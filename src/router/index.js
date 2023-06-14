@@ -20,6 +20,7 @@ import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
+import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 
 import { useAuthStore } from '@/stores/auth.js'
 
@@ -140,6 +141,11 @@ const router = createRouter({
           path: '/add-movie',
           name: 'add-movie',
           component: AddMovieModal
+        },
+        {
+          path: '/update-movie/:id',
+          name: 'update-movie',
+          component: UpdateMovieModal
         }
       ]
     },
