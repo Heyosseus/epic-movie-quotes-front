@@ -36,12 +36,12 @@
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">Movie name:</label>
+              <label for="" class="text-gray-400 text-sm w-40">Movie name:</label>
               <Field
                 type="text"
                 name="title_en"
-                class="outline-0 bg-transparent w-fit sm:w-full px-2 p-1 rounded-md text-lg"
-                :value="movies.title.en"
+                class="outline-0 bg-transparent w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                :placeholder="movies.title.en"
                 v-model="title_en"
               />
             </div>
@@ -49,85 +49,85 @@
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">ფილმის სახელი:</label>
+              <label for="" class="text-gray-400 text-sm w-40">ფილმის სახელი:</label>
               <Field
                 type="text"
                 name="title_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg"
-                :value="movies.title.ka"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                :placeholder="movies.title.ka"
                 v-model="title_ka"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">genre:</label>
+              <label for="" class="text-gray-400 text-sm w-40">genre:</label>
               <Field
                 type="text"
                 name="genre"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                 v-model="genres"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">Year/წელი:</label>
+              <label for="" class="text-gray-400 text-sm w-40">Year/წელი:</label>
               <Field
                 type="number"
                 name="release_date"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg"
-                :value="movies.release_date"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                :placeholder="movies.release_date"
                 v-model="release_date"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">Director:</label>
+              <label for="" class="text-gray-400 text-sm w-40">Director:</label>
               <Field
                 type="text"
                 name="director_en"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg"
-                :value="JSON.parse(movies.director).en"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                :placeholder="JSON.parse(movies.director).en"
                 v-model="director_en"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">რეჟისორი:</label>
+              <label for="" class="text-gray-400 text-sm w-40">რეჟისორი:</label>
               <Field
                 type="text"
                 name="director_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg"
-                :value="JSON.parse(movies.director).ka"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                :placeholder="JSON.parse(movies.director).ka"
                 v-model="director_ka"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">Description:</label>
+              <label for="" class="text-gray-400 text-sm w-40">Description:</label>
               <Field
                 as="textarea"
                 type="text"
                 name="description_en"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg"
-                :value="JSON.parse(movies.description).ka"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                :placeholder="JSON.parse(movies.description).ka"
                 v-model="description_en"
               />
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
             >
-              <label for="" class="text-gray-300 text-sm w-40">ფილმის აღწერა:</label>
+              <label for="" class="text-gray-400 text-sm w-40">ფილმის აღწერა:</label>
               <Field
                 as="textarea"
                 type="text"
                 name="description_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg"
-                :value="JSON.parse(movies.description).ka"
+                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                :placeholder="JSON.parse(movies.description).ka"
                 v-model="description_ka"
               />
             </div>

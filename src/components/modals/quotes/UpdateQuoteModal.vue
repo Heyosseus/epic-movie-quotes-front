@@ -107,7 +107,7 @@ const editQuote = () => {
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`${backendUrl}/api/add-quotes`, formData)
+    .post(`${backendUrl}/api/update-quotes`, formData)
     .then((res) => {
       console.log(res)
       router.back()

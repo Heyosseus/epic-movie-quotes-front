@@ -39,7 +39,7 @@
                       :key="item.id"
                       class="text-white bg-genre py-1 px-3 rounded"
                     >
-                      {{ item.value }}
+                      {{ item }}
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg mt-6">
@@ -75,17 +75,19 @@
                 <div
                   v-for="quote in quotes"
                   :key="quote.id"
-                  class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl relative"
+                  class="space-y-6 mt-16 bg-movie px-6 py-8 w-96 lg:w-[800px] rounded-xl relative"
                 >
-                  <div class="flex items-center space-x-2 break-words relative w-fit lg:w-full">
+                  <div
+                    class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full"
+                  >
                     <img
                       :src="getImages(quote.thumbnail)"
                       alt=""
-                      class="w-44 h-thumbnailHeight object-contain rounded-md"
+                      class="w-full lg:w-44 h-thumbnailHeight object-contain rounded-md"
                     />
                     <p class="italic text-gray-400">"{{ quote.body }}"</p>
                     <IconDots
-                      class="absolute top-1 right-2 cursor-pointer"
+                      class="absolute bottom-0 right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
                       @click="show_quote_modal = quote.id"
                     />
                   </div>
@@ -95,24 +97,30 @@
 
                   <!-- quote pop up -->
                   <div
-                    class="px-8 py-9 bg-headerBg w-60 space-y-6 absolute top-16 right-0 z-10"
+                    class="px-4 py-5 lg:px-8 lg:py-9 bg-headerBg lg:w-60 space-y-6 absolute right-6 top-[-20px] lg:top-14 z-10 lg:right-[-50px] transform"
                     v-if="show_quote_modal === quote.id"
                     ref="quote_modal"
                   >
-                    <div class="flex items-center space-x-4">
+                    <router-link
+                      :to="{ name: 'view-quote', params: { id: quote.id } }"
+                      class="flex items-center space-x-4"
+                    >
                       <IconEye />
-                      <p>View Quote</p>
-                    </div>
-                    <router-link :to="{ name: 'update-quote' }" class="flex items-center space-x-4">
+                      <p class="text-sm lg:text-md">View Quote</p>
+                    </router-link>
+                    <router-link
+                      :to="{ name: 'update-quote', params: { id: quote.id } }"
+                      class="flex items-center space-x-4"
+                    >
                       <IconEdit />
-                      <p>Edit</p>
+                      <p class="text-sm lg:text-md">Edit</p>
                     </router-link>
                     <div
                       class="flex items-center space-x-4 cursor-pointer"
                       @click="handleQuoteDelete(quote.id)"
                     >
                       <IconTrash />
-                      <p>Delete</p>
+                      <p class="text-sm lg:text-md">Delete</p>
                     </div>
                   </div>
                 </div>
@@ -147,7 +155,6 @@ const movieId = route.params.id
 const genre = ref(null)
 const show_quote_modal = ref(false)
 const quote_modal = ref(null)
-const quotes_id = ref(null)
 
 onClickOutside(quote_modal, () => {
   show_quote_modal.value = false

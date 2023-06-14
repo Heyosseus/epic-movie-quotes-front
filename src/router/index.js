@@ -21,7 +21,7 @@ import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
 import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
-
+import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -164,6 +164,11 @@ const router = createRouter({
           path: '/update-quote/:id',
           name: 'update-quote',
           component: UpdateQuoteModal
+        },
+        {
+          path: '/view-quote/:id',
+          name: 'view-quote',
+          component: ViewQuoteModal
         }
       ]
     }
