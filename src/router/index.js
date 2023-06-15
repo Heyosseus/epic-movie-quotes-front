@@ -20,16 +20,18 @@ import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
-
+import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
+import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
   const authStore = useAuthStore()
   const isUserAuthenticated = authStore.getIsUserAuthenticated
+  const isGoogleAuthenticated = authStore.getIsGoogleAuthenticated
 
   if (to.path === '/login') {
     next()
-  } else if (isUserAuthenticated) {
+  } else if (isUserAuthenticated || isGoogleAuthenticated) {
     next()
   } else {
     next('/login')
@@ -139,6 +141,11 @@ const router = createRouter({
           path: '/add-movie',
           name: 'add-movie',
           component: AddMovieModal
+        },
+        {
+          path: '/update-movie/:id',
+          name: 'update-movie',
+          component: UpdateMovieModal
         }
       ]
     },
@@ -157,6 +164,11 @@ const router = createRouter({
           path: '/update-quote/:id',
           name: 'update-quote',
           component: UpdateQuoteModal
+        },
+        {
+          path: '/view-quote/:id',
+          name: 'view-quote',
+          component: ViewQuoteModal
         }
       ]
     }

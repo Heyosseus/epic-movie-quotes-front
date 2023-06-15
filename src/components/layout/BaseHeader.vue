@@ -58,12 +58,13 @@ const logout = () => {
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive
-  console.log(isSessionActive)
-  if (isSessionActive) {
+  const isGoogleAuthenticated = response.data.isGoogleAuthenticated
+
+  if (isSessionActive && isGoogleAuthenticated) {
     authStore.setIsUserAuthenticated(true)
   } else {
     authStore.setIsUserAuthenticated(false)
-    router.push({ name: 'session-expired' })
+    router.push({ name: 'forbidden' })
   }
 })
 </script>

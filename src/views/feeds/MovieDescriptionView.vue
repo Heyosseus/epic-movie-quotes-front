@@ -26,11 +26,11 @@
                     <div
                       class="hidden sm:flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer"
                     >
-                      <router-link :to="{ name: 'update-quote' }">
+                      <router-link :to="{ name: 'update-movie' }">
                         <IconEdit />
                       </router-link>
                       <div class="w-[1px] bg-gray-400"></div>
-                      <IconTrash @click="handleDelete" />
+                      <IconTrash @click="handleMovieDelete" />
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg">
@@ -39,7 +39,7 @@
                       :key="item.id"
                       class="text-white bg-genre py-1 px-3 rounded"
                     >
-                      {{ item.value }}
+                      {{ item }}
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg mt-6">
@@ -71,21 +71,59 @@
               </div>
             </div>
             <div v-if="quotes" class="lg:w-form mt-10">
-              <div
-                v-for="quote in quotes"
-                :key="quote.id"
-                class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl"
-              >
-                <div class="flex items-center space-x-2 break-words relative w-fit lg:w-full">
-                  <img
-                    :src="getImages(quote.thumbnail)"
-                    alt=""
-                    class="w-44 h-thumbnailHeight object-contain rounded-md"
-                  />
-                  <p class="italic text-gray-400">"{{ quote.body }}"</p>
-                  <IconDots class="absolute top-1 right-2" />
+              <div class="w-[900px] relative">
+                <div
+                  v-for="quote in quotes"
+                  :key="quote.id"
+                  class="space-y-6 mt-16 bg-movie px-6 py-8 w-96 lg:w-[800px] rounded-xl relative"
+                >
+                  <div
+                    class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full"
+                  >
+                    <img
+                      :src="getImages(quote.thumbnail)"
+                      alt=""
+                      class="w-full lg:w-44 h-thumbnailHeight object-contain rounded-md"
+                    />
+                    <p class="italic text-gray-400">"{{ quote.body }}"</p>
+                    <IconDots
+                      class="absolute bottom-0 right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
+                      @click="show_quote_modal = quote.id"
+                    />
+                  </div>
+
+                  <!-- line -->
+                  <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
+
+                  <!-- quote pop up -->
+                  <div
+                    class="px-4 py-5 lg:px-8 lg:py-9 bg-headerBg lg:w-60 space-y-6 absolute right-6 top-[-20px] lg:top-14 z-10 lg:right-[-50px] transform"
+                    v-if="show_quote_modal === quote.id"
+                    ref="quote_modal"
+                  >
+                    <router-link
+                      :to="{ name: 'view-quote', params: { id: quote.id } }"
+                      class="flex items-center space-x-4"
+                    >
+                      <IconEye />
+                      <p class="text-sm lg:text-md">View Quote</p>
+                    </router-link>
+                    <router-link
+                      :to="{ name: 'update-quote', params: { id: quote.id } }"
+                      class="flex items-center space-x-4"
+                    >
+                      <IconEdit />
+                      <p class="text-sm lg:text-md">Edit</p>
+                    </router-link>
+                    <div
+                      class="flex items-center space-x-4 cursor-pointer"
+                      @click="handleQuoteDelete(quote.id)"
+                    >
+                      <IconTrash />
+                      <p class="text-sm lg:text-md">Delete</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
               </div>
             </div>
           </div>
@@ -106,7 +144,8 @@ import IconEdit from '@/components/icons/IconEdit.vue'
 import IconAddMovie from '@/components/icons/IconAddMovie.vue'
 import IconDots from '@/components/icons/IconDots.vue'
 import { getImages } from '@/config/axios/helpers'
-// import UpdateMovieModal from '@/components/modals/UpdateMovieModal.vue'
+import IconEye from '../../components/icons/IconEye.vue'
+import { onClickOutside } from '@vueuse/core'
 
 const movie = ref(null)
 const quotes = ref(null)
@@ -114,7 +153,12 @@ const router = useRouter()
 const route = useRoute()
 const movieId = route.params.id
 const genre = ref(null)
+const show_quote_modal = ref(false)
+const quote_modal = ref(null)
 
+onClickOutside(quote_modal, () => {
+  show_quote_modal.value = false
+})
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
@@ -138,7 +182,7 @@ onMounted(() => {
     })
 })
 
-const handleDelete = () => {
+const handleMovieDelete = () => {
   AxiosInstance.delete(`/api/movies/${movieId}`)
     .then((response) => {
       console.log(response)
@@ -147,5 +191,8 @@ const handleDelete = () => {
     .catch((error) => {
       console.error(error)
     })
+}
+const handleQuoteDelete = (quoteId) => {
+  AxiosInstance.delete(`/api/quotes/${quoteId}`)
 }
 </script>
