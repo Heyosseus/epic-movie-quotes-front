@@ -55,6 +55,39 @@ const router = createRouter({
           path: '/register',
           name: 'register',
           component: RegisterModal
+        },
+        {
+          path: '/forgot-password',
+          name: 'forgot-password',
+          component: ForgotPassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/reset-password',
+          name: 'reset-password',
+          component: ResetPassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/update-password',
+          name: 'update-password',
+          component: UpdatePassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/success',
+          name: 'success',
+          component: SuccessModal
+        },
+        {
+          path: '/link-expired',
+          name: 'link-expired',
+          component: LinkExpired
+        },
+        {
+          path: '/session-expired',
+          name: 'session-expired',
+          component: SessionExpired
         }
       ]
     },
@@ -92,39 +125,7 @@ const router = createRouter({
       component: ErrorView
     },
     { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
-    {
-      path: '/forgot-password',
-      name: 'forgot-password',
-      component: ForgotPassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/reset-password',
-      name: 'reset-password',
-      component: ResetPassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/update-password',
-      name: 'update-password',
-      component: UpdatePassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/success',
-      name: 'success',
-      component: SuccessModal
-    },
-    {
-      path: '/link-expired',
-      name: 'link-expired',
-      component: LinkExpired
-    },
-    {
-      path: '/session-expired',
-      name: 'session-expired',
-      component: SessionExpired
-    },
+
     {
       path: '/profile',
       name: 'profile',

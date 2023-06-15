@@ -2,14 +2,16 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg"
+        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div
-          class="flex flex-col p-8 md:p-20 lg:px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
+          class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          ref="modalRef"
         >
           <h1 class="text-2xl md:text-4xl">Forgot password?</h1>
-          <p class="text-sm md:text-base text-center mt-6">
-            Enter the email and we’ll send an email with instructions to reset your password
+          <p class="text-sm md:text-base text-center">
+            Enter the email and we’ll send an email with <br />
+            instructions to reset your password
           </p>
           <Form class="flex flex-col w-full" @submit="recoveryPassword">
             <label for="email">Email</label>
@@ -28,10 +30,10 @@
               Send instructions
             </button>
           </Form>
-          <div class="flex items-center justify-center space-x-4">
-            <IconArrowBack @click="navigateToLogin" />
-            <p class="text-[#6C757D] cursor-pointer" @click="navigateToLogin">back to log in</p>
-          </div>
+          <router-link :to="{ name: 'login' }" class="flex items-center justify-center space-x-4">
+            <IconArrowBack />
+            <p class="text-[#6C757D] cursor-pointer">back to log in</p>
+          </router-link>
         </div>
       </div>
     </teleport>
@@ -43,12 +45,16 @@ import { Form, Field, ErrorMessage } from 'vee-validate'
 import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { onClickOutside } from '@vueuse/core'
+
 const router = useRouter()
 const email = ref('')
 
-const navigateToLogin = () => {
-  router.push({ name: 'Login' })
-}
+const modalRef = ref(null)
+
+onClickOutside(modalRef, () => {
+  router.push({ name: 'home' })
+})
 
 const recoveryPassword = () => {
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL

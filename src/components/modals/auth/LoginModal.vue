@@ -47,7 +47,9 @@
                 <Field type="checkbox" name="remember" />
                 <label for="remember">Remember me</label>
               </div>
-              <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
+              <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600"
+                >Forgot password</router-link
+              >
             </div>
             <div class="space-y-8">
               <button
