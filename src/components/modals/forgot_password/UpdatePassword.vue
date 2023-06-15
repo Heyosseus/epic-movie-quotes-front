@@ -71,7 +71,10 @@
             </button>
           </Form>
 
-          <router-link :to="{name: 'login'}" class="flex items-center justify-center mt-4 md:mt-8 space-x-4">
+          <router-link
+            :to="{ name: 'login' }"
+            class="flex items-center justify-center mt-4 md:mt-8 space-x-4"
+          >
             <IconArrowBack />
             <p class="text-[#6C757D]">back to log in</p>
           </router-link>
@@ -84,10 +87,10 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import IconShowPassword from '@/components/icons/IconShowPassword.vue'
-import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
+import AxiosInstance from '@/config/axios/index'
 
 const router = useRouter()
 const email = ref()
@@ -103,13 +106,13 @@ const modalRef = ref(null)
 onClickOutside(modalRef, () => {
   router.push({ name: 'home' })
 })
-const resetPassword = () => {
-  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .put(`${backendUrl}/api/reset-password`, {
-      password: update_password.value,
-      email: email.value
-    })
+const resetPassword = async () => {
+  await AxiosInstance.get('/sanctum/csrf-cookie')
+
+  await AxiosInstance.put(`api/reset-password`, {
+    password: update_password.value,
+    email: email.value
+  })
     .then((res) => {
       console.log(res)
       router.push({ name: 'success' })

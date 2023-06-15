@@ -115,10 +115,10 @@ const login = async () => {
     email: email.value,
     password: password.value
   })
-    .then((res) => {
-      console.log(res)
-      router.push({ name: 'news-feed' })
+    .then(() => {
       authStore.setIsUserAuthenticated(true)
+      console.log(authStore.isUserAuthenticated)
+      router.push({ name: 'news-feed' })
     })
     .catch((err) => {
       console.log(email.value, password.value)

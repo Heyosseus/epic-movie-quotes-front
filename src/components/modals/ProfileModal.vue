@@ -19,7 +19,7 @@
               />
               <div v-else>
                 <img
-                  src="@/assets/images/profile.jpg"
+                  src="@/assets/images/default_picture.jpg"
                   alt=""
                   class="object-contain w-40 ml-20 lg:ml-44 rounded-full"
                 />
@@ -91,18 +91,70 @@
                 <ErrorMessage name="new_email" class="text-red-600" />
               </div>
 
-              <label for="profile_password" class="mt-6">Password</label>
-              <div class="flex space-x-3">
-                <Field
-                  type="password"
-                  name="profile_password"
-                  class="w-20 py-3 px-2 rounded mt-2 bg-transparent text-white outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
+              <label S class="mt-6">Password</label>
+              <div class="flex space-x-3 items-center">
+                <div
+                  class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
                 >
-                </Field>
+                  <p class="text-white lg:text-black"></p>
+                </div>
+                <div @click="editPassword = !editPassword" class="cursor-pointer">Edit</div>
               </div>
-              <div class="block h-[1px] bg-gray-400 lg:hidden"></div>
+              <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
 
-              <ErrorMessage name="quote_ka" class="text-red-600" />
+              <div v-if="editPassword" class="grid">
+                <div class="border border-gray-600 px-6 py-7 mt-10 w-fit lg:w-[466px]">
+                  <p>Password should contain:</p>
+                  <div class="flex items-center space-x-3 mt-4">
+                    <div class="rounded-full w-1 h-1 bg-gray-300"></div>
+                    <p class="text-gray-300 text-sm">8 or more characters</p>
+                  </div>
+                  <div class="flex items-center space-x-3 mt-2">
+                    <div class="rounded-full w-1 h-1 bg-green-600"></div>
+                    <p class="text-gray-300 text-sm">15 lowercase characters</p>
+                  </div>
+                </div>
+                <div class="flex flex-col">
+                  <label for="new_password" class="mt-6">New password</label>
+                  <div class="relative">
+                    <Field
+                      v-bind:type="showPassword ? 'text' : 'password'"
+                      name="new_password"
+                      class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
+                      placeholder="New password"
+                      v-model="new_password"
+                      rules="required"
+                    >
+                    </Field>
+                    <IconShowPassword
+                      class="absolute right-14 top-6"
+                      @click="showPassword = !showPassword"
+                    />
+                  </div>
+
+                  <ErrorMessage name="new_password" class="text-red-600" />
+                </div>
+                <div class="flex flex-col">
+                  <label for="confirm_new_password" class="mt-6">Confirm New password</label>
+                  <div class="relative">
+                    <Field
+                      v-bind:type="showPassword ? 'text' : 'password'"
+                      name="confirm_new_password"
+                      class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
+                      placeholder="Confirm new password"
+                      v-model="confirm_new_password"
+                      rules="required"
+                    >
+                    </Field>
+                    <IconShowPassword
+                      class="absolute right-14 top-6"
+                      @click="showPassword = !showPassword"
+                    />
+                  </div>
+
+                  <ErrorMessage name="confirm_new_password" class="text-red-600" />
+                </div>
+              </div>
             </Form>
           </div>
           <div class="space-x-4 ml-auto mt-10">
@@ -125,12 +177,15 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import AxiosInstance from '@/config/axios/index'
+import IconShowPassword from '@/components/icons/IconShowPassword.vue'
 
 const user = ref(null)
 const editUsername = ref(false)
 const editEmail = ref(false)
+const editPassword = ref(false)
 const router = useRouter()
 const picture = ref(null)
+const showPassword = ref(false)
 
 const new_username = ref(null)
 const new_email = ref(null)
