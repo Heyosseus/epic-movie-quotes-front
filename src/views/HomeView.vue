@@ -11,15 +11,19 @@
               <option value="" class="bg-black">Eng</option>
               <option value="" class="bg-black">Ka</option>
             </select>
-            <router-link :to="{name: 'register'}" class="py-2 px-4 text-sm sm:px-6 bg-red-700 text-white rounded-md">
+            <router-link
+              :to="{ name: 'register' }"
+              class="py-2 px-4 text-sm sm:px-6 bg-red-700 text-white rounded-md"
+            >
               Sign up
             </router-link>
             <div v-if="isRegisterModalOpen">
               <RegisterModal />
             </div>
-            <router-link :to="{name: 'login'}"
+            <router-link
+              :to="{ name: 'login' }"
               class="py-2 px-4 text-sm sm:px-6 bg-transparent border border-white rounded-md"
-    
+              @click="navigateToNewsFeed"
             >
               Log in
             </router-link>
@@ -74,7 +78,6 @@ import { useAuthStore } from '@/stores/auth.js'
 import RegisterModal from '../components/modals/auth/RegisterModal.vue'
 const router = useRouter()
 const authStore = useAuthStore()
-// const modalRef = ref(null)
 
 const isLoginModalOpen = ref(false)
 const registerModal = ref(null)
@@ -87,7 +90,11 @@ const navigateToLogin = () => {
     router.push({ name: 'news-feed' })
   }
 }
-
+const navigateToNewsFeed = () => {
+  if (authStore.isUserAuthenticated === true) {
+    router.push({ name: 'news-feed' })
+  }
+}
 // const naviageToRegister = () => {
 //   isRegisterModalOpen.value = true
 //   router.push('/register')

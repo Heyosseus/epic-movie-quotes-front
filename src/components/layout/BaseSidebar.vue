@@ -7,7 +7,7 @@
         </div>
         <div v-else>
           <img
-            src="@/assets/images/profile.jpg"
+            src="@/assets/images/default_picture.jpg"
             alt="profile"
             class="object-fit w-20 rounded-full"
           />
@@ -71,7 +71,6 @@ if (window.location.pathname === '/news-feed') {
 if (window.location.pathname === '/movie-list') {
   activeMovieList.value = !activeMovieList.value
 }
-
 
 onMounted(() => {
   AxiosInstance.get(`/api/user`)

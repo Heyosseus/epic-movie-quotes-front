@@ -22,6 +22,8 @@ import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
 import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
+import SuccessEmail from '@/components/modals/forgot_password/SuccessEmail.vue'
+
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -45,6 +47,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      props: true,
       children: [
         {
           path: '/login',
@@ -71,13 +74,20 @@ const router = createRouter({
         {
           path: '/update-password',
           name: 'update-password',
+          props: true,
           component: UpdatePassword,
           beforeEnter: authGuard
         },
         {
           path: '/success',
           name: 'success',
+          props: true,
           component: SuccessModal
+        },
+        {
+          path: '/success-email',
+          name: 'success-email',
+          component: SuccessEmail
         },
         {
           path: '/link-expired',
