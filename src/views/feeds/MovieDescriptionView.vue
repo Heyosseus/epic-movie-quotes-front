@@ -80,11 +80,14 @@
                   <div
                     class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full"
                   >
-                    <img
-                      :src="getImages(quote.thumbnail)"
-                      alt=""
-                      class="w-full lg:w-44 h-thumbnailHeight object-contain rounded-md"
-                    />
+                    <router-link :to="{ name: 'view-quote', params: { id: quote.id } }">
+                      <img
+                        :src="getImages(quote.thumbnail)"
+                        alt=""
+                        class="w-full lg:w-44 h-thumbnailHeight object-contain rounded-md"
+                      />
+                    </router-link>
+
                     <p class="italic text-gray-400">"{{ quote.body }}"</p>
                     <IconDots
                       class="absolute bottom-0 right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
@@ -102,6 +105,7 @@
                     ref="quote_modal"
                   >
                     <router-link
+                      v-if="movie"
                       :to="{ name: 'view-quote', params: { id: quote.id } }"
                       class="flex items-center space-x-4"
                     >
@@ -109,7 +113,8 @@
                       <p class="text-sm lg:text-md">View Quote</p>
                     </router-link>
                     <router-link
-                      :to="{ name: 'update-quote', params: { id: quote.id } }"
+                      v-if="movie"
+                      :to="{ name: 'update-quote', params: { movie_id: movie.id, id: quote.id } }"
                       class="flex items-center space-x-4"
                     >
                       <IconEdit />

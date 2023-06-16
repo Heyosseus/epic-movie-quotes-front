@@ -69,8 +69,8 @@ const movies = ref([])
 const show = ref(false)
 const router = useRouter()
 
-const redirectToMovie = (id) => {
-  router.push(`/movie/${id}`)
+const redirectToMovie = (movie_id) => {
+  router.push(`/movie/${movie_id}`)
   show.value = !show.value
 }
 
@@ -103,6 +103,4 @@ const getMovies = () => {
 onMounted(() => {
   getMovies()
 })
-
-
 </script>
