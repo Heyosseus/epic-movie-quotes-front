@@ -2,11 +2,22 @@
   <div class="hidden px-16 sm:block" v-if="user">
     <div class="flex justify-between w-64 pt-12">
       <div>
-        <div v-if="user && user.profile_picture">
-          <img :src="getImages(user.profile_picture)" alt="" class="object-fit w-20 rounded-full" />
-        </div>
-        <div v-else>
+        <div
+          :class="[
+            'object-fit',
+            'w-20',
+            'rounded-full',
+            { 'border-4': activeProfile, 'border-red-700': activeProfile }
+          ]"
+        >
           <img
+            v-if="user && user.profile_picture"
+            :src="getImages(user.profile_picture)"
+            alt=""
+            class="object-fit w-20 rounded-full"
+          />
+          <img
+            v-else
             src="@/assets/images/default_picture.jpg"
             alt="profile"
             class="object-fit w-20 rounded-full"
@@ -55,6 +66,7 @@ const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
 const user = ref(null)
+const activeProfile = ref(false)
 
 const navigateToMovieList = () => {
   router.push('/movie-list')
@@ -66,12 +78,11 @@ const navigateToNewsFeed = () => {
 
 if (window.location.pathname === '/news-feed') {
   activeHome.value = !activeHome.value
-}
-
-if (window.location.pathname === '/movie-list') {
+} else if (window.location.pathname === '/profile') {
+  activeProfile.value = !activeProfile.value
+} else {
   activeMovieList.value = !activeMovieList.value
 }
-
 onMounted(() => {
   AxiosInstance.get(`/api/user`)
     .then((res) => {
