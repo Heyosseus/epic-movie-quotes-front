@@ -55,12 +55,32 @@
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
-            <div v-if="quotes">
-              <img
-                :src="getImages(quotes.thumbnail)"
-                alt=""
-                class="w-full object-contain h-96 rounded-md"
-              />
+            <div v-if="quotes" class="relative w-full">
+              <div class="relative">
+                <img
+                  :src="getImages(quotes.thumbnail)"
+                  alt=""
+                  class="w-full object-contain h-96 rounded-md z-1 mt-8"
+                />
+                <label
+                  for="fileInput"
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white rounded cursor-pointer"
+                >
+                  <span
+                    class="flex flex-col items-center justify-center text-md lg:text-md lg:mt-4 bg-transparentLandingBg rounded-xl px-4 py-6"
+                  >
+                    <IconPhotoVue />
+                    <p class="mt-2">Change photo</p>
+                  </span>
+                  <Field
+                    name="fileInput"
+                    id="fileInput"
+                    type="file"
+                    class="w-full absolute top-0 left-0 lg:w-full h-full opacity-0 cursor-pointer"
+                    v-model="image"
+                  />
+                </label>
+              </div>
             </div>
 
             <button
@@ -83,31 +103,34 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import IconPhotoVue from '@/components/icons/IconPhoto.vue'
 
 const router = useRouter()
 const route = useRoute()
 const quotes = ref(null)
-const movieId = route.params.id
-
+const quoteId = route.params.id
+const movieId = route.params.movie_id
 const quote_en = ref('')
 const quote_ka = ref('')
 const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
+const movie = ref(null)
 
 onClickOutside(modalRef, () => {
-  router.back()
+  router.push({ name: 'movie-list' })
 })
 const editQuote = () => {
   const formData = new FormData()
   formData.append('thumbnail', image.value)
-
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
+  formData.append('movie_id', parseInt(movieId))
+  console.log(movieId)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`${backendUrl}/api/update-quotes`, formData)
+    .post(`${backendUrl}/api/update-quotes/${quoteId}`, formData)
     .then((res) => {
       console.log(res)
       router.back()
@@ -118,13 +141,22 @@ const editQuote = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/quotes/${movieId}`)
+  AxiosInstance.get(`/api/show-quotes/${quoteId}`)
     .then((response) => {
-      quotes.value = response.data.quote[0]
+      quotes.value = response.data.quote
       console.log(quotes.value)
     })
     .catch((error) => {
       console.error(error)
+    })
+})
+onMounted(() => {
+  AxiosInstance.get(`/api/movies/1`)
+    .then((res) => {
+      movie.value = res.data.movie
+    })
+    .catch((err) => {
+      console.log(err.response)
     })
 })
 
