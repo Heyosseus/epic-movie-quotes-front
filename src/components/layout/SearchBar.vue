@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 lg:ml-40 justify-between lg:w-[921px]">
+  <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10  justify-between lg:w-[921px]">
     <div
       class="w-full sm:bg-transparent  flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
     >

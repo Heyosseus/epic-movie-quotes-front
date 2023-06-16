@@ -9,7 +9,11 @@
             <h1 class="text-2xl mx-auto">Add Movie</h1>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
-          <div v-if="user" class="flex items-center mt-6 space-x-4">
+          <router-link
+            :to="{ name: 'profile' }"
+            v-if="user"
+            class="flex items-center mt-6 space-x-4"
+          >
             <div v-if="user.profile_picture">
               <img
                 :src="getImages(user.profile_picture)"
@@ -19,13 +23,13 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
             </div>
             <h1>{{ user.name }}</h1>
-          </div>
+          </router-link>
           <Form class="flex flex-col mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
             <Field
               name="title_en"
@@ -220,6 +224,7 @@ const addMovie = () => {
   formData.append('description_ka', description_ka.value)
   formData.append('genre', JSON.stringify(selected.value))
   formData.append('release_date', release_date.value)
+  formData.append('user_id', user.value.id)
 
   console.log(formData)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
