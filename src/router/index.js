@@ -177,7 +177,7 @@ const router = createRouter({
           component: UpdateQuoteModal
         },
         {
-          path: '/view-quote/:id',
+          path: '/movie/:movie_id/view-quote/:id',
           name: 'view-quote',
           component: ViewQuoteModal
         }

@@ -80,7 +80,9 @@
                   <div
                     class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full"
                   >
-                    <router-link :to="{ name: 'view-quote', params: { id: quote.id } }">
+                    <router-link
+                      :to="{ name: 'view-quote', params: { movie_id: movie.id, id: quote.id } }"
+                    >
                       <img
                         :src="getImages(quote.thumbnail)"
                         alt=""
@@ -106,7 +108,7 @@
                   >
                     <router-link
                       v-if="movie"
-                      :to="{ name: 'view-quote', params: { id: quote.id } }"
+                      :to="{ name: 'view-quote', params: { movie_id: movie.id, id: quote.id } }"
                       class="flex items-center space-x-4"
                     >
                       <IconEye />
@@ -114,7 +116,10 @@
                     </router-link>
                     <router-link
                       v-if="movie"
-                      :to="{ name: 'update-quote', params: { movie_id: movie.id, id: quote.id } }"
+                      :to="{
+                        name: 'update-quote',
+                        params: { movie_id: movie.id, id: quote.id }
+                      }"
                       class="flex items-center space-x-4"
                     >
                       <IconEdit />
@@ -156,7 +161,8 @@ const movie = ref(null)
 const quotes = ref(null)
 const router = useRouter()
 const route = useRoute()
-const movieId = route.params.id
+const movieId = route.params.movie_id
+const quoteId = route.params.id
 const genre = ref(null)
 const show_quote_modal = ref(false)
 const quote_modal = ref(null)
@@ -178,7 +184,7 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  AxiosInstance.get(`/api/quotes/${movieId}`)
+  AxiosInstance.get(`/api/quotes/${quoteId}`)
     .then((response) => {
       quotes.value = response.data.quote
     })

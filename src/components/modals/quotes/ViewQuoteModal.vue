@@ -6,9 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center" v-if="view_quotes">
-            <router-link
-              v-if="movie"
-              :to="{ name: 'update-quote', params: { movie_id: movie.id, id: quote_id } }"
+            <router-link :to="{ name: 'update-quote', params: { movie_id: movieId, id: quote_id } }"
               ><IconEdit class="cursor-pointer"
             /></router-link>
             <div class="w-[1px] bg-gray-500 h-6 ml-6"></div>
@@ -93,6 +91,7 @@ const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
 const quote_id = route.params.id
+const movieId = route.params.movie_id
 
 onClickOutside(modalRef, () => {
   router.back()
