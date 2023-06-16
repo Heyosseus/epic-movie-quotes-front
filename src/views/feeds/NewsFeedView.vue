@@ -53,14 +53,14 @@
               <div v-if="quote.movie && quote.movie.user">
                 <div
                   v-if="quote.movie.user.profile_picture"
-                  class="flex items-center mt-4 space-x-6"
+                  class="flex items-center mt-4 space-x-6 mb-6"
                 >
                   <img
                     :src="getImages(quote.movie.user.profile_picture)"
                     alt=""
-                    class="object-fit w-14 rounded-full mt-4"
+                    class="object-fit w-14 rounded-full"
                   />
-                  <Form>
+                  <Form class="w-full">
                     <Field
                       name="comment"
                       class="w-full sm:bg-transparent rounded-md outline-0 flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
@@ -69,11 +69,11 @@
                     </Field>
                   </Form>
                 </div>
-                <div v-else class="flex items-center mt-4 space-x-6">
+                <div v-else class="flex items-center mt-4 space-x-6 mb-6">
                   <img
                     src="@/assets/images/default_picture.jpg"
                     alt="profile"
-                    class="object-fit w-14 rounded-full"
+                    class="object-fit w-14 rounded-full "
                   />
                   <Form class="w-full">
                     <Field
