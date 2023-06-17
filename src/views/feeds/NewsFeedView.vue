@@ -111,6 +111,7 @@ import { getImages } from '@/config/axios/helpers'
 // const router = useRouter()
 const quotes = ref(null)
 
+
 onMounted(() => {
   AxiosInstance.get(`/api/news-feed`)
     .then((response) => {
