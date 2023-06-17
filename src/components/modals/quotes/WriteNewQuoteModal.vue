@@ -6,7 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">Write New Quote</h1>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -26,39 +26,6 @@
             </div>
             <h1>{{ user.name }}</h1>
           </div>
-          <!-- ---------------------------------------- -->
-          <div v-if="movie" class="w-full mb-4 sm:mb-8 mt-5 sm:mt-10">
-            <div
-              class="flex space-x-3 items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-12 w-full"
-            >
-              <img :src="getImages(movie.poster)" alt="" class="w-36 sm:w-80 rounded-md" />
-
-              <div class="flex flex-col">
-                <div class="flex space-x-4 mr-auto mb-4 sm:mb-10 mt-2 sm:mt-4 text-[#DDCCAA]">
-                  <div class="flex space-x-2">
-                    <h1 class="uppercase text-sm lg:text-lg">{{ movie.title.en }}</h1>
-                    <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
-                  </div>
-                </div>
-                <div class="flex space-x-4">
-                  <div
-                    v-for="item in genre"
-                    :key="item.id"
-                    class="text-white bg-genre py-1 px-3 rounded"
-                  >
-                    {{ item.value }}
-                  </div>
-                </div>
-                <div class="flex space-x-4 mt-2 sm:mt-6">
-                  <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
-                  <p class="text-white text-sm lg:text-lg">{{ JSON.parse(movie.director).en }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else></div>
-
-          <!-- ----------------------------------------- -->
           <Form
             class="flex flex-col w-full mt-4 sm:mt-6"
             @submit="addMovie"
@@ -129,11 +96,29 @@
               </Field>
             </label>
 
+            <div class="flex items-center bg-black mt-6">
+              <IconChooseMovie class="ml-5" />
+              <select
+                class="py-6 rounded-lg bg-black outline-none text-white px-4 w-full"
+                v-model="selectedMovieId"
+              >
+                <option disabled selected value="" class="hidden">Choose a movie</option>
+                <option
+                  v-for="movie in movies"
+                  :key="movie.id"
+                  :value="movie.id"
+                  class="p-2 bg-movie text-xl py-6"
+                >
+                  {{ movie.title.en }}
+                </option>
+              </select>
+            </div>
+
             <button
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Add quote
+              Post
             </button>
           </Form>
         </div>
@@ -150,16 +135,17 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import IconChooseMovie from '../../icons/IconChooseMovie.vue'
 
 const router = useRouter()
-const movie = ref(null)
+const movies = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-const genre = ref(null)
 const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
+const selectedMovieId = ref(null)
 
 onClickOutside(modalRef, () => {
   router.back()
@@ -171,7 +157,9 @@ const addMovie = () => {
 
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
-  formData.append('movie_id', movie.value.id)
+  formData.append('movie_id', selectedMovieId.value)
+
+  console.log(formData)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
@@ -186,11 +174,11 @@ const addMovie = () => {
 }
 
 onMounted(() => {
-  const movieId = router.currentRoute.value.params.id
-  AxiosInstance.get(`/api/movies/${movieId}`)
+  // const movieId = router.currentRoute.value.params.id
+  AxiosInstance.get(`/api/movies`)
     .then((response) => {
-      movie.value = response.data.movie
-      genre.value = JSON.parse(response.data.movie.genre)
+      movies.value = response.data.movies
+      console.log(movies.value)
     })
     .catch((error) => {
       console.error(error)

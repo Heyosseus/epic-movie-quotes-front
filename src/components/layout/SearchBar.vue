@@ -1,12 +1,10 @@
 <template>
-  <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10  justify-between lg:w-[921px]">
+  <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 justify-between lg:w-[921px]">
     <div
-      class="w-full sm:bg-transparent  flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
+      class="w-full sm:bg-transparent flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
     >
       <IconPencil />
-      <router-link :to="{ name: 'add-quote', params: { id: 0 } }" class="text-search"
-        >Write new quote</router-link
-      >
+      <router-link :to="{ name: 'write-quote' }" class="text-search">Write new quote</router-link>
     </div>
     <form action="" class="h-16 ml-10 mt-3 w-[1840px]" v-if="showSearchBar">
       <div class="flex">
@@ -31,25 +29,25 @@
 <script setup>
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
-import { ref, onMounted } from 'vue'
-import AxiosInstance from '../../config/axios'
+import { ref } from 'vue'
+// import AxiosInstance from '../../config/axios'
 
 const showSearchBar = ref(false)
 const showButton = ref(true)
-const quotes = ref(null)
+// const quotes = ref(null)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
   showButton.value = !showButton.value
 }
 
-onMounted(() => {
-  AxiosInstance.get(`/api/quotes/0}}`)
-    .then((response) => {
-      quotes.value = response.data.quote
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-})
+// onMounted(() => {
+//   AxiosInstance.get(`/api/quotes`)
+//     .then((response) => {
+//       quotes.value = response.data.quotes
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// })
 </script>

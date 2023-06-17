@@ -2,37 +2,39 @@
   <div>
     <BaseHeader />
     <div class="bg-[#181624] min-h-screen">
-      <div class="flex">
-        <BaseSidebar />
-        <div class="lg:ml-60">
+      <div class="flex flex-col md:flex-row">
+        <div class="md:w-1/4">
+          <BaseSidebar />
+        </div>
+        <div>
           <SearchBar />
           <div
             v-for="quote in quotes"
             :key="quote.id"
-            class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-10 mb-20"
+            class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
           >
             <router-link
               :to="{ name: 'profile' }"
               v-if="quote.movie && quote.movie.user"
-              class="flex items-center mt-6 space-x-4"
+              class="flex items-center mt-2 lg:mt-6 space-x-4"
             >
               <div v-if="quote.movie.user.profile_picture">
                 <img
                   :src="getImages(quote.movie.user.profile_picture)"
                   alt=""
-                  class="object-fit w-14 rounded-full"
+                  class="object-fit w-10 lg:w-14 rounded-full"
                 />
               </div>
               <div v-else>
                 <img
                   src="@/assets/images/default_picture.jpg"
                   alt="profile"
-                  class="object-fit w-14 rounded-full"
+                  class="object-fit w-10 lg:w-14 rounded-full"
                 />
               </div>
               <h1>{{ quote.movie.user.name }}</h1>
             </router-link>
-            <!-- ------ -->
+
             <div v-if="quotes">
               <div class="flex mt-6">
                 <p class="italic">"{{ JSON.parse(quote.body).en }}"</p>
@@ -42,11 +44,10 @@
               <img
                 :src="getImages(quote.thumbnail)"
                 alt=""
-                class="w-36 sm:w-96 rounded-md mx-auto"
+                class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
               />
               <div class="flex space-x-4">
                 <IconComments />
-
                 <IconLikes />
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
@@ -58,12 +59,12 @@
                   <img
                     :src="getImages(quote.movie.user.profile_picture)"
                     alt=""
-                    class="object-fit w-14 rounded-full"
+                    class="object-fit w-10 lg:w-14 rounded-full"
                   />
                   <Form class="w-full">
                     <Field
                       name="comment"
-                      class="w-full sm:bg-transparent rounded-md outline-0 flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
+                      class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
                       placeholder="write a comment"
                     >
                     </Field>
@@ -73,12 +74,12 @@
                   <img
                     src="@/assets/images/default_picture.jpg"
                     alt="profile"
-                    class="object-fit w-14 rounded-full "
+                    class="object-fit w-10 rounded-full lg:w-14"
                   />
                   <Form class="w-full">
                     <Field
                       name="comment"
-                      class="w-full sm:bg-transparent rounded-md outline-0 flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
+                      class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
                       placeholder="write a comment"
                     >
                     </Field>
@@ -94,7 +95,6 @@
 
   <router-view />
 </template>
-
 <script setup>
 import { Form, Field } from 'vee-validate'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
