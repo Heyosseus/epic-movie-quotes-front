@@ -55,7 +55,7 @@
               <select
                 name="genres"
                 id=""
-                class="bg-transparent py-2 sm:w-32 outline-0 text-white bg-genre px-3 rounded"
+                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded"
                 v-model="selectedGenre"
                 @change="selectedGenreData"
               >
@@ -73,7 +73,7 @@
                 :key="item.id"
                 class="text-white bg-genre px-3 rounded items-center flex"
               >
-                {{ item }}
+                {{ getGenreName(item) }}
               </div>
             </div>
             <Field
@@ -193,13 +193,27 @@ onClickOutside(modalRef, () => {
   router.back()
 })
 
-const selectedGenreData = () => {
-  console.log(selectedGenre.value)
-  if (selectedGenre.value) {
-    selected.value.push(selectedGenre.value)
-    console.log(selected.value)
+const getGenreName = (genreId) => {
+  const foundGenre = genres.value.find((genre) => genre.id === genreId);
+  if (foundGenre) {
+    return JSON.parse(foundGenre.name).en;
   }
-}
+  return "";
+};
+
+const selectedGenreData = () => {
+  if (selectedGenre.value && !selected.value.includes(selectedGenre.value)) {
+    selected.value.push(selectedGenre.value);
+  }
+};
+
+// const selectedGenreData = () => {
+//   console.log(selectedGenre.value)
+//   if (selectedGenre.value) {
+//     selected.value.push(selectedGenre.value)
+//     console.log(selected.value)
+//   }
+// }
 
 const addMovie = () => {
   AxiosInstance.post('/api/add-genres', {

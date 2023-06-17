@@ -24,7 +24,7 @@
             <AddMovie />
           </div>
 
-          <div class="mt-8 md:mt-20" v-if="movies && movies.length > 0 ">
+          <div class="mt-8 md:mt-20" v-if="movies && movies.length > 0">
             <div class="flex flex-wrap">
               <div
                 v-for="movie in movies"
@@ -79,8 +79,7 @@ const handleSearch = () => {
   axios
     .get(`${searchUrl}?search=${search.value}`)
     .then((res) => {
-      console.log(res.data)
-      movies.value = res.data.movie
+      movies.value = res.data.movies
     })
     .catch((err) => {
       console.log(err)

@@ -170,6 +170,7 @@ const quote_modal = ref(null)
 onClickOutside(quote_modal, () => {
   show_quote_modal.value = false
 })
+
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
