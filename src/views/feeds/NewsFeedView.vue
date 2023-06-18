@@ -4,7 +4,11 @@
     <div class="bg-[#181624] min-h-screen">
       <div class="flex flex-col md:flex-row">
         <div class="md:w-1/4">
-          <BaseSidebar />
+          <BaseSidebar
+            :searchQuery="searchQuery"
+            :searchResults="filteredQuotes"
+            @updateSearchQuery="searchQuery = $event"
+          />
         </div>
         <div>
           <SearchBar />
@@ -47,10 +51,43 @@
                 class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
               />
               <div class="flex space-x-4">
-                <IconComments />
+                <div class="flex space-x-2" v-if="quote.comments">
+                  <span>{{ commentList.length }}</span>
+                  <IconComments />
+                </div>
                 <IconLikes />
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
+
+              <div v-for="comment in commentList" :key="comment.id">
+                <div v-if="comment.quote_id === quote.id" class="py-4 flex items-center space-x-6">
+                  <router-link
+                    :to="{ name: 'profile' }"
+                    v-if="quote.movie && quote.movie.user"
+                    class="flex items-center mt-2 lg:mt-6 space-x-4"
+                  >
+                    <div v-if="quote.movie.user.profile_picture">
+                      <img
+                        :src="getImages(quote.movie.user.profile_picture)"
+                        alt=""
+                        class="object-fit w-10 lg:w-14 rounded-full"
+                      />
+                    </div>
+                    <div v-else>
+                      <img
+                        src="@/assets/images/default_picture.jpg"
+                        alt="profile"
+                        class="object-fit w-10 lg:w-14 rounded-full"
+                      />
+                    </div>
+                  </router-link>
+                  <div class="w-full mt-8">
+                    <p>{{ comment.content }}</p>
+                    <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
+                  </div>
+                </div>
+              </div>
+
               <div v-if="quote.movie && quote.movie.user">
                 <div
                   v-if="quote.movie.user.profile_picture"
@@ -76,11 +113,12 @@
                     alt="profile"
                     class="object-fit w-10 rounded-full lg:w-14"
                   />
-                  <Form class="w-full">
+                  <Form class="w-full" @submit="addComment(quote)">
                     <Field
                       name="comment"
                       class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
                       placeholder="write a comment"
+                      v-model="comment"
                     >
                     </Field>
                   </Form>
@@ -103,14 +141,67 @@ import SearchBar from '@/components/layout/SearchBar.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 // import { useRoute, useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 
 // const router = useRouter()
 const quotes = ref(null)
+const quoteId = ref(null)
+const comment = ref('')
+const commentList = ref([])
+const searchQuery = ref('')
 
+const addComment = (quote) => {
+  if (quote.movie && quote.movie.user) {
+    quoteId.value = quote.id
+
+    AxiosInstance.post(`/api/add-comments`, {
+      quote_id: quote.id,
+      user_id: quote.movie.user.id,
+      content: comment.value
+    })
+      .then(() => {
+        comment.value = ''
+        // Fetch comments for the current quote
+        fetchComments(quoteId.value)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  } else {
+    console.error('Unable to retrieve user information')
+  }
+}
+
+onMounted(() => {
+  fetchComments()
+})
+
+const fetchComments = () => {
+  AxiosInstance.get(`/api/comments/1`)
+    .then((response) => {
+      commentList.value = response.data.comments
+      console.log(commentList.value)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+const filteredQuotes = computed(() => {
+  if (!searchQuery.value) {
+    return quotes.value
+  }
+
+  const query = searchQuery.value.toLowerCase()
+  return quotes.value.filter((quote) => {
+    const movieTitle = quote.movie.title.en.toLowerCase()
+    const quoteBody = JSON.parse(quote.body).en.toLowerCase()
+    return movieTitle.includes(query) || quoteBody.includes(query)
+  })
+})
 
 onMounted(() => {
   AxiosInstance.get(`/api/news-feed`)

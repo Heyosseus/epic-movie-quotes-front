@@ -6,7 +6,12 @@
       <IconPencil />
       <router-link :to="{ name: 'write-quote' }" class="text-search">Write new quote</router-link>
     </div>
-    <form action="" class="h-16 ml-10 mt-3 w-[1840px]" v-if="showSearchBar" @submit.prevent="search">
+    <form
+      action=""
+      class="h-16 ml-10 mt-3 w-[1840px]"
+      v-if="showSearchBar"
+      @submit.prevent="search"
+    >
       <div class="flex">
         <IconSearch />
         <input
@@ -27,7 +32,7 @@
     </div>
     <ul>
       <li v-for="result in searchResults" :key="result.id">
-        {{ result }}
+        <p>{{ JSON.parse(result.body).en }}</p>
       </li>
     </ul>
   </div>
@@ -35,7 +40,7 @@
 <script setup>
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
-import { ref } from 'vue'
+import { ref ,  watch} from 'vue'
 import AxiosInstance from '@/config/axios/index.js'
 // import AxiosInstance from '../../config/axios'
 
@@ -51,15 +56,23 @@ const handleShow = () => {
 const searchQuery = ref('')
 const searchResults = ref([])
 
+// const search = () => {
+//   console.log('searching')
+//   if (searchQuery.value.startsWith('@')) {
+//     searchMovies()
+//     console.log('searching movies')
+//   } else if (searchQuery.value.startsWith('#')) {
+//     searchQuotes()
+//     console.log('searching quotes')
+//   }
+// }
 const search = () => {
-  console.log('searching')
   if (searchQuery.value.startsWith('@')) {
     searchMovies()
-    console.log('searching movies')
   } else if (searchQuery.value.startsWith('#')) {
     searchQuotes()
-    console.log('searching quotes')
   }
+  
 }
 
 const searchMovies = () => {
@@ -85,6 +98,12 @@ const searchQuotes = () => {
       console.error(error)
     })
 }
+
+watch(searchQuery, (newQuery) => {
+  if (!newQuery) {
+    searchResults.value = []
+  }
+})
 
 // onMounted(() => {
 //   AxiosInstance.get(`/api/quotes`)

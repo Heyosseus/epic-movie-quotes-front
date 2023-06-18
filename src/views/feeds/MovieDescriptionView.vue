@@ -161,7 +161,6 @@ const movie = ref(null)
 const quotes = ref(null)
 const router = useRouter()
 const route = useRoute()
-const movieId = route.params.movie_id
 const quoteId = route.params.id
 const genre = ref(null)
 const show_quote_modal = ref(false)
@@ -195,6 +194,7 @@ onMounted(() => {
 })
 
 const handleMovieDelete = () => {
+  const movieId = router.currentRoute.value.params.id
   AxiosInstance.delete(`/api/movies/${movieId}`)
     .then((response) => {
       console.log(response)
