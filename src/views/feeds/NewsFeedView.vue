@@ -52,14 +52,14 @@
               />
               <div class="flex space-x-4">
                 <div class="flex space-x-2" v-if="quote.comments">
-                  <span>{{ commentList.length }}</span>
+                  <!-- <span>{{ commentList.length }}</span> -->
                   <IconComments />
                 </div>
                 <IconLikes />
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
 
-              <div v-for="comment in commentList" :key="comment.id">
+              <div v-for="comment in quote.comments" :key="comment.id">
                 <div v-if="comment.quote_id === quote.id" class="py-4 flex items-center space-x-6">
                   <router-link
                     :to="{ name: 'profile' }"
@@ -164,8 +164,6 @@ const addComment = (quote) => {
     })
       .then(() => {
         comment.value = ''
-        // Fetch comments for the current quote
-        fetchComments(quoteId.value)
       })
       .catch((error) => {
         console.error(error)
@@ -175,20 +173,6 @@ const addComment = (quote) => {
   }
 }
 
-onMounted(() => {
-  fetchComments()
-})
-
-const fetchComments = () => {
-  AxiosInstance.get(`/api/comments/1`)
-    .then((response) => {
-      commentList.value = response.data.comments
-      console.log(commentList.value)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
 
 const filteredQuotes = computed(() => {
   if (!searchQuery.value) {
@@ -207,6 +191,10 @@ onMounted(() => {
   AxiosInstance.get(`/api/news-feed`)
     .then((response) => {
       quotes.value = response.data.quotes
+      commentList.value = response.data.quotes.map((quote) => {
+        return quote.comments
+      })
+      console.log(commentList.value, 'commentList')
       console.log(quotes.value)
     })
     .catch((error) => {
