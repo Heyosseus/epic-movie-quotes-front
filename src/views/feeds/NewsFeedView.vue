@@ -19,12 +19,12 @@
           >
             <router-link
               :to="{ name: 'profile' }"
-              v-if="quote.movie && quote.movie.user"
+              v-if="quote.user"
               class="flex items-center mt-2 lg:mt-6 space-x-4"
             >
-              <div v-if="quote.movie.user.profile_picture">
+              <div v-if="quote.user.profile_picture">
                 <img
-                  :src="getImages(quote.movie.user.profile_picture)"
+                  :src="getImages(quote.user.profile_picture)"
                   alt=""
                   class="object-fit w-10 lg:w-14 rounded-full"
                 />
@@ -36,7 +36,7 @@
                   class="object-fit w-10 lg:w-14 rounded-full"
                 />
               </div>
-              <h1>{{ quote.movie.user.name }}</h1>
+              <h1>{{ quote.user.name }}</h1>
             </router-link>
 
             <div v-if="quotes">
@@ -52,10 +52,13 @@
               />
               <div class="flex space-x-4">
                 <div class="flex space-x-2" v-if="quote.comments">
-                  <!-- <span>{{ commentList.length }}</span> -->
+                  <span>{{ quote.comments.length }}</span>
                   <IconComments />
                 </div>
-                <IconLikes />
+                <div class="flex space-x-2">
+                  <span>{{ quote.likes.length ?? 0 }} </span>
+                  <IconLikes @click="addLikes(quote)" />
+                </div>
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
 
@@ -63,12 +66,12 @@
                 <div v-if="comment.quote_id === quote.id" class="py-4 flex items-center space-x-6">
                   <router-link
                     :to="{ name: 'profile' }"
-                    v-if="quote.movie && quote.movie.user"
+                    v-if="quote.user"
                     class="flex items-center mt-2 lg:mt-6 space-x-4"
                   >
-                    <div v-if="quote.movie.user.profile_picture">
+                    <div v-if="quote.user.profile_picture">
                       <img
-                        :src="getImages(quote.movie.user.profile_picture)"
+                        :src="getImages(quote.user.profile_picture)"
                         alt=""
                         class="object-fit w-10 lg:w-14 rounded-full"
                       />
@@ -88,13 +91,13 @@
                 </div>
               </div>
 
-              <div v-if="quote.movie && quote.movie.user">
+              <div v-if="quote && quote.user">
                 <div
-                  v-if="quote.movie.user.profile_picture"
+                  v-if="quote.user.profile_picture"
                   class="flex items-center mt-4 space-x-6 mb-6"
                 >
                   <img
-                    :src="getImages(quote.movie.user.profile_picture)"
+                    :src="getImages(quote.user.profile_picture)"
                     alt=""
                     class="object-fit w-10 lg:w-14 rounded-full"
                   />
@@ -154,25 +157,35 @@ const commentList = ref([])
 const searchQuery = ref('')
 
 const addComment = (quote) => {
-  if (quote.movie && quote.movie.user) {
-    quoteId.value = quote.id
+  quoteId.value = quote.id
 
-    AxiosInstance.post(`/api/add-comments`, {
-      quote_id: quote.id,
-      user_id: quote.movie.user.id,
-      content: comment.value
+  AxiosInstance.post(`/api/add-comments`, {
+    quote_id: quote.id,
+    user_id: quote.user.id,
+    content: comment.value
+  })
+    .then(() => {
+      comment.value = ''
     })
-      .then(() => {
-        comment.value = ''
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  } else {
-    console.error('Unable to retrieve user information')
-  }
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
+const addLikes = (quote) => {
+  quoteId.value = quote.id
+
+  AxiosInstance.post(`/api/add-likes`, {
+    quote_id: quote.id,
+    user_id: quote.user.id
+  })
+    .then(() => {
+      console.log('success')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 
 const filteredQuotes = computed(() => {
   if (!searchQuery.value) {
