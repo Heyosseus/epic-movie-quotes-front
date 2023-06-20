@@ -90,19 +90,28 @@
                       />
                     </router-link>
 
-                    <p class="italic text-gray-400">"{{ quote.body }}"</p>
+                    <p class="italic text-gray-400 w-52 mt-2 lg:w-fit">"{{ quote.body }}"</p>
                     <IconDots
-                      class="absolute bottom-0 right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
+                      class="absolute bottom-[-70px] right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
                       @click="show_quote_modal = quote.id"
                     />
                   </div>
 
                   <!-- line -->
                   <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
-
+                  <div class="flex space-x-6">
+                    <div class="flex space-x-3" v-if="quote.comments">
+                      <span>{{ quote.comments.length }}</span>
+                      <IconComments />
+                    </div>
+                    <div class="flex space-x-3">
+                      <span>{{ quote.likes.length ?? 0 }} </span>
+                      <IconLikes />
+                    </div>
+                  </div>
                   <!-- quote pop up -->
                   <div
-                    class="px-4 py-5 lg:px-8 lg:py-9 bg-headerBg lg:w-60 space-y-6 absolute right-6 top-[-20px] lg:top-14 z-10 lg:right-[-50px] transform"
+                    class="px-5 py-6 lg:px-8 lg:py-9 bg-headerBg lg:w-60 space-y-6 absolute right-6 top-[70px] lg:top-14 z-10 lg:right-[-50px] transform"
                     v-if="show_quote_modal === quote.id"
                     ref="quote_modal"
                   >
@@ -153,6 +162,8 @@ import IconTrash from '@/components/icons/IconTrash.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import IconAddMovie from '@/components/icons/IconAddMovie.vue'
 import IconDots from '@/components/icons/IconDots.vue'
+import IconComments from '@/components/icons/IconComments.vue'
+import IconLikes from '@/components/icons/IconLikes.vue'
 import { getImages } from '@/config/axios/helpers'
 import IconEye from '../../components/icons/IconEye.vue'
 import { onClickOutside } from '@vueuse/core'

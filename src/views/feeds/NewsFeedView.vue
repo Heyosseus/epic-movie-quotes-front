@@ -50,7 +50,7 @@
                 alt=""
                 class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
               />
-              <div class="flex space-x-6">
+              <div class="flex space-x-6 cursor-pointer">
                 <div class="flex space-x-3" v-if="quote.comments">
                   <span>{{ quote.comments.length }}</span>
                   <IconComments />
