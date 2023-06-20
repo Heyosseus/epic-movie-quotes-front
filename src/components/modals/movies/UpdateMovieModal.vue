@@ -62,12 +62,37 @@
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
             >
               <label for="" class="text-gray-400 text-sm w-40">genre:</label>
-              <Field
-                type="text"
-                name="genre"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                v-model="genres"
-              />
+              <div
+                v-for="genre in movies.genres"
+                :key="genre.id"
+                class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
+                @click="removeGenre(genre)"
+              >
+                {{ JSON.parse(genre.name).en }}
+              </div>
+              <select
+                name="genres"
+                id=""
+                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded w-40"
+                v-model="selectedGenre"
+                @change="selectedGenreData"
+              >
+                <option
+                  v-for="genre in genres"
+                  :key="genre.id"
+                  :value="genre.id"
+                  class="py-2 mt-2 bg-slate-900 w-40"
+                >
+                  {{ JSON.parse(genre.name).en }}
+                </option>
+              </select>
+              <div
+                v-for="item in selected"
+                :key="item.id"
+                class="text-white bg-genre px-3 rounded items-center flex"
+              >
+                {{ getGenreName(item) }}
+              </div>
             </div>
             <div
               class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
@@ -194,13 +219,14 @@ const description_en = ref('')
 const description_ka = ref('')
 const release_date = ref('')
 const image = ref(null)
-const genres = ref(null)
+const genres = ref([])
 const user = ref(null)
 const modalRef = ref(null)
 
 onClickOutside(modalRef, () => {
   router.back()
 })
+
 const editMovie = () => {
   const formData = new FormData()
   formData.append('poster', image.value)
@@ -229,6 +255,7 @@ onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movies.value = response.data.movie
+      genres.value = response.data.movie.genre
       console.log(movies.value)
     })
     .catch((error) => {
@@ -244,5 +271,15 @@ onMounted(() => {
     .catch((err) => {
       console.log(err.response)
     })
+})
+
+const removeGenre = (genre) => {
+  movies.value.genres = movies.value.genres.filter((item) => item.id !== genre.id)
+}
+
+onMounted(async () => {
+  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
+  const res = await axios.get(`${backendUrl}/api/genres`)
+  genres.value = res.data.genres
 })
 </script>

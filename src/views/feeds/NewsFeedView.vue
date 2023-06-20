@@ -50,14 +50,14 @@
                 alt=""
                 class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
               />
-              <div class="flex space-x-6 cursor-pointer">
+              <div class="flex space-x-6 cursor-pointer mt-5">
                 <div class="flex space-x-3" v-if="quote.comments">
                   <span>{{ quote.comments.length }}</span>
-                  <IconComments />
+                  <IconComments class="w-7 lg:w-10" />
                 </div>
                 <div class="flex space-x-3">
                   <span>{{ quote.likes.length ?? 0 }} </span>
-                  <IconLikes @click="addLikes(quote)" />
+                  <IconLikes @click="addLikes(quote)" class="w-7 lg:w-10" />
                 </div>
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
