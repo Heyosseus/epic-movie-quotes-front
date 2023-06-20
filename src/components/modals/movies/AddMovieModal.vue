@@ -172,6 +172,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
 
+
 const user = ref(null)
 const router = useRouter()
 const title_en = ref('')
@@ -194,26 +195,18 @@ onClickOutside(modalRef, () => {
 })
 
 const getGenreName = (genreId) => {
-  const foundGenre = genres.value.find((genre) => genre.id === genreId);
+  const foundGenre = genres.value.find((genre) => genre.id === genreId)
   if (foundGenre) {
-    return JSON.parse(foundGenre.name).en;
+    return JSON.parse(foundGenre.name).en
   }
-  return "";
-};
+  return ''
+}
 
 const selectedGenreData = () => {
   if (selectedGenre.value && !selected.value.includes(selectedGenre.value)) {
-    selected.value.push(selectedGenre.value);
+    selected.value.push(selectedGenre.value)
   }
-};
-
-// const selectedGenreData = () => {
-//   console.log(selectedGenre.value)
-//   if (selectedGenre.value) {
-//     selected.value.push(selectedGenre.value)
-//     console.log(selected.value)
-//   }
-// }
+}
 
 const addMovie = () => {
   AxiosInstance.post('/api/add-genres', {

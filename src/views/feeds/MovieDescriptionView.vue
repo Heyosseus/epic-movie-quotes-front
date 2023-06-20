@@ -35,11 +35,11 @@
                   </div>
                   <div class="flex space-x-4 text-lg">
                     <div
-                      v-for="item in genre"
-                      :key="item.id"
+                      v-for="genre in movie.genres"
+                      :key="genre.id"
                       class="text-white bg-genre py-1 px-3 rounded"
                     >
-                      {{ item }}
+                      {{ JSON.parse(genre.name).en }}
                     </div>
                   </div>
                   <div class="flex space-x-4 text-lg mt-6">
