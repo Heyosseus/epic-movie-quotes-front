@@ -9,7 +9,11 @@
             <h1 class="text-2xl mx-auto">Add Movie</h1>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
-          <div v-if="user" class="flex items-center mt-6 space-x-4">
+          <router-link
+            :to="{ name: 'profile' }"
+            v-if="user"
+            class="flex items-center mt-6 space-x-4"
+          >
             <div v-if="user.profile_picture">
               <img
                 :src="getImages(user.profile_picture)"
@@ -19,13 +23,13 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
             </div>
             <h1>{{ user.name }}</h1>
-          </div>
+          </router-link>
           <Form class="flex flex-col mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
             <Field
               name="title_en"
@@ -51,7 +55,7 @@
               <select
                 name="genres"
                 id=""
-                class="bg-transparent py-2 sm:w-32 outline-0 text-white bg-genre px-3 rounded"
+                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded"
                 v-model="selectedGenre"
                 @change="selectedGenreData"
               >
@@ -69,7 +73,7 @@
                 :key="item.id"
                 class="text-white bg-genre px-3 rounded items-center flex"
               >
-                {{ item }}
+                {{ getGenreName(item) }}
               </div>
             </div>
             <Field
@@ -189,13 +193,27 @@ onClickOutside(modalRef, () => {
   router.back()
 })
 
-const selectedGenreData = () => {
-  console.log(selectedGenre.value)
-  if (selectedGenre.value) {
-    selected.value.push(selectedGenre.value)
-    console.log(selected.value)
+const getGenreName = (genreId) => {
+  const foundGenre = genres.value.find((genre) => genre.id === genreId);
+  if (foundGenre) {
+    return JSON.parse(foundGenre.name).en;
   }
-}
+  return "";
+};
+
+const selectedGenreData = () => {
+  if (selectedGenre.value && !selected.value.includes(selectedGenre.value)) {
+    selected.value.push(selectedGenre.value);
+  }
+};
+
+// const selectedGenreData = () => {
+//   console.log(selectedGenre.value)
+//   if (selectedGenre.value) {
+//     selected.value.push(selectedGenre.value)
+//     console.log(selected.value)
+//   }
+// }
 
 const addMovie = () => {
   AxiosInstance.post('/api/add-genres', {
@@ -220,6 +238,7 @@ const addMovie = () => {
   formData.append('description_ka', description_ka.value)
   formData.append('genre', JSON.stringify(selected.value))
   formData.append('release_date', release_date.value)
+  formData.append('user_id', user.value.id)
 
   console.log(formData)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL

@@ -22,6 +22,9 @@ import MenuSidebar from '@/components/modals/MenuSidebar.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
 import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
+import SuccessEmail from '@/components/modals/forgot_password/SuccessEmail.vue'
+import WriteNewQuoteModal from '@/components/modals/quotes/WriteNewQuoteModal.vue'
+
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -45,6 +48,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      props: true,
       children: [
         {
           path: '/login',
@@ -55,6 +59,46 @@ const router = createRouter({
           path: '/register',
           name: 'register',
           component: RegisterModal
+        },
+        {
+          path: '/forgot-password',
+          name: 'forgot-password',
+          component: ForgotPassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/reset-password',
+          name: 'reset-password',
+          component: ResetPassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/update-password',
+          name: 'update-password',
+          props: true,
+          component: UpdatePassword,
+          beforeEnter: authGuard
+        },
+        {
+          path: '/success',
+          name: 'success',
+          props: true,
+          component: SuccessModal
+        },
+        {
+          path: '/success-email',
+          name: 'success-email',
+          component: SuccessEmail
+        },
+        {
+          path: '/link-expired',
+          name: 'link-expired',
+          component: LinkExpired
+        },
+        {
+          path: '/session-expired',
+          name: 'session-expired',
+          component: SessionExpired
         }
       ]
     },
@@ -83,6 +127,11 @@ const router = createRouter({
           path: '/menu',
           name: 'menu',
           component: MenuSidebar
+        },
+        {
+          path: 'write-quote',
+          name: 'write-quote',
+          component: WriteNewQuoteModal
         }
       ]
     },
@@ -92,39 +141,7 @@ const router = createRouter({
       component: ErrorView
     },
     { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
-    {
-      path: '/forgot-password',
-      name: 'forgot-password',
-      component: ForgotPassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/reset-password',
-      name: 'reset-password',
-      component: ResetPassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/update-password',
-      name: 'update-password',
-      component: UpdatePassword,
-      beforeEnter: authGuard
-    },
-    {
-      path: '/success',
-      name: 'success',
-      component: SuccessModal
-    },
-    {
-      path: '/link-expired',
-      name: 'link-expired',
-      component: LinkExpired
-    },
-    {
-      path: '/session-expired',
-      name: 'session-expired',
-      component: SessionExpired
-    },
+
     {
       path: '/profile',
       name: 'profile',
@@ -161,12 +178,12 @@ const router = createRouter({
           component: AddQuoteModal
         },
         {
-          path: '/update-quote/:id',
+          path: '/movie/:movie_id/update-quote/:id',
           name: 'update-quote',
           component: UpdateQuoteModal
         },
         {
-          path: '/view-quote/:id',
+          path: '/movie/:movie_id/view-quote/:id',
           name: 'view-quote',
           component: ViewQuoteModal
         }

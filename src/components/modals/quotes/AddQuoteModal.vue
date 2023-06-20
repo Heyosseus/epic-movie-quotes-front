@@ -61,7 +61,7 @@
           <!-- ----------------------------------------- -->
           <Form
             class="flex flex-col w-full mt-4 sm:mt-6"
-            @submit="addMovie"
+            @submit="addQuote"
             enctype="multipart/form-data"
           >
             <Field
@@ -89,7 +89,7 @@
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
             <label
-              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-3 rounded-md"
+              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
             >
               <IconPhoto class="inline-block" />
               <span class="text-sm ml-2 lg:text-md">Drag & drop your image here or</span>
@@ -165,10 +165,10 @@ onClickOutside(modalRef, () => {
   router.back()
 })
 
-const addMovie = () => {
+const addQuote = () => {
   const formData = new FormData()
   formData.append('thumbnail', image.value)
-
+  formData.append('user_id', movie.value.user_id)
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)

@@ -2,16 +2,17 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg"
+        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div
-          class="flex flex-col p-6 md:p-20 lg:px-36 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-6"
+          class="flex flex-col px-6 py-12 md:px-20 md:pt-12 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          ref="modalRef"
         >
           <h1 class="text-2xl md:text-4xl">Create new password</h1>
           <p class="text-sm md:text-base text-center mt-4 md:mt-6">
             Your new password must be different from previous used passwords
           </p>
-          <Form class="w-full space-y-4" @submit="resetPassword">
+          <Form class="w-full space-y-6" @submit="resetPassword">
             <div class="flex flex-col">
               <label for="email">Email</label>
               <Field
@@ -70,10 +71,13 @@
             </button>
           </Form>
 
-          <div class="flex items-center justify-center mt-4 md:mt-8 space-x-4">
+          <router-link
+            :to="{ name: 'login' }"
+            class="flex items-center justify-center mt-4 md:mt-8 space-x-4"
+          >
             <IconArrowBack />
-            <router-link to="/login" class="text-[#6C757D]">back to log in</router-link>
-          </div>
+            <p class="text-[#6C757D]">back to log in</p>
+          </router-link>
         </div>
       </div>
     </teleport>
@@ -83,9 +87,11 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import IconShowPassword from '@/components/icons/IconShowPassword.vue'
-import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { onClickOutside } from '@vueuse/core'
+import AxiosInstance from '@/config/axios/index'
+
 const router = useRouter()
 const email = ref()
 const update_password = ref(null)
@@ -95,13 +101,18 @@ const showPassword = ref(false)
 
 const showPasswordConfirmation = ref(false)
 
-const resetPassword = () => {
-  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .put(`${backendUrl}/api/reset-password`, {
-      password: update_password.value,
-      email: email.value
-    })
+const modalRef = ref(null)
+
+onClickOutside(modalRef, () => {
+  router.push({ name: 'home' })
+})
+const resetPassword = async () => {
+  await AxiosInstance.get('/sanctum/csrf-cookie')
+
+  await AxiosInstance.put(`api/reset-password`, {
+    password: update_password.value,
+    email: email.value
+  })
     .then((res) => {
       console.log(res)
       router.push({ name: 'success' })

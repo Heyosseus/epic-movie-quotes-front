@@ -6,7 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Edit Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">Write New Quote</h1>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -26,10 +26,9 @@
             </div>
             <h1>{{ user.name }}</h1>
           </div>
-
           <Form
             class="flex flex-col w-full mt-4 sm:mt-6"
-            @submit="editQuote"
+            @submit="addMovie"
             enctype="multipart/form-data"
           >
             <Field
@@ -55,39 +54,71 @@
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
-            <div v-if="quotes" class="relative w-full">
-              <div class="relative">
-                <img
-                  :src="getImages(quotes.thumbnail)"
-                  alt=""
-                  class="w-full object-contain h-96 rounded-md z-1 mt-8"
-                />
-                <label
-                  for="fileInput"
-                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white rounded cursor-pointer"
+
+            <label
+              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
+            >
+              <IconPhoto class="inline-block" />
+              <span class="text-sm ml-2 lg:text-md">Drag & drop your image here or</span>
+              <span
+                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
+              >
+                Choose File
+              </span>
+              <Field
+                type="file"
+                name="image"
+                class="hidden"
+                placeholder="ფილმის აღწერა"
+                v-model="image"
+                rules="required"
+              >
+              </Field>
+            </label>
+            <label
+              class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
+            >
+              <IconPhoto class="inline-block" />
+              <span class="text-sm ml-2 lg:text-md">Upload image</span>
+              <span
+                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
+              >
+                Choose File
+              </span>
+              <Field
+                type="file"
+                name="image"
+                class="hidden"
+                placeholder="ფილმის აღწერა"
+                v-model="image"
+                rules="required"
+              >
+              </Field>
+            </label>
+
+            <div class="flex items-center bg-black mt-6">
+              <IconChooseMovie class="ml-5" />
+              <select
+                class="py-6 rounded-lg bg-black outline-none text-white px-4 w-full"
+                v-model="selectedMovieId"
+              >
+                <option disabled selected value="" class="hidden">Choose a movie</option>
+                <option
+                  v-for="movie in movies"
+                  :key="movie.id"
+                  :value="movie.id"
+                  class="p-2 bg-movie text-xl py-6"
                 >
-                  <span
-                    class="flex flex-col items-center justify-center text-md lg:text-md lg:mt-4 bg-transparentLandingBg rounded-xl px-4 py-6"
-                  >
-                    <IconPhotoVue />
-                    <p class="mt-2">Change photo</p>
-                  </span>
-                  <Field
-                    name="fileInput"
-                    id="fileInput"
-                    type="file"
-                    class="w-full absolute top-0 left-0 lg:w-full h-full opacity-0 cursor-pointer"
-                    v-model="image"
-                  />
-                </label>
-              </div>
+                  {{ movie.title.en }}
+                </option>
+              </select>
             </div>
 
             <button
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Save changes
+              Post
             </button>
           </Form>
         </div>
@@ -97,40 +128,42 @@
 </template>
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
-import IconPhotoVue from '@/components/icons/IconPhoto.vue'
+import IconChooseMovie from '../../icons/IconChooseMovie.vue'
 
 const router = useRouter()
-const route = useRoute()
-const quotes = ref(null)
-const quoteId = route.params.id
-const movieId = route.params.movie_id
+const movies = ref(null)
+
 const quote_en = ref('')
 const quote_ka = ref('')
 const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
-const movie = ref(null)
+const selectedMovieId = ref(null)
 
 onClickOutside(modalRef, () => {
-  router.push({ name: 'movie-list' })
+  router.back()
 })
-const editQuote = () => {
+
+const addMovie = () => {
   const formData = new FormData()
   formData.append('thumbnail', image.value)
+
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
-  formData.append('movie_id', parseInt(movieId))
-  console.log(movieId)
+  formData.append('movie_id', selectedMovieId.value)
+
+  console.log(formData)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
-    .post(`${backendUrl}/api/update-quotes/${quoteId}`, formData)
+    .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
       console.log(res)
       router.back()
@@ -141,22 +174,14 @@ const editQuote = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/show-quotes/${quoteId}`)
+  // const movieId = router.currentRoute.value.params.id
+  AxiosInstance.get(`/api/movies`)
     .then((response) => {
-      quotes.value = response.data.quote
-      console.log(quotes.value)
+      movies.value = response.data.movies
+      console.log(movies.value)
     })
     .catch((error) => {
       console.error(error)
-    })
-})
-onMounted(() => {
-  AxiosInstance.get(`/api/movies/1`)
-    .then((res) => {
-      movie.value = res.data.movie
-    })
-    .catch((err) => {
-      console.log(err.response)
     })
 })
 

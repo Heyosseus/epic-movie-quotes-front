@@ -11,7 +11,7 @@
           <img src="@/assets/images/success.png" alt="" class="mt-10" />
           <h1 class="text-2xl md:text-4xl">Success!</h1>
           <p class="text-sm md:text-base text-center mt-4 md:mt-6">
-            Your password changed successfully
+            Your email changed successfully
           </p>
           <router-link
             :to="{ name: 'login' }"

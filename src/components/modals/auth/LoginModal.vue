@@ -47,7 +47,9 @@
                 <Field type="checkbox" name="remember" />
                 <label for="remember">Remember me</label>
               </div>
-              <a href="/forgot-password" class="underline text-blue-600">Forgot password</a>
+              <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600"
+                >Forgot password</router-link
+              >
             </div>
             <div class="space-y-8">
               <button
@@ -113,10 +115,10 @@ const login = async () => {
     email: email.value,
     password: password.value
   })
-    .then((res) => {
-      console.log(res)
-      router.push({ name: 'news-feed' })
+    .then(() => {
       authStore.setIsUserAuthenticated(true)
+      console.log(authStore.isUserAuthenticated)
+      router.push({ name: 'news-feed' })
     })
     .catch((err) => {
       console.log(email.value, password.value)
