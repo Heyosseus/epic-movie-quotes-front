@@ -50,12 +50,12 @@
                 alt=""
                 class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
               />
-              <div class="flex space-x-4">
-                <div class="flex space-x-2" v-if="quote.comments">
+              <div class="flex space-x-6">
+                <div class="flex space-x-3" v-if="quote.comments">
                   <span>{{ quote.comments.length }}</span>
                   <IconComments />
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex space-x-3">
                   <span>{{ quote.likes.length ?? 0 }} </span>
                   <IconLikes @click="addLikes(quote)" />
                 </div>
@@ -63,17 +63,13 @@
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
 
               <div v-for="comment in quote.comments" :key="comment.id">
-                <div v-if="comment.quote_id === quote.id" class="py-4 flex items-center space-x-6">
-                  <router-link
-                    :to="{ name: 'profile' }"
-                    v-if="quote.user"
-                    class="flex items-center mt-2 lg:mt-6 space-x-4"
-                  >
+                <div v-if="comment.quote_id === quote.id" class="py-4 flex space-x-6 lg:mt-3">
+                  <router-link :to="{ name: 'profile' }" v-if="quote.user" class="flex space-x-4">
                     <div v-if="quote.user.profile_picture">
                       <img
                         :src="getImages(quote.user.profile_picture)"
                         alt=""
-                        class="object-fit w-10 lg:w-14 rounded-full"
+                        class="object-fit w-10 mt-2 lg:w-14 rounded-full"
                       />
                     </div>
                     <div v-else>
@@ -84,9 +80,14 @@
                       />
                     </div>
                   </router-link>
-                  <div class="w-full mt-8">
-                    <p>{{ comment.content }}</p>
-                    <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
+                  <div class="w-full">
+                    <h1 class="text-lg font-bold">{{ comment.user.name }}</h1>
+                    <div class="w-full">
+                      <p class="text-sm font-normal mt-1 lg:mt-3 lg:text-md">
+                        {{ comment.content }}
+                      </p>
+                      <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-2 lg:mt-4"></div>
+                    </div>
                   </div>
                 </div>
               </div>
