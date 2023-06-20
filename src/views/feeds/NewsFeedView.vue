@@ -157,6 +157,12 @@ const comment = ref('')
 const commentList = ref([])
 const searchQuery = ref('')
 
+// onMounted(() => {
+//   window.Echo.channel('notification').listen('CommentNotification', (data) => {
+//     commentList.value.push(data.notification)
+//   })
+// })
+
 const addComment = (quote) => {
   quoteId.value = quote.id
 
@@ -166,6 +172,9 @@ const addComment = (quote) => {
     content: comment.value
   })
     .then(() => {
+      window.Echo.channel('notification').dispatch('App\\Events\\CommentNotification', {
+        message: 'New comment added'
+      })
       comment.value = ''
     })
     .catch((error) => {
