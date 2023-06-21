@@ -160,9 +160,13 @@
           <div class="space-x-4 ml-auto mt-10">
             <router-link to="/news-feed" class="bg-transparent">Cancel</router-link>
 
-            <button class="bg-red-700 py-3 px-4 rounded" @click="updateProfile">
+            <router-link
+              :to="{ name: 'reset-password' }"
+              class="bg-red-700 py-3 px-4 rounded"
+              @click="updateProfile"
+            >
               Save changes
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
