@@ -62,8 +62,11 @@
               </div>
               <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
 
-              <div v-for="comment in quote.comments" :key="comment.id">
-                <div v-if="comment.quote_id === quote.id" class="py-4 flex space-x-6 lg:mt-3">
+              <div v-for="(comment, index) in quote.comments" :key="comment.id">
+                <div
+                  v-if="comment.quote_id === quote.id && (index < 3 || quote.showAllComments)"
+                  class="py-4 flex space-x-6 lg:mt-3"
+                >
                   <router-link :to="{ name: 'profile' }" v-if="quote.user" class="flex space-x-4">
                     <div v-if="quote.user.profile_picture">
                       <img
@@ -81,7 +84,7 @@
                     </div>
                   </router-link>
                   <div class="w-full">
-                    <h1 class="text-lg font-bold">{{ comment.user.name }}</h1>
+                    <h1 class="text-lg font-bold">{{ comment.user?.name }}</h1>
                     <div class="w-full">
                       <p class="text-sm font-normal mt-1 lg:mt-3 lg:text-md">
                         {{ comment.content }}
@@ -89,6 +92,14 @@
                       <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-2 lg:mt-4"></div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="text-sm flex lg:items-center lg:justify-center mt-2 lg:text-lg">
+                <div v-if="!quote.showAllComments && quote.comments.length > 3">
+                  <button @click="quote.showAllComments = true">View Other Comments</button>
+                </div>
+                <div v-if="quote.showAllComments">
+                  <button @click="quote.showAllComments = false">Hide Comments</button>
                 </div>
               </div>
 
@@ -144,24 +155,34 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import SearchBar from '@/components/layout/SearchBar.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
-
+import instantiatePusher from '@/config/helpers/instantiatePusher'
 import { ref, onMounted, computed } from 'vue'
-// import { useRoute, useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 
-// const router = useRouter()
 const quotes = ref(null)
 const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
 const searchQuery = ref('')
 
-// onMounted(() => {
-//   window.Echo.channel('notification').listen('CommentNotification', (data) => {
-//     commentList.value.push(data.notification)
-//   })
-// })
+onMounted(() => {
+  instantiatePusher()
+  window.Echo.channel('notification').listen('CommentNotification', (data) => {
+    const newComment = data.comment
+    const quoteToUpdate = quotes.value.find((quote) => quote.id === newComment.quote_id)
+    if (quoteToUpdate) {
+      quoteToUpdate.comments.push(newComment)
+    }
+  })
+  window.Echo.channel('like-notification').listen('LikeNotification', (data) => {
+    const newLike = data.like
+    const quoteToUpdate = quotes.value.find((quote) => quote.id === newLike.quote_id)
+    if (quoteToUpdate) {
+      quoteToUpdate.likes.push(newLike)
+    }
+  })
+})
 
 const addComment = (quote) => {
   quoteId.value = quote.id
@@ -172,9 +193,6 @@ const addComment = (quote) => {
     content: comment.value
   })
     .then(() => {
-      window.Echo.channel('notification').dispatch('App\\Events\\CommentNotification', {
-        message: 'New comment added'
-      })
       comment.value = ''
     })
     .catch((error) => {
