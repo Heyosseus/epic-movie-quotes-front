@@ -44,7 +44,7 @@
               <img
                 :src="getImages(quote.thumbnail)"
                 alt=""
-                class="w-40 mt-4 sm:w-96 rounded-md mx-auto"
+                class="w-full mt-4 sm:w-form sm:h-posterHeight object-contain rounded-md mx-auto"
               />
               <div class="flex space-x-6 cursor-pointer mt-5">
                 <div class="flex space-x-3" v-if="quote.comments">
