@@ -49,7 +49,6 @@
       <p class="">List of Movies</p>
     </div>
   </div>
-
   <div v-else>Loading...</div>
 </template>
 <script setup>

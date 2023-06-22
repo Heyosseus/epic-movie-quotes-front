@@ -4,11 +4,7 @@
     <div class="bg-[#181624] min-h-screen">
       <div class="flex flex-col md:flex-row">
         <div class="md:w-1/4">
-          <BaseSidebar
-            :searchQuery="searchQuery"
-            :searchResults="filteredQuotes"
-            @updateSearchQuery="searchQuery = $event"
-          />
+          <BaseSidebar />
         </div>
         <div>
           <SearchBar />
@@ -157,7 +153,7 @@ import SearchBar from '@/components/layout/SearchBar.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 
@@ -165,7 +161,7 @@ const quotes = ref(null)
 const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
-const searchQuery = ref('')
+// const searchQuery = ref('')
 
 onMounted(() => {
   instantiatePusher()
@@ -216,18 +212,18 @@ const addLikes = (quote) => {
     })
 }
 
-const filteredQuotes = computed(() => {
-  if (!searchQuery.value) {
-    return quotes.value
-  }
+// const filteredQuotes = computed(() => {
+//   if (!searchQuery.value) {
+//     return quotes.value
+//   }
 
-  const query = searchQuery.value.toLowerCase()
-  return quotes.value.filter((quote) => {
-    const movieTitle = quote.movie.title.en.toLowerCase()
-    const quoteBody = JSON.parse(quote.body).en.toLowerCase()
-    return movieTitle.includes(query) || quoteBody.includes(query)
-  })
-})
+//   const query = searchQuery.value.toLowerCase()
+//   return quotes.value.filter((quote) => {
+//     const movieTitle = quote.movie.title.en.toLowerCase()
+//     const quoteBody = JSON.parse(quote.body).en.toLowerCase()
+//     return movieTitle.includes(query) || quoteBody.includes(query)
+//   })
+// })
 
 onMounted(() => {
   AxiosInstance.get(`/api/news-feed`)
