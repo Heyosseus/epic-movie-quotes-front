@@ -90,7 +90,7 @@
                       />
                     </router-link>
 
-                    <p class="italic text-gray-400 w-52 mt-2 lg:w-fit">"{{ quote.body }}"</p>
+                    <p class="italic text-gray-400 w-52 mt-2 lg:w-fit">"{{ JSON.parse(quote.body).en }}"</p>
                     <IconDots
                       class="absolute bottom-[-70px] right-[-80px] lg:top-1 lg:right-2 cursor-pointer"
                       @click="show_quote_modal = quote.id"
