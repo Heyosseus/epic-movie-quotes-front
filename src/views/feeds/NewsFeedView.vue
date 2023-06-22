@@ -113,11 +113,12 @@
                     alt=""
                     class="object-fit w-10 lg:w-14 rounded-full"
                   />
-                  <Form class="w-full">
+                  <Form class="w-full" @submit="addComment(quote)">
                     <Field
                       name="comment"
                       class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
                       placeholder="write a comment"
+                      v-model="comment"
                     >
                     </Field>
                   </Form>

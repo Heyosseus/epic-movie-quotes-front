@@ -160,13 +160,9 @@
           <div class="space-x-4 ml-auto mt-10">
             <router-link to="/news-feed" class="bg-transparent">Cancel</router-link>
 
-            <router-link
-              :to="{ name: 'reset-password' }"
-              class="bg-red-700 py-3 px-4 rounded"
-              @click="updateProfile"
-            >
+            <button class="bg-red-700 py-3 px-4 rounded" @click="updateProfile">
               Save changes
-            </router-link>
+            </button>
           </div>
         </div>
       </div>
@@ -209,7 +205,7 @@ const updateProfile = () => {
   axios
     .post(`${backendUrl}/api/profile`, formData)
     .then(() => {
-      router.push({ name: 'news-feed' })
+      router.push({ name: 'reset-password' })
     })
     .catch((err) => {
       console.log(err.response)
