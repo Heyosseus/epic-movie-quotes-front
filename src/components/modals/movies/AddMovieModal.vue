@@ -129,7 +129,7 @@
             >
             </Field>
             <ErrorMessage name="description_ka" class="text-red-600 mt-2" />
-            <label
+            <!-- <label
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
             >
               <IconPhoto class="inline-block" />
@@ -146,8 +146,33 @@
                 placeholder="ფილმის აღწერა"
                 v-model="image"
                 rules="required"
+                draggable="true"
+                @dragover="handleDragOver"
+                @drop="handleDrop"
+                ref="dropTarget"
               >
               </Field>
+              <ErrorMessage name="image" class="text-red-600 mt-2" />
+            </label> -->
+            <label
+              class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+            >
+              <IconPhoto class="inline-block" />
+              <span class="ml-2 text-sm lg:text-lg">Drag & drop your image here or</span>
+              <span
+                class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
+                @click="chooseFile"
+              >
+                Choose File
+              </span>
+              <input
+                type="file"
+                name="image"
+                class="hidden"
+                placeholder="ფილმის აღწერა"
+                ref="fileInput"
+                @change="handleFileChange"
+              />
               <ErrorMessage name="image" class="text-red-600 mt-2" />
             </label>
 
@@ -170,8 +195,8 @@ import { onMounted, ref } from 'vue'
 import AxiosInstance from '../../../config/axios'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
-
 
 const user = ref(null)
 const router = useRouter()
@@ -262,4 +287,43 @@ onMounted(() => {
       console.log(err.response)
     })
 })
+const fileInput = ref(null)
+
+const chooseFile = () => {
+  fileInput.value.click()
+}
+
+const handleFileChange = () => {
+  const file = fileInput.value.files[0]
+  const reader = new FileReader()
+  reader.onload = () => {
+    image.value = reader.result
+  }
+  reader.readAsDataURL(file)
+}
+
+// const draggableElement = ref(null)
+// const dropTarget = ref(null)
+
+// const handleDragOver = (event) => {
+//   event.preventDefault()
+// }
+
+// const handleDrop = (event) => {
+//   event.preventDefault()
+
+//   const draggedElement = draggableElement.value
+//   if (dropTarget.value) {
+//     dropTarget.value.appendChild(draggedElement)
+//     const droppedFile = event.dataTransfer.files[0]
+
+//     const reader = new FileReader()
+//     reader.onload = () => {
+//       image.value = reader.result
+//     }
+//     reader.readAsDataURL(droppedFile)
+//   }
+//   draggableElement.value = null
+//   dropTarget.value = null
+// }
 </script>

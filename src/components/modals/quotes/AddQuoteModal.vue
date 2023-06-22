@@ -88,7 +88,7 @@
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
-            <label
+            <!-- <label
               class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
             >
               <IconPhoto class="inline-block" />
@@ -107,7 +107,8 @@
                 rules="required"
               >
               </Field>
-            </label>
+            </label> -->
+
             <label
               class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
             >
@@ -164,6 +165,7 @@ const modalRef = ref(null)
 onClickOutside(modalRef, () => {
   router.back()
 })
+
 
 const addQuote = () => {
   const formData = new FormData()
