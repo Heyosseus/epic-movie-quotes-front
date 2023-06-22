@@ -23,6 +23,7 @@
                 rules="required|email"
               />
               <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
+              <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
             </div>
             <div class="flex flex-col">
               <label for="password">Password</label>
@@ -41,6 +42,7 @@
                 />
               </div>
               <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
+              <span class="text-red-500 text-sm font-normal">{{ errors.password }}</span>
             </div>
             <div class="flex justify-between">
               <div class="space-x-2">
@@ -86,7 +88,7 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import { useField } from 'vee-validate'
+
 import IconGoogle from '../../icons/IconGoogle.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
@@ -97,11 +99,13 @@ import { onClickOutside } from '@vueuse/core'
 const router = useRouter()
 const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
-const { errors } = useField()
 const showPassword = ref(false)
 const email = ref('')
 const password = ref('')
-
+const errors = ref({
+  email: '',
+  password: ''
+})
 const authStore = useAuthStore()
 const modalRef = ref(null)
 
@@ -121,9 +125,13 @@ const login = async () => {
       router.push({ name: 'news-feed' })
     })
     .catch((err) => {
-      console.log(email.value, password.value)
-      console.log(err.response)
-      console.log(err.response.data)
+      if (err.response.status === 401 && err.response.data.message === 'Invalid credentials') {
+        errors.value.email = 'Invalid email or password'
+        errors.value.password = 'Invalid email or password'
+      } else {
+        errors.value.email = ''
+        errors.value.password = ''
+      }
     })
 
   await AxiosInstance.get('/api/user')

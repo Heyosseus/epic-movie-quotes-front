@@ -13,7 +13,7 @@
 
       <router-link :to="{ name: 'menu' }"> </router-link>
       <div class="flex items-center sm:justify-between sm:w-80">
-        <IconSearch class="mt-2 w-14" @click="router.push({ name: 'search' })" />
+        <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
         <IconNotification class="mt-2 ml-2 w-6 lg:w-10" />
         <select
           name=""
