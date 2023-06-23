@@ -12,6 +12,7 @@
             <div class="w-[1px] bg-gray-500 h-6 ml-6"></div>
             <IconTrash class="cursor-pointer ml-5" @click="handleDeleteQuote" />
             <h1 class="text-2xl mx-auto sm:pl-8">View Quote</h1>
+            <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -164,6 +165,7 @@ import IconTrash from '@/components/icons/IconTrash.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
+import IconClose from '@/components/icons/IconClose.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 
 const router = useRouter()

@@ -35,7 +35,7 @@
               <h1>{{ quote.user.name }}</h1>
             </router-link>
 
-            <div v-if="quotes">
+            <!-- <div v-if="quotes">
               <div class="flex mt-6">
                 <p class="italic">"{{ JSON.parse(quote.body).en }}"</p>
                 <span class="ml-6 uppercase text-primary">{{ quote.movie.title.en }}</span>
@@ -136,7 +136,15 @@
                   </Form>
                 </div>
               </div>
-            </div>
+            </div> -->
+            <news-feed-quote-data
+              :quotes="quotes"
+              :quote="quote"
+              :add_likes="addLikes"
+              :add_comment="addComment"
+              :comment="comment"
+              @update:comment="comment = $event"
+            ></news-feed-quote-data>
           </div>
         </div>
       </div>
@@ -146,16 +154,14 @@
   <router-view />
 </template>
 <script setup>
-import { Form, Field } from 'vee-validate'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import SearchBar from '@/components/layout/SearchBar.vue'
-import IconLikes from '@/components/icons/IconLikes.vue'
-import IconComments from '@/components/icons/IconComments.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
+import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 
 const quotes = ref(null)
 const quoteId = ref(null)

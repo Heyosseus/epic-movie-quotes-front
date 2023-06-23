@@ -7,6 +7,7 @@
         <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto">Add Movie</h1>
+            <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
           <router-link
@@ -194,6 +195,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import IconClose from '@/components/icons/IconClose.vue'
 
 const user = ref(null)
 const router = useRouter()
