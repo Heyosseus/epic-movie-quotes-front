@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div v-if="props.quotes">
     <div class="flex mt-6">
@@ -87,7 +88,7 @@
           alt="profile"
           class="object-fit w-10 rounded-full lg:w-14"
         />
-        <Form class="w-full" @submit="add_comment(quote)">
+        <Form class="w-full" @submit="add_comment(quote, comment)">
           <Field
             name="comment"
             class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
