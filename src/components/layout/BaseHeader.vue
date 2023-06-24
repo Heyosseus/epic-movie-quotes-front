@@ -14,7 +14,21 @@
       <router-link :to="{ name: 'menu' }"> </router-link>
       <div class="flex items-center sm:justify-between sm:w-80">
         <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
-        <IconNotification class="mt-2 ml-2 w-6 lg:w-10" />
+        <div>
+          <IconNotification
+            class="mt-2 ml-2 w-6 lg:w-10 relative"
+            @click="showNotifications = !showNotifications"
+          />
+          <div
+            v-if="showNotifications"
+            class="bg-movie w-notification absolute top-20 right-[100px] px-6 py-10"
+          >
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl">Notifications</h1>
+              <p class="underline">Mark as all read</p>
+            </div>
+          </div>
+        </div>
         <select
           name=""
           id=""
@@ -38,17 +52,19 @@
 import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import MenuSidebar from '../modals/MenuSidebar.vue'
+import instantiatePusher from '@/config/helpers/instantiatePusher'
 
 const router = useRouter()
 // import axios from 'axios'
 
 const authStore = useAuthStore()
 const show = ref(false)
+const showNotifications = ref(false)
 
 const logout = () => {
   AxiosInstance.post('/api/logout')
@@ -61,6 +77,14 @@ const logout = () => {
       console.log(err.response)
     })
 }
+
+onMounted(() => {
+  instantiatePusher()
+
+  window.Echo.private(`notification-received.${1}`).notification((notification) => {
+    console.log(notification)
+  })
+})
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive

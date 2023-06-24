@@ -14,7 +14,8 @@ export const theme = {
     width: {
       form: '688px',
       quote: '840px',
-      profile: '1200px'
+      profile: '1200px',
+      notification: '961px'
     },
     height: {
       posterHeight: '441px',
