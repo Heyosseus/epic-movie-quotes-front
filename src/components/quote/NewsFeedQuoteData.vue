@@ -25,13 +25,13 @@
 
     <div v-for="(comment, index) in quote.comments" :key="comment.id">
       <div
-        v-if="comment.quote_id === quote.id && (index < 3 || quote.showAllComments)"
+        v-if="comment.quote_id === quote.id && (index < 2 || quote.showAllComments)"
         class="py-4 flex space-x-6 lg:mt-3"
       >
-        <router-link :to="{ name: 'profile' }" v-if="quote.user" class="flex space-x-4">
-          <div v-if="quote.user.profile_picture">
+        <router-link :to="{ name: 'profile' }" class="flex space-x-4">
+          <div v-if="comment.user.profile_picture ">
             <img
-              :src="getImages(quote.user.profile_picture)"
+              :src="getImages(comment.user.profile_picture)"
               alt=""
               class="object-fit w-10 mt-2 lg:w-14 rounded-full"
             />
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="text-sm flex lg:items-center lg:justify-center mt-2 lg:text-lg">
-      <div v-if="!quote.showAllComments && quote.comments.length > 3">
+      <div v-if="!quote.showAllComments && quote.comments.length > 2">
         <button @click="quote.showAllComments = true">View Other Comments</button>
       </div>
       <div v-if="quote.showAllComments">
@@ -64,41 +64,26 @@
       </div>
     </div>
 
-    <div v-if="quote && quote.user">
-      <div v-if="quote.user.profile_picture" class="flex items-center mt-4 space-x-6 mb-6">
-        <img
-          :src="getImages(quote.user.profile_picture)"
-          alt=""
-          class="object-fit w-10 lg:w-14 rounded-full"
-        />
-        <Form class="w-full" @submit="add_comment(quote)">
-          <Field
-            name="comment"
-            class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-            placeholder="write a comment"
-            :value="comment"
-            @input="$emit('update:comment', $event.target.value)"
-          >
-          </Field>
-        </Form>
-      </div>
-      <div v-else class="flex items-center mt-4 space-x-6 mb-6">
-        <img
-          src="@/assets/images/default_picture.jpg"
-          alt="profile"
-          class="object-fit w-10 rounded-full lg:w-14"
-        />
-        <Form class="w-full" @submit="add_comment(quote, comment)">
-          <Field
-            name="comment"
-            class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-            placeholder="write a comment"
-            :value="comment"
-            @input="$emit('update:comment', $event.target.value)"
-          >
-          </Field>
-        </Form>
-      </div>
+    <div v-if="user" class="flex items-center mt-4 space-x-6 mb-6">
+      <img
+        :src="
+          user.profile_picture
+            ? getImages(user.profile_picture)
+            : '@/assets/images/default_picture.jpg'
+        "
+        alt=""
+        class="object-fit w-10 lg:w-14 rounded-full"
+      />
+      <Form class="w-full" @submit="add_comment(quote)">
+        <Field
+          name="comment"
+          class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
+          placeholder="write a comment"
+          :value="comment"
+          @input="$emit('update:comment', $event.target.value)"
+        >
+        </Field>
+      </Form>
     </div>
   </div>
 </template>
@@ -108,6 +93,10 @@ import { Form, Field } from 'vee-validate'
 import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
+import { onMounted, ref } from 'vue'
+import AxiosInstance from '@/config/axios/index.js'
+
+const user = ref(null)
 
 const props = defineProps({
   quotes: {
@@ -130,5 +119,12 @@ const props = defineProps({
     type: String,
     required: true
   }
+})
+
+onMounted(() => {
+  AxiosInstance.get(`/api/user`).then((response) => {
+    user.value = response.data
+    console.log(user.value)
+  })
 })
 </script>

@@ -64,6 +64,7 @@ const quotes = ref(null)
 const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
+
 // const searchQuery = ref('')
 
 onMounted(() => {
