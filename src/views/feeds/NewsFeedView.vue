@@ -115,6 +115,8 @@ const addLikes = (quote) => {
     .catch((error) => {
       console.error(error)
     })
+
+  AxiosInstance.post(`/api/notifications/${quote.user.id}`)
 }
 
 // const filteredQuotes = computed(() => {
@@ -137,8 +139,6 @@ onMounted(() => {
       commentList.value = response.data.quotes.map((quote) => {
         return quote.comments
       })
-      console.log(commentList.value, 'commentList')
-      console.log(quotes.value)
     })
     .catch((error) => {
       console.error(error)

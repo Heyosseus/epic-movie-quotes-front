@@ -29,7 +29,7 @@
         class="py-4 flex space-x-6 lg:mt-3"
       >
         <router-link :to="{ name: 'profile' }" class="flex space-x-4">
-          <div v-if="comment.user.profile_picture ">
+          <div v-if="comment.user.profile_picture">
             <img
               :src="getImages(comment.user.profile_picture)"
               alt=""
@@ -65,25 +65,35 @@
     </div>
 
     <div v-if="user" class="flex items-center mt-4 space-x-6 mb-6">
-      <img
-        :src="
-          user.profile_picture
-            ? getImages(user.profile_picture)
-            : '@/assets/images/default_picture.jpg'
-        "
-        alt=""
-        class="object-fit w-10 lg:w-14 rounded-full"
-      />
-      <Form class="w-full" @submit="add_comment(quote)">
-        <Field
-          name="comment"
-          class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-          placeholder="write a comment"
-          :value="comment"
-          @input="$emit('update:comment', $event.target.value)"
-        >
-        </Field>
-      </Form>
+      <div v-if="user.profile_picture" class="w-full flex space-x-3 items-center">
+        <img :src="getImages(user.profile_picture)" class="object-fit w-10 lg:w-14 rounded-full" />
+        <Form class="w-full" @submit="add_comment(quote)">
+          <Field
+            name="comment"
+            class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
+            placeholder="write a comment"
+            :value="comment"
+            @input="$emit('update:comment', $event.target.value)"
+          >
+          </Field>
+        </Form>
+      </div>
+      <div v-else class="w-full flex space-x-3 items-center">
+        <img
+          src="@/assets/images/default_picture.jpg"
+          class="object-fit w-10 lg:w-14 rounded-full"
+        />
+        <Form class="w-full" @submit="add_comment(quote)">
+          <Field
+            name="comment"
+            class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
+            placeholder="write a comment"
+            :value="comment"
+            @input="$emit('update:comment', $event.target.value)"
+          >
+          </Field>
+        </Form>
+      </div>
     </div>
   </div>
 </template>
@@ -124,7 +134,6 @@ const props = defineProps({
 onMounted(() => {
   AxiosInstance.get(`/api/user`).then((response) => {
     user.value = response.data
-    console.log(user.value)
   })
 })
 </script>

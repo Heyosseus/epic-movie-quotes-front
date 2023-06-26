@@ -9,7 +9,7 @@ export default function instantiatePusher() {
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_KEY,
     forceTLS: true,
-    cluster: ['eu'],
+    cluster: 'eu',
     authorizer: (channel) => {
       return {
         authorize: (socketId, callback) => {

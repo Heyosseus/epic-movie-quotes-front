@@ -27,6 +27,10 @@
               <h1 class="text-2xl">Notifications</h1>
               <p class="underline">Mark as all read</p>
             </div>
+            <div v-if="notification">
+              <span>{{ notification }} </span>
+            </div>
+            <div v-else>hh</div>
           </div>
         </div>
         <select
@@ -60,16 +64,16 @@ import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 
 const router = useRouter()
-// import axios from 'axios'
 
 const authStore = useAuthStore()
 const show = ref(false)
 const showNotifications = ref(false)
+const user = ref(null)
+const notification = ref('')
 
 const logout = () => {
   AxiosInstance.post('/api/logout')
-    .then((res) => {
-      console.log(res)
+    .then(() => {
       router.push({ name: 'home' })
       authStore.setIsUserAuthenticated(false)
     })
@@ -77,14 +81,24 @@ const logout = () => {
       console.log(err.response)
     })
 }
+onMounted(async () => {
+  try {
+    const response = await AxiosInstance.get('/api/user')
+    user.value = response.data
 
-onMounted(() => {
-  instantiatePusher()
+    instantiatePusher()
 
-  window.Echo.private(`notification-received.${1}`).notification((notification) => {
-    console.log(notification)
-  })
+    window.Echo.private(`notification-received.${user.value.id}`).listen(
+      'NotificationReceived',
+      (data) => {
+        notification.value = data.notification
+      }
+    )
+  } catch (error) {
+    console.log(error.response)
+  }
 })
+
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive

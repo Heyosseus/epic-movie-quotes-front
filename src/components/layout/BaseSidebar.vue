@@ -86,7 +86,6 @@ onMounted(() => {
   AxiosInstance.get(`/api/user`)
     .then((res) => {
       user.value = res.data
-      console.log(res.data)
     })
     .catch((err) => {
       console.log(err.response)
