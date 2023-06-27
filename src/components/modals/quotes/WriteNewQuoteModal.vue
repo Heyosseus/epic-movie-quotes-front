@@ -28,7 +28,7 @@
           </div>
           <Form
             class="flex flex-col w-full mt-4 sm:mt-6"
-            @submit="addMovie"
+            @submit="AddQuote"
             enctype="multipart/form-data"
           >
             <Field
@@ -56,42 +56,24 @@
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
             <label
-              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
+              class="flex items-center border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Drag & drop your image here or</span>
-              <span
+              <span class="hidden sm:block text-sm ml-2 lg:text-md"
+                >Drag & drop your image here or</span
+              >
+              <span class="flex lg:hidden text-sm ml-2">Upload image</span>
+              <p
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
                 Choose File
-              </span>
+              </p>
               <Field
                 type="file"
-                name="image"
+                name="thumbnai1"
                 class="hidden"
+                v-model="thumbnail"
                 placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
-            </label>
-            <label
-              class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
-            >
-              <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Upload image</span>
-              <span
-                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-              >
-                Choose File
-              </span>
-              <Field
-                type="file"
-                name="image"
-                class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
               >
               </Field>
             </label>
@@ -142,7 +124,7 @@ const movies = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-const image = ref(null)
+const thumbnail = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
 const selectedMovieId = ref(null)
@@ -151,31 +133,32 @@ onClickOutside(modalRef, () => {
   router.back()
 })
 
-const addMovie = () => {
+const AddQuote = () => {
   const formData = new FormData()
-  formData.append('thumbnail', image.value)
-
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
+  formData.append('thumbnail', thumbnail.value)
   formData.append('movie_id', selectedMovieId.value)
+  formData.append('user_id', user.value.id)
 
-  console.log(formData)
+  console.log(thumbnail.value)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
       console.log(res)
+      console.log(thumbnail.value)
       router.back()
     })
     .catch((err) => {
       console.log(err.response.data)
+      console.log(thumbnail.value)
     })
 }
 
 onMounted(() => {
-  // const movieId = router.currentRoute.value.params.id
-  AxiosInstance.get(`/api/movies`)
+  AxiosInstance.get(`/api/all-movies`)
     .then((response) => {
       movies.value = response.data.movies
       console.log(movies.value)

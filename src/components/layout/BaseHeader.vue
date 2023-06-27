@@ -27,10 +27,20 @@
               <h1 class="text-2xl">Notifications</h1>
               <p class="underline">Mark as all read</p>
             </div>
-            <div v-if="notification">
-              <span>{{ notification }} </span>
+            <div v-if="notification.length > 0">
+              <div v-for="notifications in notification" :key="notifications.id">
+                <div class="border border-gray-500 p-6">
+                  <span>{{ notifications.from }}</span>
+                  <div class="flex items-center space-x-2 mt-4">
+                    <IconHeart />
+                    <p>reacted on your quote.</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div v-else>hh</div>
+            <p v-else class="flex justify-center items-center mx-auto mt-10 text-lg">
+              No notifications yet
+            </p>
           </div>
         </div>
         <select
@@ -56,6 +66,9 @@
 import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
+import IconHeart from '@/components/icons/IconHeart.vue'
+// import IconComments from '@/components/icons/IconComments.vue'
+
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
@@ -91,7 +104,7 @@ onMounted(async () => {
     window.Echo.private(`notification-received.${user.value.id}`).listen(
       'NotificationReceived',
       (data) => {
-        notification.value = data.notification
+        console.log(data)
       }
     )
   } catch (error) {
@@ -99,6 +112,9 @@ onMounted(async () => {
   }
 })
 
+AxiosInstance.get('/api/notifications').then((response) => {
+  notification.value = response.data
+})
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive
