@@ -19,7 +19,8 @@ export const theme = {
     },
     height: {
       posterHeight: '441px',
-      thumbnailHeight: '141px'
+      thumbnailHeight: '141px',
+      notificationHeight: '861px'
     },
     fontFamily: {
       geo: ['geo', 'sans-serif'],
