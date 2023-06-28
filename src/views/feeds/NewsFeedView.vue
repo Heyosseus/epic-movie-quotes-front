@@ -100,12 +100,10 @@ const addComment = (quote) => {
     .catch((error) => {
       console.error(error)
     })
-  AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`)
+  AxiosInstance.post(`/api/notifications/${quote.user.id}/comment/${quote.id}`)
 }
 
 const addLikes = (quote) => {
-  quoteId.value = quote.id
-
   AxiosInstance.post(`/api/add-likes`, {
     quote_id: quote.id,
     user_id: quote.user.id
@@ -116,12 +114,17 @@ const addLikes = (quote) => {
     .catch((error) => {
       console.error(error)
     })
-
-  AxiosInstance.post(`/api/notifications/${quote.user.id}/like`)
+  AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
+    quote_id: quote.id
+  }).then(() => {
+    console.log('success')
+  }).catch((error) => {
+    console.error(error)
+  })
 }
 
 // const filteredQuotes = computed(() => {
-//   if (!searchQuery.value) {
+//   if (!searchQuery.value) { 
 //     return quotes.value
 //   }
 
