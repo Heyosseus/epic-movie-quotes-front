@@ -15,25 +15,74 @@
       <div class="flex items-center sm:justify-between sm:w-80">
         <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
         <div>
-          <IconNotification
-            class="mt-2 ml-2 w-6 lg:w-10 relative"
-            @click="showNotifications = !showNotifications"
-          />
+          <div class="relative cursor-pointer" @click="showNotifications = !showNotifications">
+            <IconNotification class="mt-2 ml-2 w-6 lg:w-10 relative" />
+            <div
+              class="absolute top-0 right-0 rounded-full bg-red-600 text-[10px] px-1 lg:text-sm lg:px-1.5"
+            >
+              {{ unread.length }}
+            </div>
+          </div>
+
           <div
             v-if="showNotifications"
-            class="bg-movie w-notification absolute top-20 right-[100px] px-6 py-10"
+            class="w-full right-0 h-screen top-14 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[861px] overflow-y-auto"
           >
             <div class="flex items-center justify-between">
-              <h1 class="text-2xl">Notifications</h1>
-              <p class="underline">Mark as all read</p>
+              <h1 class="text-lg lg:text-2xl">Notifications</h1>
+              <p class="text-sm underline">Mark as all read</p>
             </div>
-            <div v-if="notification.length > 0">
-              <div v-for="notifications in notification" :key="notifications.id">
-                <div class="border border-gray-500 p-6">
-                  <span>{{ notifications.from }}</span>
-                  <div class="flex items-center space-x-2 mt-4">
-                    <IconHeart />
-                    <p>reacted on your quote.</p>
+            <div v-if="notification">
+              <div v-for="notifications in notification" :key="notifications.id" class="mt-4">
+                <div
+                  class="flex items-center space-x-5 border border-gray-700 rounded p-4 lg:p-6"
+                  @click="markAsRead(notifications.id)"
+                >
+                  <div
+                    :class="[
+                      'object-fit',
+                      'w-24',
+                      'rounded-full',
+                      {
+                        'border-4': notifications.read === 0,
+                        'border-green-700': notifications.read === 0
+                      }
+                    ]"
+                  >
+                    <img
+                      v-if="user && user.profile_picture"
+                      :src="getImages(user.profile_picture)"
+                      alt=""
+                      class="object-fit w-20 rounded-full"
+                    />
+                    <img
+                      v-else
+                      src="@/assets/images/default_picture.jpg"
+                      alt="profile"
+                      class="object-fit w-20 rounded-full"
+                    />
+                  </div>
+                  <div class="w-full">
+                    <span>{{ notifications.from }}</span>
+                    <div
+                      class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
+                    >
+                      <div
+                        v-if="notifications.like"
+                        class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
+                      >
+                        <IconHeart class="w-5 lg:w-7" />
+                        <p class="text-[11px] lg:text-lg">reacted on your quote.</p>
+                      </div>
+                      <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
+                        <IconComment class="w-5 lg:w-7" />
+                        <p class="text-[11px] lg:text-lg">commented on your quote.</p>
+                      </div>
+                      <div class="text-[10px] lg:text-sm w-40">
+                        {{ formatTimeAgo(notifications.created_at) }}
+                        <div v-if="notifications.read === 0" class="text-green-700">New</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -67,8 +116,9 @@ import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import IconHeart from '@/components/icons/IconHeart.vue'
-// import IconComments from '@/components/icons/IconComments.vue'
-
+import IconComment from '@/components/icons/IconComment.vue'
+import { getImages } from '@/config/axios/helpers'
+import { formatTimeAgo } from '@/config/axios/helpers'
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
@@ -82,7 +132,15 @@ const authStore = useAuthStore()
 const show = ref(false)
 const showNotifications = ref(false)
 const user = ref(null)
-const notification = ref('')
+const notification = ref([])
+const unread = ref([])
+const quote = ref(null)
+
+const updateUnreadNotifications = () => {
+  unread.value = notification.value.filter((notification) => {
+    return notification.read === 0
+  })
+}
 
 const logout = () => {
   AxiosInstance.post('/api/logout')
@@ -98,23 +156,51 @@ onMounted(async () => {
   try {
     const response = await AxiosInstance.get('/api/user')
     user.value = response.data
-
+    AxiosInstance.get('/api/news-feed').then((response) => {
+      quote.value = response.data.quotes
+      console.log(response.data.quotes)
+    })
     instantiatePusher()
 
     window.Echo.private(`notification-received.${user.value.id}`).listen(
       'NotificationReceived',
       (data) => {
-        console.log(data)
+        const receivedNotification = data.notification
+        if (
+          receivedNotification.to === user.value.id &&
+          receivedNotification.from !== user.value.name
+        ) {
+          notification.value.push(receivedNotification)
+          unread.value.push(receivedNotification)
+        }
       }
     )
+    fetchNotifications()
   } catch (error) {
     console.log(error.response)
   }
 })
+const fetchNotifications = () => {
+  AxiosInstance.get('/api/notifications')
+    .then((response) => {
+      notification.value = response.data
+      console.log(response.data)
+      updateUnreadNotifications()
+    })
+    .catch((error) => {
+      console.log(error.response)
+    })
+}
 
-AxiosInstance.get('/api/notifications').then((response) => {
-  notification.value = response.data
-})
+const markAsRead = (notification) => {
+  AxiosInstance.post(`/api/notifications/${notification}/mark-as-read`, { _method: 'PUT' })
+    .then(() => {
+      updateUnreadNotifications()
+    })
+    .catch((error) => {
+      console.log(error.response)
+    })
+}
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive
