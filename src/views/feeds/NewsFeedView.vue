@@ -100,6 +100,7 @@ const addComment = (quote) => {
     .catch((error) => {
       console.error(error)
     })
+  AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`)
 }
 
 const addLikes = (quote) => {
@@ -116,7 +117,7 @@ const addLikes = (quote) => {
       console.error(error)
     })
 
-  AxiosInstance.post(`/api/notifications/${quote.user.id}`)
+  AxiosInstance.post(`/api/notifications/${quote.user.id}/like`)
 }
 
 // const filteredQuotes = computed(() => {
