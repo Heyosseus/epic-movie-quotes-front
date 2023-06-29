@@ -1,0 +1,14 @@
+{
+  "profile": "My profile",
+  "upload": "Upload new photo",
+  "username": "Username",
+  "new_username": "New username",
+  "new_email": "New email",
+  "new_password": "New password",
+  "confirm_new_password": "Confirm new password",
+  "password_contain": "Password should contain:",
+  "characters": "8 or more characters",
+  "lowercase": "15 lowercase characters",
+  "save": "Save changes",
+  "cancel": "Cancel"
+}

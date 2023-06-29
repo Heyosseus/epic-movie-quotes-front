@@ -8,17 +8,17 @@
           class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
-          <h1 class="text-xl md:text-2xl">Log in to your account</h1>
-          <p class="text-sm text-gray-500">Welcome back! Please enter your details.</p>
+          <h1 class="text-xl md:text-2xl">{{ $t('login.title') }}</h1>
+          <p class="text-sm text-gray-500">{{ $t('login.paragraph') }}</p>
           <Form class="flex flex-col space-y-4" @submit="login">
             <div class="flex flex-col w-full md:w-96">
-              <label for="email">Email</label>
+              <label for="email">{{ $t('login.email') }}</label>
               <Field
                 type="email"
                 name="email"
                 class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
                 :class="{ 'text-red-500': errors.email }"
-                placeholder="Enter your email"
+                :placeholder="$t('login.placeholder_email')"
                 v-model="email"
                 rules="required|email"
               />
@@ -26,13 +26,13 @@
               <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
             </div>
             <div class="flex flex-col">
-              <label for="password">Password</label>
+              <label for="password">{{ $t('login.password') }}</label>
               <div class="relative">
                 <Field
                   v-bind:type="showPassword ? 'text' : 'password'"
                   name="password"
                   class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
-                  placeholder="Password"
+                  :placeholder="$t('login.password')"
                   v-model="password"
                   rules="required|min:8"
                 />
@@ -47,18 +47,18 @@
             <div class="flex justify-between">
               <div class="space-x-2">
                 <Field type="checkbox" name="remember" />
-                <label for="remember">Remember me</label>
+                <label for="remember">{{ $t('login.remember_me') }}</label>
               </div>
-              <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600"
-                >Forgot password</router-link
-              >
+              <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600">{{
+                $t('login.forgot')
+              }}</router-link>
             </div>
             <div class="space-y-8">
               <button
                 class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-6"
                 type="submit"
               >
-                Sign in
+                {{ $t('login.login') }}
               </button>
               <div @click="authStore.setIsGoogleAuthenticated(true)">
                 <a
@@ -70,12 +70,12 @@
                 </a>
               </div>
               <p class="text-center mt-6">
-                Already have an account?
+                {{ $t('login.dont_have_an_account') }}
                 <router-link
                   :to="{ name: 'register' }"
                   class="underline text-blue-600"
                   @click="openRegisterModal"
-                  >Sign up</router-link
+                  >{{ $t('login.signup') }}</router-link
                 >
               </p>
             </div>

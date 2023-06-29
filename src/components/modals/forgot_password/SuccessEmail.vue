@@ -9,15 +9,15 @@
           ref="modalRef"
         >
           <img src="@/assets/images/success.png" alt="" class="mt-10" />
-          <h1 class="text-2xl md:text-4xl">Success!</h1>
+          <h1 class="text-2xl md:text-4xl">{{ $t('forgot.success') }}</h1>
           <p class="text-sm md:text-base text-center mt-4 md:mt-6">
-            Your email changed successfully
+            {{ $t('forgot.email_update') }}
           </p>
           <router-link
             :to="{ name: 'login' }"
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-8 md:mt-12"
           >
-            Log in
+            {{ $t('login.login') }}
           </router-link>
         </div>
       </div>

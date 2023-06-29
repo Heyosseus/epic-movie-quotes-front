@@ -1,0 +1,22 @@
+{
+  "logout": "Log out",
+  "notifications": "Notifications",
+  "mark_all_as_read": "Mark all as read",
+  "react": "Reacted on your quote",
+  "comment": "Commented on your quote",
+  "new": "New",
+  "no_notifications": "No notifications yet",
+  "news_feed": "News feed",
+  "movie_list": "List of movies",
+  "list": "My list of movies",
+  "add_movie": "Add movie",
+  "no_movie": "No movie yet",
+  "description": "Movie description",
+  "edit": "Edit your profile",
+  "write_quote": "Write new quote",
+  "search_by": "Search by",
+  "search_placeholder": "Enter @ to search movies, Enter # to search quotes",
+  "total": "Quotes total",
+  "add_quote": "Add quote",
+  "no_quotes": "No quote yet"
+}

@@ -2,15 +2,17 @@
   <div>
     <div class="flex items-center lg:space-x-12 mt-20">
       <h1 v-if="props.quote" class="hidden sm:block text-sm lg:text-xl">
-        Quotes total ({{ props.quote.length }})
+        {{ $t('base.total') }}({{ props.quote.length }})
       </h1>
-      <h1 v-else class="hidden sm:block text-xl">No quotes yet</h1>
+      <h1 v-else class="hidden sm:block text-xl">{{ $t('base.no_quotes') }}</h1>
       <div
         class="px-2 py-2 bg-red-600 sm:w-48 sm:text-lg sm:bg-red-600 md:px-4 md:py-3 rounded flex items-center space-x-2"
       >
         <IconAddMovie />
-        <button class="" v-if="props.movie">
-          <router-link :to="{ name: 'add-quote', params: { id: movie.id } }">Add Quote</router-link>
+        <button class="w-52" v-if="props.movie">
+          <router-link :to="{ name: 'add-quote', params: { id: movie.id } }">{{
+            $t('base.add_quote')
+          }}</router-link>
         </button>
         <router-view />
       </div>

@@ -8,17 +8,17 @@
           class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
-          <h1 class="text-2xl md:text-4xl">Forgot password?</h1>
+          <h1 class="text-2xl md:text-4xl">{{ $t('login.forgot') }}</h1>
           <p class="text-sm md:text-base text-center">
-            Enter the email and we’ll send an email with <br />
-            instructions to reset your password
+            {{ $t('forgot.first_paragraph') }} <br />
+            {{ $t('forgot.second_paragraph') }}
           </p>
           <Form class="flex flex-col w-full" @submit="recoveryPassword">
-            <label for="email">Email</label>
+            <label for="email">{{ $t('login.email') }}</label>
             <Field
               type="email"
               name="email"
-              placeholder="Enter your email"
+              :placeholder="$t('login.placeholder_email')"
               class="py-2 px-4 md:py-2.5 md:px-2 mt-2 rounded-md bg-[#CED4DA] text-black"
               v-model="email"
             />
@@ -27,12 +27,12 @@
               class="py-2 px-6 md:py-2.5 md:px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-12"
               type="submit"
             >
-              Send instructions
+              {{ $t('forgot.send_instructions') }}
             </button>
           </Form>
           <router-link :to="{ name: 'login' }" class="flex items-center justify-center space-x-4">
             <IconArrowBack />
-            <p class="text-[#6C757D] cursor-pointer">back to log in</p>
+            <p class="text-[#6C757D] cursor-pointer">{{ $t('forgot.back_to_login') }}</p>
           </router-link>
         </div>
       </div>

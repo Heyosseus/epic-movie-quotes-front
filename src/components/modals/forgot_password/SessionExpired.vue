@@ -5,14 +5,13 @@
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-landingBg"
       >
         <div
-          class="flex flex-col p-2 md:px-32 lg:px-32  lg:py-12 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
+          class="flex flex-col p-2 md:px-32 lg:px-32 lg:py-12 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-8"
         >
           <img src="@/assets/images/expired.png" alt="" class="mt-10" />
           <h1 class="text-2xl md:text-4xl">Session expired!</h1>
-          <p class="text-base md:text-lg text-center mt-4 md:mt-6">
-            Please, login again
-          </p>
-          <router-link :to="{ name: 'login' }"
+          <p class="text-base md:text-lg text-center mt-4 md:mt-6">Please, login again</p>
+          <router-link
+            :to="{ name: 'login' }"
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-8 md:mt-12"
           >
             Log in

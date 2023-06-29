@@ -8,16 +8,16 @@
           class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
-          <h1 class="text-xl md:text-2xl text-center">Create an account</h1>
-          <p class="text-sm text-gray-500 text-center">Start your journey</p>
+          <h1 class="text-xl md:text-2xl text-center">{{ $t('register.title') }}</h1>
+          <p class="text-sm text-gray-500 text-center">{{ $t('register.paragraph') }}</p>
           <Form class="flex flex-col space-y-4 md:w-96" @submit="register">
             <div class="flex flex-col">
-              <label for="name">Name</label>
+              <label for="name">{{ $t('register.name') }}</label>
               <Field
                 type="text"
                 name="name"
                 class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
-                placeholder="At least 3 & max.15 lowercase characters"
+                :placeholder="$t('register.name')"
                 v-model="name"
                 rules="required|min_for_name:3|max:15|lowercase"
               />
@@ -25,12 +25,12 @@
               <span class="text-red-500 text-sm font-normal">{{ errors.name }}</span>
             </div>
             <div class="flex flex-col">
-              <label for="email">Email</label>
+              <label for="email">{{ $t('login.email') }}</label>
               <Field
                 type="email"
                 name="email"
                 class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
-                placeholder="Enter your email"
+                :placeholder="$t('login.email')"
                 v-model="email"
                 rules="required|email"
               />
@@ -38,13 +38,13 @@
               <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
             </div>
             <div class="flex flex-col">
-              <label for="password">Password</label>
+              <label for="password">{{ $t('login.password') }}</label>
               <div class="relative">
                 <Field
                   v-bind:type="showPassword ? 'text' : 'password'"
                   name="password"
                   class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
-                  placeholder="Password"
+                  :placeholder="$t('login.password')"
                   v-model="password"
                   rules="required|min:8"
                 />
@@ -56,13 +56,13 @@
               <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
             </div>
             <div class="flex flex-col">
-              <label for="password_confirmation">Password confirmation</label>
+              <label for="password_confirmation">{{ $t('register.confirm_password') }}</label>
               <div class="relative">
                 <Field
                   v-bind:type="showPasswordConfirmation ? 'text' : 'password'"
                   name="password_confirmation"
                   class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
-                  placeholder="Confirm Password"
+                  :placeholder="$t('register.confirm_password')"
                   v-model="password_confirmation"
                   rules="required|confirmed:@password"
                 />
@@ -78,7 +78,7 @@
                 class="py-2 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-2"
                 type="submit"
               >
-                Get started
+                {{ $t('home.get_started') }}
               </button>
               <div>
                 <a
@@ -90,7 +90,8 @@
                 </a>
               </div>
               <p class="text-center mt-6">
-                Already have an account? <a href="/login" class="underline text-blue-600">Log in</a>
+                {{ $t('register.have_an_account') }}
+                <a href="/login" class="underline text-blue-600">{{ $t('home.login') }}</a>
               </p>
             </div>
           </Form>

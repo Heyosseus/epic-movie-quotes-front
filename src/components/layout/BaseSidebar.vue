@@ -26,9 +26,9 @@
       </div>
       <div>
         <h1 class="text-xl">{{ user.name }}</h1>
-        <router-link to="/profile" class="text-[#CED4DA] text-sm mt-2"
-          >Edit your profile</router-link
-        >
+        <router-link to="/profile" class="text-[#CED4DA] text-sm mt-2">{{
+          $t('base.edit')
+        }}</router-link>
       </div>
     </div>
     <div
@@ -37,7 +37,7 @@
     >
       <IconActiveHome v-if="activeHome" />
       <IconHome v-else />
-      <p>News feed</p>
+      <p>{{ $t('base.news_feed') }}</p>
     </div>
 
     <div
@@ -46,7 +46,7 @@
     >
       <IconMovieList v-if="activeMovieList" />
       <IconActiveMovieList v-else />
-      <p class="">List of Movies</p>
+      <p class="">{{ $t('base.movie_list') }}</p>
     </div>
   </div>
   <div v-else class="absolute inset-0 flex items-center justify-center">

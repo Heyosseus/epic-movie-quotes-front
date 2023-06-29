@@ -29,8 +29,8 @@
             class="w-full right-0 h-screen top-14 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[861px] overflow-y-auto"
           >
             <div class="flex items-center justify-between">
-              <h1 class="text-lg lg:text-2xl">Notifications</h1>
-              <p class="text-sm underline">Mark as all read</p>
+              <h1 class="text-lg lg:text-2xl">{{ $t('base.notifications') }}</h1>
+              <p class="text-sm underline">{{ $t('base.mark_all_as_read') }}</p>
             </div>
             <div v-if="notification">
               <div v-for="notifications in notification" :key="notifications.id" class="mt-4">
@@ -72,15 +72,17 @@
                         class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
                       >
                         <IconHeart class="w-5 lg:w-7" />
-                        <p class="text-[11px] lg:text-lg">reacted on your quote.</p>
+                        <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
                       </div>
                       <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
                         <IconComment class="w-5 lg:w-7" />
-                        <p class="text-[11px] lg:text-lg">commented on your quote.</p>
+                        <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
                       </div>
                       <div class="text-[10px] lg:text-sm w-40">
                         {{ formatTimeAgo(notifications.created_at) }}
-                        <div v-if="notifications.read === 0" class="text-green-700">New</div>
+                        <div v-if="notifications.read === 0" class="text-green-700">
+                          {{ $t('base.new') }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -88,7 +90,7 @@
               </div>
             </div>
             <p v-else class="flex justify-center items-center mx-auto mt-10 text-lg">
-              No notifications yet
+              {{ $t('base.no_notifications') }}
             </p>
           </div>
         </div>
@@ -96,16 +98,23 @@
           name=""
           id=""
           class="hidden bg-transparent w-16 outline-0 ml-4 sm:ml-0 mt-4 sm:mt-0 sm:block"
+          v-model="$i18n.locale"
         >
-          <option value="" class="bg-transparent text-black">Eng</option>
-          <option value="" class="bg-transparent text-black">Ka</option>
+          <option
+            v-for="locale in $i18n.availableLocales"
+            :key="`locale-${locale}`"
+            :value="locale"
+            class="bg-black"
+          >
+            {{ locale }}
+          </option>
         </select>
 
         <button
           class="border border-white rounded-md px-2 py-2 ml-4 sm:ml-0 mt-2 sm:mt-0 sm:px-4 sm:py-3 text-[11px]"
           @click="logout"
         >
-          Log out
+          {{ $t('base.logout') }}
         </button>
       </div>
     </div>

@@ -1,0 +1,16 @@
+{
+  "first_paragraph": "Enter the email and we’ll send an email with",
+  "second_paragraph": " instructions to reset your password.",
+  "send_instructions": "Send instructions",
+  "back_to_login": "back to log in",
+  "check_email": "Check your email",
+  "email_sent_first": "We have sent password recovery instructions",
+  "email_sent_second": "to your email address.",
+  "skip": "Skip, I'll confirm later",
+  "create_new_password": "Create new password",
+  "new_password": "Your new password must be different from previous used passwords",
+  "reset": "Reset password",
+  "success": "Success!",
+  "email_update": "Your email changed successfully",
+  "password_update": "Your password changed successfully"
+}

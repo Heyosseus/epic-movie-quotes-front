@@ -5,17 +5,30 @@
     <div class="bg-landingBg px-4 sm:px-8 py-4 sm:py-8 md:py-4 h-[72vh]">
       <div>
         <nav class="flex justify-between items-center">
-          <h1 class="text-[12px] uppercase text-primary font-extrabold lg:text-lg">movie quotes</h1>
+          <h1 class="text-[12px] uppercase text-primary font-extrabold lg:text-lg">
+            {{ $t('home.title') }}
+          </h1>
           <div class="flex justify-between w-56 sm:w-80">
-            <select name="" id="" class="bg-transparent w-12 sm:w-14 outline-0">
-              <option value="" class="bg-black">Eng</option>
-              <option value="" class="bg-black">Ka</option>
+            <select
+              name=""
+              id=""
+              class="bg-transparent w-12 sm:w-14 outline-0"
+              v-model="$i18n.locale"
+            >
+              <option
+                v-for="locale in $i18n.availableLocales"
+                :key="`locale-${locale}`"
+                :value="locale"
+                class="bg-black"
+              >
+                {{ locale }}
+              </option>
             </select>
             <router-link
               :to="{ name: 'register' }"
               class="py-2 px-4 text-sm sm:px-6 bg-red-700 text-white rounded-md"
             >
-              Sign up
+              {{ $t('home.signup') }}
             </router-link>
             <div v-if="isRegisterModalOpen">
               <RegisterModal />
@@ -25,7 +38,7 @@
               class="py-2 px-4 text-sm sm:px-6 bg-transparent border border-white rounded-md"
               @click="navigateToNewsFeed"
             >
-              Log in
+              {{ $t('home.login') }}
             </router-link>
             <div class="relative">
               <teleport to="body">
@@ -44,7 +57,7 @@
           class="py-2 w-52 mt-10 sm:py-3 px-4 sm:px-6 bg-red-700 text-white rounded-md sm:w-40 flex items-center justify-center mx-auto"
           @click="navigateToLogin"
         >
-          Get started
+          {{ $t('home.get_started') }}
         </button>
       </div>
     </div>

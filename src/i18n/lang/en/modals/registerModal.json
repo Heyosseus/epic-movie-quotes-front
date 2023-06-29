@@ -1,0 +1,12 @@
+{
+  "title": "Create an account",
+  "paragraph": "Start your journey",
+  "name": "Name",
+  "confirm_password": "Password confirmation",
+  "have_an_account": "Already have an account?",
+  "thanks": "Thank you!",
+  "first_paragraph": "Please check your email and follow the instructions to",
+  "second_paragraph": "activate your account.",
+  "go_to_email": "Go to my email",
+  "activation": "Your account has been activated."
+}

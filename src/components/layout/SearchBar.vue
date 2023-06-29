@@ -4,7 +4,9 @@
       class="w-full sm:bg-transparent flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
     >
       <IconPencil />
-      <router-link :to="{ name: 'write-quote' }" class="text-search">Write new quote</router-link>
+      <router-link :to="{ name: 'write-quote' }" class="text-search">{{
+        $t('base.write_quote')
+      }}</router-link>
     </div>
     <form
       action=""
@@ -16,7 +18,7 @@
         <IconSearch />
         <input
           type="text"
-          placeholder="Enter @ to search movies, Enter # to search quotes"
+          :placeholder="$t('base.search_placeholder')"
           class="bg-transparent ml-6 w-full outline-0 text-search"
           v-model="searchQuery"
         />
@@ -27,7 +29,7 @@
     <div class="hidden sm:flex items-center h-14 ml-4" @click="handleShow" v-if="showButton">
       <IconSearch />
       <button class="bg-[#181624] h-14 w-28 rounded-full flex items-center justify-center">
-        <p class="text-search">Search by</p>
+        <p class="text-search">{{ $t('base.search_by') }}</p>
       </button>
     </div>
     <ul>
@@ -40,7 +42,7 @@
 <script setup>
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
-import { ref ,  watch} from 'vue'
+import { ref, watch } from 'vue'
 import AxiosInstance from '@/config/axios/index.js'
 // import AxiosInstance from '../../config/axios'
 
@@ -72,7 +74,6 @@ const search = () => {
   } else if (searchQuery.value.startsWith('#')) {
     searchQuotes()
   }
-  
 }
 
 const searchMovies = () => {

@@ -7,7 +7,7 @@
         <div class="w-full md:w-full px-4 md:px-16 pr-4 md:pr-56" v-if="!show">
           <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4">
             <h1 class="text-sm w-full md:w-full mt-2 md:mt-10 lg:text-xl">
-              My list of movies ({{ movies.length }})
+              {{ $t('base.list') }} ({{ movies.length }})
             </h1>
             <Form method="GET" @keydown.enter.prevent="handleSearch" class="hidden lg:flex mt-6">
               <div class="flex items-center">
@@ -16,7 +16,7 @@
                   name="search"
                   type="text"
                   class="bg-transparent outline-0 w-36 md:w-auto flex items-center justify-center px-2"
-                  placeholder="Search by"
+                  :placeholder="$t('base.search_by')"
                   v-model="search"
                 />
               </div>
@@ -50,7 +50,7 @@
             </div>
           </div>
           <div v-else>
-            <h1 class="text-2xl text-center mt-32">No movie yet</h1>
+            <h1 class="text-2xl text-center mt-32">{{ $t('base.no_movie') }}</h1>
           </div>
         </div>
       </div>

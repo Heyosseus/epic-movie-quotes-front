@@ -5,7 +5,7 @@
       <div class="flex flex-col items-center lg:flex lg:flex-row lg:items-start">
         <BaseSidebar />
         <div class="py-4 px-0 lg:py-12 lg:px-20 lg:w-profile flex flex-col">
-          <p class="text-xl">My profile</p>
+          <p class="text-xl">{{ $t('profile.profile') }}</p>
           <div class="relative"></div>
           <div
             class="w-fit px-0 py-10 lg:bg-movie lg:w-[800px] lg:px-36 lg:py-20 flex flex-col mt-20 ml-auto"
@@ -33,7 +33,9 @@
               v-if="user"
             >
               <label for="fileInput" class="relative py-2 text-white rounded cursor-pointer">
-                <span class="flex justify-center mt-16 text-xl lg:mt-4">Upload new photo</span>
+                <span class="flex justify-center mt-16 text-xl lg:mt-4">{{
+                  $t('profile.upload')
+                }}</span>
                 <Field
                   name="fileInput"
                   id="fileInput"
@@ -42,7 +44,7 @@
                   v-model="picture"
                 />
               </label>
-              <label for="username" class="mt-8 lg:mt-10">Username</label>
+              <label for="username" class="mt-8 lg:mt-10">{{ $t('profile.username') }}</label>
               <div class="flex space-x-3">
                 <div
                   class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
@@ -53,7 +55,7 @@
               </div>
               <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
               <div v-if="editUsername" class="hidden sm:flex flex-col">
-                <label for="new_username" class="mt-6">New username</label>
+                <label for="new_username" class="mt-6">{{ $t('profile.new_username') }}</label>
                 <Field
                   type="text"
                   name="new_username"
@@ -66,7 +68,7 @@
                 <ErrorMessage name="new_username" class="text-red-600" />
               </div>
 
-              <label for="profile_email" class="mt-6">Email</label>
+              <label for="profile_email" class="mt-6">{{ $t('login.email') }}</label>
               <div class="flex space-x-3">
                 <div
                   class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
@@ -78,12 +80,12 @@
               <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
 
               <div v-if="editEmail" class="hidden sm:flex flex-col">
-                <label for="new_email" class="mt-6">New email</label>
+                <label for="new_email" class="mt-6">{{ $t('profile.new_email') }}</label>
                 <Field
                   type="text"
                   name="new_email"
                   class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
-                  placeholder="New email"
+                  :placeholder="$t('profile.new_email')"
                   v-model="new_email"
                   rules="required"
                 >
@@ -91,7 +93,7 @@
                 <ErrorMessage name="new_email" class="text-red-600" />
               </div>
 
-              <label S class="mt-6">Password</label>
+              <label S class="mt-6">{{ $t('login.password') }}</label>
               <div class="flex space-x-3 items-center">
                 <div
                   class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
@@ -104,24 +106,24 @@
 
               <div v-if="editPassword" class="grid">
                 <div class="border border-gray-600 px-6 py-7 mt-10 w-fit lg:w-[466px]">
-                  <p>Password should contain:</p>
+                  <p>{{ $t('profile.password_contain') }}</p>
                   <div class="flex items-center space-x-3 mt-4">
                     <div class="rounded-full w-1 h-1 bg-gray-300"></div>
-                    <p class="text-gray-300 text-sm">8 or more characters</p>
+                    <p class="text-gray-300 text-sm">{{ $t('profile.characters') }}</p>
                   </div>
                   <div class="flex items-center space-x-3 mt-2">
                     <div class="rounded-full w-1 h-1 bg-green-600"></div>
-                    <p class="text-gray-300 text-sm">15 lowercase characters</p>
+                    <p class="text-gray-300 text-sm">{{ $t('profile.lowercase') }}</p>
                   </div>
                 </div>
                 <div class="flex flex-col">
-                  <label for="new_password" class="mt-6">New password</label>
+                  <label for="new_password" class="mt-6">{{ $t('profile.new_password') }}</label>
                   <div class="relative">
                     <Field
                       v-bind:type="showPassword ? 'text' : 'password'"
                       name="new_password"
                       class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
-                      placeholder="New password"
+                      :placeholder="$t('profile.new_password')"
                       v-model="new_password"
                       rules="required"
                     >
@@ -135,13 +137,15 @@
                   <ErrorMessage name="new_password" class="text-red-600" />
                 </div>
                 <div class="flex flex-col">
-                  <label for="confirm_new_password" class="mt-6">Confirm New password</label>
+                  <label for="confirm_new_password" class="mt-6">{{
+                    $t('profile.confirm_new_password')
+                  }}</label>
                   <div class="relative">
                     <Field
                       v-bind:type="showPassword ? 'text' : 'password'"
                       name="confirm_new_password"
                       class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-gray-400"
-                      placeholder="Confirm new password"
+                      :placeholder="$t('profile.confirm_new_password')"
                       v-model="confirm_new_password"
                       rules="required"
                     >
@@ -158,10 +162,12 @@
             </Form>
           </div>
           <div class="space-x-4 ml-auto mt-10">
-            <router-link to="/news-feed" class="bg-transparent">Cancel</router-link>
+            <router-link to="/news-feed" class="bg-transparent">{{
+              $t('profile.cancel')
+            }}</router-link>
 
             <button class="bg-red-700 py-3 px-4 rounded" @click="updateProfile">
-              Save changes
+              {{ $t('profile.save') }}
             </button>
           </div>
         </div>
