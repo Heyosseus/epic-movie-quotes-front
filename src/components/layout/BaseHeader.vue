@@ -26,14 +26,18 @@
 
           <div
             v-if="showNotifications"
-            class="w-full right-0 h-screen top-14 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[861px] overflow-y-auto"
+            class="w-full right-0 h-screen top-14 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[861px] overflow-y-auto cursor-pointer rounded-md"
           >
             <div class="flex items-center justify-between">
               <h1 class="text-lg lg:text-2xl">{{ $t('base.notifications') }}</h1>
               <p class="text-sm underline">{{ $t('base.mark_all_as_read') }}</p>
             </div>
             <div v-if="notification">
-              <div v-for="notifications in notification" :key="notifications.id" class="mt-4">
+              <div
+                v-for="notifications in notification"
+                :key="notifications.id"
+                class="mt-4 hover:bg-gray-900"
+              >
                 <div
                   class="flex items-center space-x-5 border border-gray-700 rounded p-4 lg:p-6"
                   @click="markAsRead(notifications.id)"
@@ -62,29 +66,39 @@
                       class="object-fit w-20 rounded-full"
                     />
                   </div>
-                  <div class="w-full">
-                    <span>{{ notifications.from }}</span>
-                    <div
-                      class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
+                  <div v-if="notifications.quotes" class="w-full">
+                    <router-link
+                      :to="{
+                        name: 'view-quote',
+                        params: {
+                          movie_id: notifications.quotes.movie.id,
+                          id: notifications.quotes.id
+                        }
+                      }"
                     >
+                      <span>{{ notifications.from }}</span>
                       <div
-                        v-if="notifications.like"
-                        class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
+                        class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
                       >
-                        <IconHeart class="w-5 lg:w-7" />
-                        <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
-                      </div>
-                      <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
-                        <IconComment class="w-5 lg:w-7" />
-                        <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
-                      </div>
-                      <div class="text-[10px] lg:text-sm w-40">
-                        {{ formatTimeAgo(notifications.created_at) }}
-                        <div v-if="notifications.read === 0" class="text-green-700">
-                          {{ $t('base.new') }}
+                        <div
+                          v-if="notifications.like"
+                          class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
+                        >
+                          <IconHeart class="w-5 lg:w-7" />
+                          <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
+                        </div>
+                        <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
+                          <IconComment class="w-5 lg:w-7" />
+                          <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
+                        </div>
+                        <div class="text-[10px] lg:text-sm w-40">
+                          {{ formatTimeAgo(notifications.created_at) }}
+                          <div v-if="notifications.read === 0" class="text-green-700">
+                            {{ $t('base.new') }}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </router-link>
                   </div>
                 </div>
               </div>
@@ -131,6 +145,7 @@ import { formatTimeAgo } from '@/config/axios/helpers'
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+
 import AxiosInstance from '@/config/axios/index'
 import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
