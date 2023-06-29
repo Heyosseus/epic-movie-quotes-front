@@ -1,11 +1,8 @@
 <template>
   <div class="relative">
     <teleport to="body">
-      <div
-        class="lg:hidden absolute w-full h-full flex flex-col bg-transparentLandingBg"
-        v-if="modalIsOpen"
-      >
-        <div class="px-16 sm:block" v-if="user">
+      <div class="lg:hidden absolute w-[90vw] h-full flex flex-col bg-landingBg">
+        <div class="px-4 sm:block" v-if="user" ref="modalRef">
           <div class="flex justify-between w-64 pt-12">
             <div>
               <div v-if="user && user.profile_picture">
@@ -62,12 +59,21 @@ import IconActiveMovieList from '../icons/IconActiveMovieList.vue'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
+import { onClickOutside } from '@vueuse/core'
 
 const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
 const user = ref(null)
+const modalRef = ref(null)
 
+onClickOutside(modalRef, () => {
+  if (window.location.pathname === '/news-feed') {
+    router.push({ name: 'movie-list' })
+  } else {
+    router.push({ name: 'news-feed' })
+  }
+})
 const navigateToMovieList = () => {
   router.push('/movie-list')
 }

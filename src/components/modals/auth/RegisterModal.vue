@@ -22,6 +22,7 @@
                 rules="required|min_for_name:3|max:15|lowercase"
               />
               <ErrorMessage name="name" class="text-red-500 text-sm font-normal" />
+              <span class="text-red-500 text-sm font-normal">{{ errors.name }}</span>
             </div>
             <div class="flex flex-col">
               <label for="email">Email</label>
@@ -34,6 +35,7 @@
                 rules="required|email"
               />
               <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
+              <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
             </div>
             <div class="flex flex-col">
               <label for="password">Password</label>
@@ -116,8 +118,12 @@ const showPassword = ref(false)
 const showPasswordConfirmation = ref(false)
 const modalRef = ref(null)
 
+const errors = ref({
+  email: '',
+  name: ''
+})
 onClickOutside(modalRef, () => {
-  router.push({name: 'home'})
+  router.push({ name: 'home' })
 })
 const register = async () => {
   await AxiosInstance.get('/sanctum/csrf-cookie')
@@ -132,7 +138,12 @@ const register = async () => {
       router.push({ name: 'activation' })
     })
     .catch((err) => {
-      console.log(err.response)
+      if (err.response.status === 401 && err.response.data.message === 'Invalid credentials') {
+        errors.value.email = 'Email already exists'
+        errors.value.name = 'User already exists'
+      } else {
+        errors.value.email = ''
+      }
     })
 }
 </script>

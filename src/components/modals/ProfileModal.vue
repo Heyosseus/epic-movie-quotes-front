@@ -205,7 +205,7 @@ const updateProfile = () => {
   axios
     .post(`${backendUrl}/api/profile`, formData)
     .then(() => {
-      router.push({ name: 'news-feed' })
+      router.push({ name: 'reset-password' })
     })
     .catch((err) => {
       console.log(err.response)

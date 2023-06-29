@@ -7,6 +7,7 @@
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
+            <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -108,6 +109,7 @@
               >
               </Field>
             </label>
+
             <label
               class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
             >
@@ -144,6 +146,7 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
+import IconClose from '@/components/icons/IconClose.vue'
 import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'

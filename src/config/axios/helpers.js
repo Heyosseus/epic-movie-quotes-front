@@ -1,25 +1,24 @@
-export function getCookie(name) {
-  var nameEQ = name + '='
-  var cookies = document.cookie.split(';')
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i]
-    while (cookie.charAt(0) == ' ') cookie = cookie.substring(1, cookie.length)
-    if (cookie.indexOf(nameEQ) == 0) return cookie.substring(nameEQ.length, cookie.length)
-  }
-  return null
-}
-
-export function setCookie(name, value, minutes) {
-  var expires = ''
-  if (minutes) {
-    var date = new Date()
-    date.setTime(date.getTime() + minutes * 600 * 1000)
-    expires = '; expires=' + date.toUTCString()
-  }
-  document.cookie = name + '=' + value + expires + '; path=/'
-}
-
 export const getImages = (poster) => {
   const backendStorageURL = import.meta.env.VITE_PUBLIC_BACKEND_STORAGE_URL
   return `${backendStorageURL}/${poster}`
+}
+
+export const formatTimeAgo = (timestamp) => {
+  const currentTime = Date.now()
+  const timeDifference = currentTime - new Date(timestamp)
+  const minuteDifference = Math.floor(timeDifference / 1000 / 60)
+  const hourDifference = Math.floor(minuteDifference / 60)
+  const dayDifference = Math.floor(hourDifference / 24)
+
+  if (minuteDifference < 1) {
+    return 'Just now'
+  } else if (minuteDifference < 60) {
+    return `${minuteDifference} minutes ago`
+  } else if (hourDifference < 24) {
+    return `${hourDifference} hours ago`
+  } else if (dayDifference < 7) {
+    return `${dayDifference} days ago`
+  } else {
+    return timestamp
+  }
 }

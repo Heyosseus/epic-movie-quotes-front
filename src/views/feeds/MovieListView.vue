@@ -41,6 +41,10 @@
                     <h1 class="uppercase">{{ movie.title.en }}</h1>
                     <p class="">({{ movie.release_date }})</p>
                   </div>
+                  <div class="flex space-x-3 items-center mr-auto">
+                    <span>{{ movie.quotes.length }}</span>
+                    <IconComment />
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,6 +59,7 @@
 </template>
 <script setup>
 import IconSearch from '@/components/icons/IconSearch.vue'
+import IconComment from '@/components/icons/IconComment.vue'
 import { Form, Field } from 'vee-validate'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'

@@ -49,7 +49,6 @@
       <p class="">List of Movies</p>
     </div>
   </div>
-
   <div v-else>Loading...</div>
 </template>
 <script setup>
@@ -87,7 +86,6 @@ onMounted(() => {
   AxiosInstance.get(`/api/user`)
     .then((res) => {
       user.value = res.data
-      console.log(res.data)
     })
     .catch((err) => {
       console.log(err.response)

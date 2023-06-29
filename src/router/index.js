@@ -19,6 +19,7 @@ import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
 import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
 import ProfileModal from '@/components/modals/ProfileModal.vue'
 import MenuSidebar from '@/components/modals/MenuSidebar.vue'
+import SearchHeader from '@/components/modals/SearchHeader.vue'
 import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
 import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
@@ -112,11 +113,6 @@ const router = createRouter({
       name: 'thank-you',
       component: ThankYouView
     },
-    // {
-    //   path: '/menu',
-    //   name: 'menu',
-    //   component: MenuSidebar
-    // },
     {
       path: '/news-feed',
       name: 'news-feed',
@@ -127,6 +123,11 @@ const router = createRouter({
           path: '/menu',
           name: 'menu',
           component: MenuSidebar
+        },
+        {
+          path: '/search',
+          name: 'search',
+          component: SearchHeader
         },
         {
           path: 'write-quote',

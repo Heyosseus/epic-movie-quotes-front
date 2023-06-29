@@ -7,6 +7,7 @@
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto sm:pl-8">Edit Movie</h1>
+            <IconClose @click="router.back()"/>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -27,170 +28,167 @@
             <h1>{{ user.name }}</h1>
           </div>
 
-          <Form
-            class="flex flex-col w-full mt-2 sm:mt-4"
-            @submit="editMovie"
-            enctype="multipart/form-data"
-            v-if="movies"
-          >
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">Movie name:</label>
-              <Field
-                type="text"
-                name="title_en"
-                class="outline-0 bg-transparent w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                :placeholder="movies.title.en"
-                v-model="title_en"
-              />
-            </div>
-
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">ფილმის სახელი:</label>
-              <Field
-                type="text"
-                name="title_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                :placeholder="movies.title.ka"
-                v-model="title_ka"
-              />
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">genre:</label>
+          <Form @submit="editMovie" enctype="multipart/form-data">
+            <div v-if="movies" class="flex flex-col w-full mt-2 sm:mt-4">
               <div
-                v-for="genre in movies.genres"
-                :key="genre.id"
-                class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
-                @click="removeGenre(genre)"
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                {{ JSON.parse(genre.name).en }}
+                <label for="" class="text-gray-400 text-sm w-40">Movie name:</label>
+                <Field
+                  type="text"
+                  name="title_en"
+                  class="outline-0 bg-transparent w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  :placeholder="movies.title.en"
+                  v-model="title_en"
+                />
               </div>
-              <select
-                name="genres"
-                id=""
-                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded w-40"
-                v-model="selectedGenre"
-                @change="selectedGenreData"
+
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                <option
-                  v-for="genre in genres"
+                <label for="" class="text-gray-400 text-sm w-40">ფილმის სახელი:</label>
+                <Field
+                  type="text"
+                  name="title_ka"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  :placeholder="movies.title.ka"
+                  v-model="title_ka"
+                />
+              </div>
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
+              >
+                <label for="" class="text-gray-400 text-sm w-40">genre:</label>
+                <div
+                  v-for="genre in movies.genres"
                   :key="genre.id"
-                  :value="genre.id"
-                  class="py-2 mt-2 bg-slate-900 w-40"
+                  class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
+                  @click="removeGenre(genre)"
                 >
                   {{ JSON.parse(genre.name).en }}
-                </option>
-              </select>
-              <div
-                v-for="item in selected"
-                :key="item.id"
-                class="text-white bg-genre px-3 rounded items-center flex"
-              >
-                {{ getGenreName(item) }}
+                </div>
+                <select
+                  name="genres"
+                  id=""
+                  class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded w-40"
+                  v-model="selectedGenre"
+                  @change="selectedGenreData"
+                >
+                  <option
+                    v-for="genre in genres"
+                    :key="genre.id"
+                    :value="genre.id"
+                    class="py-2 mt-2 bg-slate-900 w-40"
+                  >
+                    {{ JSON.parse(genre.name).en }}
+                  </option>
+                </select>
+                <div
+                  v-for="item in selected"
+                  :key="item.id"
+                  class="text-white bg-genre px-3 rounded items-center flex"
+                >
+                  {{ getGenreName(item) }}
+                </div>
               </div>
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">Year/წელი:</label>
-              <Field
-                type="number"
-                name="release_date"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                :placeholder="movies.release_date"
-                v-model="release_date"
-              />
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">Director:</label>
-              <Field
-                type="text"
-                name="director_en"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                :placeholder="JSON.parse(movies.director).en"
-                v-model="director_en"
-              />
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">რეჟისორი:</label>
-              <Field
-                type="text"
-                name="director_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                :placeholder="JSON.parse(movies.director).ka"
-                v-model="director_ka"
-              />
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">Description:</label>
-              <Field
-                as="textarea"
-                type="text"
-                name="description_en"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
-                :placeholder="JSON.parse(movies.description).ka"
-                v-model="description_en"
-              />
-            </div>
-            <div
-              class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
-            >
-              <label for="" class="text-gray-400 text-sm w-40">ფილმის აღწერა:</label>
-              <Field
-                as="textarea"
-                type="text"
-                name="description_ka"
-                class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
-                :placeholder="JSON.parse(movies.description).ka"
-                v-model="description_ka"
-              />
-            </div>
-
-            <div v-if="movies" class="flex mt-4">
-              <img
-                :src="getImages(movies.poster)"
-                alt=""
-                class="w-full object-contain h-52 rounded-md"
-              />
-              <label
-                class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                <p class="uppercase text-primary mb-6">replace photo</p>
-                <IconPhoto class="inline-block" />
-                <span class="ml-2 text-sm lg:text-md">Drag & drop your image here or</span>
-                <span
-                  class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-                >
-                  Choose File
-                </span>
+                <label for="" class="text-gray-400 text-sm w-40">Year/წელი:</label>
                 <Field
-                  type="file"
-                  name="image"
-                  class="hidden"
-                  placeholder="ფილმის აღწერა"
-                  v-model="image"
-                >
-                </Field>
-              </label>
-            </div>
+                  type="number"
+                  name="release_date"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  :placeholder="movies.release_date"
+                  v-model="release_date"
+                />
+              </div>
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
+              >
+                <label for="" class="text-gray-400 text-sm w-40">Director:</label>
+                <Field
+                  type="text"
+                  name="director_en"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  :placeholder="JSON.parse(movies.director).en"
+                  v-model="director_en"
+                />
+              </div>
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
+              >
+                <label for="" class="text-gray-400 text-sm w-40">რეჟისორი:</label>
+                <Field
+                  type="text"
+                  name="director_ka"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  :placeholder="JSON.parse(movies.director).ka"
+                  v-model="director_ka"
+                />
+              </div>
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
+              >
+                <label for="" class="text-gray-400 text-sm w-40">Description:</label>
+                <Field
+                  as="textarea"
+                  type="text"
+                  name="description_en"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  :placeholder="JSON.parse(movies.description).ka"
+                  v-model="description_en"
+                />
+              </div>
+              <div
+                class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
+              >
+                <label for="" class="text-gray-400 text-sm w-40">ფილმის აღწერა:</label>
+                <Field
+                  as="textarea"
+                  type="text"
+                  name="description_ka"
+                  class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  :placeholder="JSON.parse(movies.description).ka"
+                  v-model="description_ka"
+                />
+              </div>
 
-            <button
-              class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
-              type="submit"
-            >
-              Save changes
-            </button>
+              <div v-if="movies" class="flex mt-4">
+                <img
+                  :src="getImages(movies.poster)"
+                  alt=""
+                  class="w-full object-contain h-52 rounded-md"
+                />
+                <label
+                  class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+                >
+                  <p class="uppercase text-primary mb-6">replace photo</p>
+                  <IconPhoto class="inline-block" />
+                  <span class="ml-2 text-sm lg:text-md">Drag & drop your image here or</span>
+                  <span
+                    class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
+                  >
+                    Choose File
+                  </span>
+                  <Field
+                    type="file"
+                    name="image"
+                    class="hidden"
+                    placeholder="ფილმის აღწერა"
+                    v-model="image"
+                  >
+                  </Field>
+                </label>
+              </div>
+
+              <button
+                class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
+                type="submit"
+              >
+                Save changes
+              </button>
+            </div>
           </Form>
         </div>
       </div>
@@ -205,6 +203,8 @@ import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import IconClose from '@/components/icons/IconClose.vue'
+
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 const router = useRouter()
 const route = useRoute()
