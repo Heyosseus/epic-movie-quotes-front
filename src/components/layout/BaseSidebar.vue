@@ -49,7 +49,9 @@
       <p class="">List of Movies</p>
     </div>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else class="absolute inset-0 flex items-center justify-center">
+    <img src="@/assets/images/loading.gif" alt="" class="w-12" />
+  </div>
 </template>
 <script setup>
 import IconActiveHome from '@/components/icons/IconActiveHome.vue'
