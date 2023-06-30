@@ -158,7 +158,7 @@ const AddQuote = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/all-movies`)
+  AxiosInstance.get(`/api/movies`)
     .then((response) => {
       movies.value = response.data.movies
       console.log(movies.value)

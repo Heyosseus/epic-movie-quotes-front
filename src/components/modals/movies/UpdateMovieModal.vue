@@ -58,7 +58,7 @@
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                <label for="" class="text-gray-400 text-sm w-10 lg:w-[134px]">{{
+                <label for="" class="text-gray-400 text-sm w-10 lg:w-[164px]">{{
                   $t('movie.genres')
                 }}</label>
                 <div
@@ -141,7 +141,7 @@
                   as="textarea"
                   type="text"
                   name="description_en"
-                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_en"
                 />
@@ -154,7 +154,7 @@
                   as="textarea"
                   type="text"
                   name="description_ka"
-                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_ka"
                 />

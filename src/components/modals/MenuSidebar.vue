@@ -3,7 +3,7 @@
     <teleport to="body">
       <div class="lg:hidden absolute w-[90vw] h-full flex flex-col bg-landingBg">
         <div class="px-4 sm:block" v-if="user" ref="modalRef">
-          <div class="flex justify-between w-64 pt-12">
+          <div class="flex items-center justify-between w-64 pt-12">
             <div>
               <div v-if="user && user.profile_picture">
                 <img
@@ -14,39 +14,41 @@
               </div>
               <div v-else>
                 <img
-                  src="@/assets/images/profile.jpg"
+                  src="@/assets/images/default_picture.jpg"
                   alt="profile"
                   class="object-fit w-20 rounded-full"
                 />
               </div>
             </div>
-            <div>
+            <div class="w-40">
               <h1 class="text-xl">{{ user.name }}</h1>
-              <router-link to="/profile" class="text-[#CED4DA] text-sm mt-2"
-                >Edit your profile</router-link
-              >
+              <router-link to="/profile" class="text-[#CED4DA] text-sm mt-2">{{
+                $t('base.edit')
+              }}</router-link>
             </div>
           </div>
           <div
-            class="flex items-center justify-between w-52 text-center text-lg mt-12 cursor-pointer"
+            class="flex items-center justify-between w-60 text-lg mt-12 cursor-pointer"
             @click="navigateToNewsFeed"
           >
             <IconActiveHome v-if="activeHome" />
             <IconHome v-else />
-            <p>News feed</p>
+            <p class="w-36">{{ $t('base.news_feed') }}</p>
           </div>
 
           <div
-            class="flex items-center justify-between w-60 text-center text-lg mt-8 cursor-pointer"
+            class="flex items-center justify-between w-60 text-lg mt-8 cursor-pointer"
             @click="navigateToMovieList"
           >
             <IconMovieList v-if="activeMovieList" />
             <IconActiveMovieList v-else />
-            <p class="">List of Movies</p>
+            <p class="w-36">{{ $t('base.movie_list') }}</p>
           </div>
         </div>
 
-        <div v-else>Loading...</div>
+        <div v-else class="absolute inset-0 flex items-center justify-center">
+          <img src="@/assets/images/loading.gif" alt="" class="w-12" />
+        </div>
       </div>
     </teleport>
   </div>

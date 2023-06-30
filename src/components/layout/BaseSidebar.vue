@@ -1,6 +1,6 @@
 <template>
   <div class="hidden px-16 sm:block" v-if="user">
-    <div class="flex justify-between w-64 pt-12">
+    <div class="flex justify-between items-center w-64 pt-12">
       <div>
         <div
           :class="[
@@ -25,28 +25,28 @@
         </div>
       </div>
       <div>
-        <h1 class="text-xl">{{ user.name }}</h1>
+        <h1 class="text-xl w-40">{{ user.name }}</h1>
         <router-link to="/profile" class="text-[#CED4DA] text-sm mt-2">{{
           $t('base.edit')
         }}</router-link>
       </div>
     </div>
     <div
-      class="flex items-center justify-between w-52 text-center text-lg mt-12 cursor-pointer"
+      class="flex items-center justify-between w-60  text-lg mt-12 cursor-pointer"
       @click="navigateToNewsFeed"
     >
       <IconActiveHome v-if="activeHome" />
       <IconHome v-else />
-      <p>{{ $t('base.news_feed') }}</p>
+      <p class="w-36">{{ $t('base.news_feed') }}</p>
     </div>
 
     <div
-      class="flex items-center justify-between w-60 text-center text-lg mt-8 cursor-pointer"
+      class="flex items-center justify-between w-60  text-lg mt-8 cursor-pointer"
       @click="navigateToMovieList"
     >
       <IconMovieList v-if="activeMovieList" />
       <IconActiveMovieList v-else />
-      <p class="">{{ $t('base.movie_list') }}</p>
+      <p class="w-36">{{ $t('base.movie_list') }}</p>
     </div>
   </div>
   <div v-else class="absolute inset-0 flex items-center justify-center">
