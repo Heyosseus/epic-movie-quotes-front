@@ -5,6 +5,7 @@ import forgot from './modals/forgotModal.json'
 import base from './baseComponents.json'
 import profile from './profile.json'
 import movie from './movie.json'
+import date from './date.json'
 
 const translations = {
   home,
@@ -13,7 +14,8 @@ const translations = {
   forgot,
   base,
   profile,
-  movie
+  movie,
+  date
 }
 
 export default translations
