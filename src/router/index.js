@@ -25,7 +25,6 @@ import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
 import SuccessEmail from '@/components/modals/forgot_password/SuccessEmail.vue'
 import WriteNewQuoteModal from '@/components/modals/quotes/WriteNewQuoteModal.vue'
-
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {

@@ -15,7 +15,7 @@
   "edit": "Edit your profile",
   "write_quote": "Write new quote",
   "search_by": "Search by",
-  "search_placeholder": "Enter @ to search movies, Enter # to search quotes",
+  "search_placeholder": "Enter {'@'} to search movies, Enter {'#'} to search quotes",
   "total": "Quotes total",
   "add_quote": "Add quote",
   "no_quotes": "No quote yet"

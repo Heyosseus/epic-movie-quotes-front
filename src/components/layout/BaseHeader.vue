@@ -182,7 +182,6 @@ onMounted(async () => {
     user.value = response.data
     AxiosInstance.get('/api/news-feed').then((response) => {
       quote.value = response.data.quotes
-      console.log(response.data.quotes)
     })
     instantiatePusher()
 
@@ -208,7 +207,6 @@ const fetchNotifications = () => {
   AxiosInstance.get('/api/notifications')
     .then((response) => {
       notification.value = response.data
-      console.log(response.data)
       updateUnreadNotifications()
     })
     .catch((error) => {

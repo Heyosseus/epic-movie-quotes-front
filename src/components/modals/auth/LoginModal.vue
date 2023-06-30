@@ -121,7 +121,6 @@ const login = async () => {
   })
     .then(() => {
       authStore.setIsUserAuthenticated(true)
-      console.log(authStore.isUserAuthenticated)
       router.push({ name: 'news-feed' })
     })
     .catch((err) => {
@@ -135,11 +134,5 @@ const login = async () => {
     })
 
   await AxiosInstance.get('/api/user')
-    .then(() => {
-      console.log('user retrieved successfully')
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
 }
 </script>

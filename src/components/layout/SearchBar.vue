@@ -16,10 +16,11 @@
     >
       <div class="flex">
         <IconSearch />
-        <input
+        <Field
+          name="search"
           type="text"
-          :placeholder="$t('base.search_placeholder')"
           class="bg-transparent ml-6 w-full outline-0 text-search"
+          :placeholder="$t('base.search_placeholder')"
           v-model="searchQuery"
         />
       </div>
@@ -34,21 +35,22 @@
     </div>
     <ul>
       <li v-for="result in searchResults" :key="result.id">
-        <p>{{ JSON.parse(result.body).en }}</p>
+        <p v-if="condition">{{ JSON.parse(result.body).en }}</p>
+        <p v-else>{{ result.title.en }}</p>
       </li>
     </ul>
   </div>
 </template>
 <script setup>
+import { Field } from 'vee-validate'
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
 import { ref, watch } from 'vue'
 import AxiosInstance from '@/config/axios/index.js'
-// import AxiosInstance from '../../config/axios'
 
 const showSearchBar = ref(false)
 const showButton = ref(true)
-// const quotes = ref(null)
+const condition = ref(null)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
@@ -58,17 +60,9 @@ const handleShow = () => {
 const searchQuery = ref('')
 const searchResults = ref([])
 
-// const search = () => {
-//   console.log('searching')
-//   if (searchQuery.value.startsWith('@')) {
-//     searchMovies()
-//     console.log('searching movies')
-//   } else if (searchQuery.value.startsWith('#')) {
-//     searchQuotes()
-//     console.log('searching quotes')
-//   }
-// }
 const search = () => {
+  condition.value = searchQuery.value.startsWith('#')
+
   if (searchQuery.value.startsWith('@')) {
     searchMovies()
   } else if (searchQuery.value.startsWith('#')) {
@@ -81,7 +75,6 @@ const searchMovies = () => {
   AxiosInstance.get(`/api/search-movies/${query}`)
     .then((response) => {
       searchResults.value = response.data
-      console.log(searchResults.value)
     })
     .catch((error) => {
       console.error(error)
@@ -93,7 +86,6 @@ const searchQuotes = () => {
   AxiosInstance.get(`/api/search-quotes/${query}`)
     .then((response) => {
       searchResults.value = response.data
-      console.log(searchResults.value)
     })
     .catch((error) => {
       console.error(error)
@@ -105,14 +97,4 @@ watch(searchQuery, (newQuery) => {
     searchResults.value = []
   }
 })
-
-// onMounted(() => {
-//   AxiosInstance.get(`/api/quotes`)
-//     .then((response) => {
-//       quotes.value = response.data.quotes
-//     })
-//     .catch((error) => {
-//       console.error(error)
-//     })
-// })
 </script>

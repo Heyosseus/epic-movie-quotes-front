@@ -7,7 +7,7 @@
           <BaseSidebar />
         </div>
         <div>
-          <SearchBar />
+          <SearchBar @search="search" :search="search" />
           <div
             v-for="quote in quotes"
             :key="quote.id"
@@ -65,8 +65,6 @@ const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
 
-// const searchQuery = ref('')
-
 onMounted(() => {
   instantiatePusher()
   window.Echo.channel('notification').listen('CommentNotification', (data) => {
@@ -103,12 +101,6 @@ const addComment = (quote) => {
   AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`, {
     quote_id: quote.id
   })
-    .then(() => {
-      console.log('success')
-    })
-    .catch((error) => {
-      console.error(error)
-    })
 }
 
 const addLikes = (quote) => {
@@ -125,26 +117,7 @@ const addLikes = (quote) => {
   AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
     quote_id: quote.id
   })
-    .then(() => {
-      console.log('success')
-    })
-    .catch((error) => {
-      console.error(error)
-    })
 }
-
-// const filteredQuotes = computed(() => {
-//   if (!searchQuery.value) {
-//     return quotes.value
-//   }
-
-//   const query = searchQuery.value.toLowerCase()
-//   return quotes.value.filter((quote) => {
-//     const movieTitle = quote.movie.title.en.toLowerCase()
-//     const quoteBody = JSON.parse(quote.body).en.toLowerCase()
-//     return movieTitle.includes(query) || quoteBody.includes(query)
-//   })
-// })
 
 onMounted(() => {
   AxiosInstance.get(`/api/news-feed`)
