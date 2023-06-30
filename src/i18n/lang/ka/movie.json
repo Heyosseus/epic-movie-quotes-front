@@ -1,0 +1,20 @@
+{
+  "add_movie": "დაამატე ფილმი",
+  "choose_file": "აირჩიე ფაილი",
+  "drag_and_drop": "ჩააგდე ფოტო ან",
+  "edit_movie": "ფილმის რედაქტირება",
+  "replace_photo": "შეცვალე ფოტო",
+  "upload_photo": "ატვირთე ფოტო",
+  "genres": "ჟანრი:",
+  "add_quote": "ციტატის დამატება",
+  "view_quote": "ციტატის ნახვა",
+  "edit": "რედაქტირება",
+  "delete": "წაშლა",
+  "edit_quote": "ციტატის რედაქტირება",
+  "write_quote": "შექმენი ციტატა",
+  "change_photo": "შეცვალე ფოტო",
+  "view_comments": "ნახე სხვა კომენტარები",
+  "hide_comments": "დამალე კომენტარები",
+  "write_a_comment_placeholder": "დაწერე კომენტარი...",
+  "post": "გამოქვეყნება"
+}

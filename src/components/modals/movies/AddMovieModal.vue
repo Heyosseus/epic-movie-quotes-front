@@ -6,7 +6,7 @@
       >
         <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto">Add Movie</h1>
+            <h1 class="text-2xl mx-auto">{{ $t('movie.add_movie') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
@@ -134,11 +134,11 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
             >
               <IconPhoto class="inline-block" />
-              <span class="ml-2 text-sm lg:text-lg">Drag & drop your image here or</span>
+              <span class="ml-2 text-sm lg:text-lg">{{ $t('movie.drag_and_drop') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
               <Field
                 type="file"
@@ -178,7 +178,7 @@
               class="bg-red-600 py-3 rounded flex items-center outline-0 mt-4 sm:mt-6 justify-center text-lg"
               type="submit"
             >
-              Add movie
+              {{ $t('movie.add_movie') }}
             </button>
           </Form>
         </div>

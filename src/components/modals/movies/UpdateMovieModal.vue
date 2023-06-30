@@ -6,8 +6,8 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Edit Movie</h1>
-            <IconClose @click="router.back()"/>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.edit_movie') }}</h1>
+            <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -58,7 +58,7 @@
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                <label for="" class="text-gray-400 text-sm w-40">genre:</label>
+                <label for="" class="text-gray-400 text-sm w-40">{{ $t('movie.genres') }}</label>
                 <div
                   v-for="genre in movies.genres"
                   :key="genre.id"
@@ -163,13 +163,13 @@
                 <label
                   class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
                 >
-                  <p class="uppercase text-primary mb-6">replace photo</p>
+                  <p class="uppercase text-primary mb-6">{{ $t('movie.replace_photo') }}</p>
                   <IconPhoto class="inline-block" />
-                  <span class="ml-2 text-sm lg:text-md">Drag & drop your image here or</span>
+                  <span class="ml-2 text-sm lg:text-md">{{ $t('movie.drag_and_drop') }}</span>
                   <span
                     class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
                   >
-                    Choose File
+                    {{ $t('movie.choose_file') }}
                   </span>
                   <Field
                     type="file"
@@ -186,7 +186,7 @@
                 class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
                 type="submit"
               >
-                Save changes
+                {{ $t('profile.save') }}
               </button>
             </div>
           </Form>

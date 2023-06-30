@@ -6,7 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Write New Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.write_quote') }}</h1>
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -59,14 +59,14 @@
               class="flex items-center border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
             >
               <IconPhoto class="inline-block" />
-              <span class="hidden sm:block text-sm ml-2 lg:text-md"
-                >Drag & drop your image here or</span
-              >
-              <span class="flex lg:hidden text-sm ml-2">Upload image</span>
+              <span class="hidden sm:block text-sm ml-2 lg:text-md">{{
+                $t('movie.drag_and_drop')
+              }}</span>
+              <span class="flex lg:hidden text-sm ml-2">{{ $t('movie.upload_photo') }}</span>
               <p
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.upload_photo') }}
               </p>
               <Field
                 type="file"
@@ -100,7 +100,7 @@
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Post
+              {{ $t('movie.post') }}
             </button>
           </Form>
         </div>

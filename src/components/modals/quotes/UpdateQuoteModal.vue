@@ -6,7 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Edit Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.edit_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -71,7 +71,7 @@
                     class="flex flex-col items-center justify-center text-md lg:text-md lg:mt-4 bg-transparentLandingBg rounded-xl px-4 py-6"
                   >
                     <IconPhotoVue />
-                    <p class="mt-2">Change photo</p>
+                    <p class="mt-2">{{ $t('movie.change_photo') }}</p>
                   </span>
                   <Field
                     name="fileInput"
@@ -88,7 +88,7 @@
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Save changes
+              {{ $t('profile.save') }}
             </button>
           </Form>
         </div>

@@ -63,7 +63,7 @@
               class="flex items-center space-x-4"
             >
               <IconEye />
-              <p class="text-sm lg:text-md">View Quote</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.view_quote') }}</p>
             </router-link>
             <router-link
               v-if="props.movie"
@@ -74,14 +74,14 @@
               class="flex items-center space-x-4"
             >
               <IconEdit />
-              <p class="text-sm lg:text-md">Edit</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.edit') }}</p>
             </router-link>
             <div
               class="flex items-center space-x-4 cursor-pointer"
               @click="handle_delete_quote(quote.id)"
             >
               <IconTrash />
-              <p class="text-sm lg:text-md">Delete</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.delete') }}</p>
             </div>
           </div>
         </div>

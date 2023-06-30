@@ -57,10 +57,10 @@
     </div>
     <div class="text-sm flex lg:items-center lg:justify-center mt-2 lg:text-lg">
       <div v-if="!quote.showAllComments && quote.comments.length > 2">
-        <button @click="quote.showAllComments = true">View Other Comments</button>
+        <button @click="quote.showAllComments = true">{{ $t('movie.view_comments') }}</button>
       </div>
       <div v-if="quote.showAllComments">
-        <button @click="quote.showAllComments = false">Hide Comments</button>
+        <button @click="quote.showAllComments = false">{{ $t('movie.hide_comments') }}</button>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
           <Field
             name="comment"
             class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-            placeholder="write a comment"
+            :placeholder="$t('movie.write_a_comment_placeholder')"
             :value="comment"
             @input="$emit('update:comment', $event.target.value)"
           >
@@ -87,7 +87,7 @@
           <Field
             name="comment"
             class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-            placeholder="write a comment"
+            :placeholder="$t('movie.write_a_comment_placeholder')"
             :value="comment"
             @input="$emit('update:comment', $event.target.value)"
           >

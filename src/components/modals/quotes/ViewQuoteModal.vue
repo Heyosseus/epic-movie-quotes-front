@@ -11,7 +11,7 @@
             /></router-link>
             <div class="w-[1px] bg-gray-500 h-6 ml-6"></div>
             <IconTrash class="cursor-pointer ml-5" @click="handleDeleteQuote" />
-            <h1 class="text-2xl mx-auto sm:pl-8">View Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.view_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -107,10 +107,14 @@
             </div>
             <div class="text-sm flex lg:items-center lg:justify-center mt-2 lg:text-lg">
               <div v-if="!view_quotes.showAllComments && view_quotes.comments.length > 2">
-                <button @click="view_quotes.showAllComments = true">View Other Comments</button>
+                <button @click="view_quotes.showAllComments = true">
+                  {{ $t('movie.view_comments') }}
+                </button>
               </div>
               <div v-if="view_quotes.showAllComments">
-                <button @click="view_quotes.showAllComments = false">Hide Comments</button>
+                <button @click="view_quotes.showAllComments = false">
+                  {{ $t('movie.hide_comments') }}
+                </button>
               </div>
             </div>
             <div v-if="view_quotes && view_quotes.user">
@@ -142,7 +146,7 @@
                   <input
                     name="comment"
                     class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-                    placeholder="write a comment"
+                    :placeholder="$t('movie.write_a_comment_placeholder')"
                     v-model="comment"
                   />
                 </Form>

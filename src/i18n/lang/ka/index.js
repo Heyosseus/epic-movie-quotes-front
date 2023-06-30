@@ -4,13 +4,15 @@ import register from './modals/registerModal.json'
 import forgot from './modals/forgotModal.json'
 import base from './baseComponents.json'
 import profile from './profile.json'
+import movie from './movie.json'
 const translations = {
   home,
   login,
   register,
   forgot,
   base,
-  profile
+  profile,
+  movie
 }
 
 export default translations
