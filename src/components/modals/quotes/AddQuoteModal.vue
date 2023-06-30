@@ -6,7 +6,7 @@
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.add_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -37,21 +37,25 @@
               <div class="flex flex-col">
                 <div class="flex space-x-4 mr-auto mb-4 sm:mb-10 mt-2 sm:mt-4 text-[#DDCCAA]">
                   <div class="flex space-x-2">
-                    <h1 class="uppercase text-sm lg:text-lg">{{ movie.title.en }}</h1>
+                    <h1 class="uppercase text-sm lg:text-lg">
+                      {{ $i18n.locale === 'en' ? movie.title.en : movie.title.ka }}
+                    </h1>
                     <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
                   </div>
                 </div>
                 <div class="flex space-x-4">
                   <div
-                    v-for="item in genre"
-                    :key="item.id"
-                    class="text-white bg-genre py-1 px-3 rounded"
+                    v-for="genre in movie.genres"
+                    :key="genre.id"
+                    class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
                   >
-                    {{ item.value }}
+                    {{
+                      $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                    }}
                   </div>
                 </div>
                 <div class="flex space-x-4 mt-2 sm:mt-6">
-                  <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
+                  <p class="text-gray-400 text-sm lg:text-lg">{{ $t('movie.director') }}</p>
                   <p class="text-white text-sm lg:text-lg">{{ JSON.parse(movie.director).en }}</p>
                 </div>
               </div>
@@ -93,11 +97,11 @@
               class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Drag & drop your image here or</span>
+              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.drag_and_drop') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
               <Field
                 type="file"
@@ -114,11 +118,11 @@
               class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Upload image</span>
+              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
               <Field
                 type="file"
@@ -135,7 +139,7 @@
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Add quote
+              {{ $t('movie.add_quote') }}
             </button>
           </Form>
         </div>

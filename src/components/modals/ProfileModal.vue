@@ -10,18 +10,18 @@
           <div
             class="w-fit px-0 py-10 lg:bg-movie lg:w-[800px] lg:px-36 lg:py-20 flex flex-col mt-20 ml-auto"
           >
-            <div v-if="user" class="absolute top-40">
+            <div v-if="user" class="absolute top-36 lg:top-40">
               <img
                 :src="getImages(user.profile_picture)"
                 alt=""
                 v-if="user.profile_picture"
-                class="object-contain w-40 lg:ml-44 rounded-full"
+                class="object-contain w-40 ml-16 lg:ml-44 rounded-full"
               />
               <div v-else>
                 <img
                   src="@/assets/images/default_picture.jpg"
                   alt=""
-                  class="object-contain w-40 ml-20 lg:ml-44 rounded-full"
+                  class="object-contain w-40 ml-16 lg:ml-44 rounded-full"
                 />
               </div>
             </div>

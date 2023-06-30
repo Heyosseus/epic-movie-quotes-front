@@ -9,7 +9,7 @@
         class="px-2 py-2 bg-red-600 sm:w-48 sm:text-lg sm:bg-red-600 md:px-4 md:py-3 rounded flex items-center space-x-2"
       >
         <IconAddMovie />
-        <button class="w-52" v-if="props.movie">
+        <button class="w-36 lg:w-52" v-if="props.movie">
           <router-link :to="{ name: 'add-quote', params: { id: movie.id } }">{{
             $t('base.add_quote')
           }}</router-link>

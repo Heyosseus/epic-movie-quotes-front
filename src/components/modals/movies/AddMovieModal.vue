@@ -51,12 +51,13 @@
             </Field>
             <ErrorMessage name="title_ka" class="text-red-600 mt-2" />
             <div
-              class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md"
+              class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md overflow-x-auto"
             >
+              <p class="text-gray-400 mt-1">{{ $t('movie.genres') }}</p>
               <select
                 name="genres"
                 id=""
-                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded"
+                class="bg-transparent py-2 outline-0 text-white bg-genre px-2 rounded"
                 v-model="selectedGenre"
                 @change="selectedGenreData"
               >
@@ -66,7 +67,9 @@
                   :value="genre.id"
                   class="py-2 mt-2 bg-slate-900"
                 >
-                  {{ JSON.parse(genre.name).en }}
+                  {{
+                    $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                  }}
                 </option>
               </select>
               <div
