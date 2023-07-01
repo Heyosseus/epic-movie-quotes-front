@@ -16,7 +16,7 @@
           <IconTrash @click="handle_movie_delete" />
         </div>
       </div>
-      <div class="flex space-x-4 text-lg">
+      <div class="flex space-x-4 text-lg cursor-pointer">
         <div
           v-for="genre in props.movie.genres"
           :key="genre.id"

@@ -18,11 +18,11 @@
       </div>
     </div>
     <div v-if="props.quote" class="lg:w-form mt-10">
-      <div class="w-[900px] relative">
+      <div class="w-full lg:w-[900px] relative">
         <div
           v-for="quote in props.quote"
           :key="quote.id"
-          class="space-y-6 mt-16 bg-movie px-6 py-8 w-96 lg:w-[800px] rounded-xl relative"
+          class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl relative"
         >
           <div class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full">
             <router-link :to="{ name: 'view-quote', params: { movie_id: movie.id, id: quote.id } }">
