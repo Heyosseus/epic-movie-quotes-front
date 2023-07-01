@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@smartweb/vue-flash-message": "^0.6.10",
     "@vee-validate/i18n": "^4.9.5",
     "@vee-validate/rules": "^4.9.5",
     "@vueuse/core": "^10.1.2",
