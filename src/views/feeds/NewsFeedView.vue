@@ -7,7 +7,7 @@
           <BaseSidebar />
         </div>
         <div>
-          <SearchBar @search="search" :search="search" />
+          <SearchBar />
           <div
             v-for="quote in quotes"
             :key="quote.id"

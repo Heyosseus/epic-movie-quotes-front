@@ -38,8 +38,8 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import { getImages } from '@/config/axios/helpers'
 
-import MovieData from '../../components/movie/MovieData.vue'
-import QuoteData from '../../components/quote/QuoteData.vue'
+import MovieData from '@/components/movie/MovieData.vue'
+import QuoteData from '@/components/quote/QuoteData.vue'
 
 const movie = ref(null)
 const quotes = ref(null)
@@ -54,7 +54,6 @@ onMounted(() => {
     .then((response) => {
       movie.value = response.data.movie
       genre.value = JSON.parse(response.data.movie.genre)
-      console.log(genre.value)
     })
     .catch((error) => {
       console.error(error)
