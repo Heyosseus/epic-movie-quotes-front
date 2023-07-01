@@ -25,6 +25,12 @@ import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
 import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
 import SuccessEmail from '@/components/modals/forgot_password/SuccessEmail.vue'
 import WriteNewQuoteModal from '@/components/modals/quotes/WriteNewQuoteModal.vue'
+import EditUsernameModal from '@/components/modals/profile/EditUsernameModal.vue'
+import EditEmailModal from '@/components/modals/profile/EditEmailModal.vue'
+import AreYouSure from '@/components/modals/profile/AreYouSure.vue'
+import FlashMessages from '@/components/modals/profile/FlashMessages.vue'
+import AreYouSureForEmail from '@/components/modals/profile/AreYouSureForEmail.vue'
+
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -146,7 +152,43 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       beforeEnter: authGuard,
-      component: ProfileModal
+      component: ProfileModal,
+      children: [
+        {
+          path: '/edit-username',
+          name: 'edit-username',
+          component: EditUsernameModal,
+          props: true,
+          children: [
+            {
+              path: '/username-update',
+              name: 'are-you-sure',
+              component: AreYouSure,
+              props: true
+            }
+          ]
+        },
+        {
+          path: '/edit-email',
+          name: 'edit-email',
+          component: EditEmailModal,
+          props: true,
+          children: [
+            {
+              path: '/email-update',
+              name: 'are-you-sure',
+              component: AreYouSureForEmail,
+              props: true
+            }
+          ]
+        },
+
+        {
+          path: '/flash-messages',
+          name: 'flash-messages',
+          component: FlashMessages
+        }
+      ]
     },
     {
       path: '/movie-list',
