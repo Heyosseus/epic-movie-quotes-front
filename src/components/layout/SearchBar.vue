@@ -14,7 +14,7 @@
       v-if="showSearchBar"
       @submit.prevent="search"
     >
-      <div class="flex">
+      <div class="flex bg-transparent">
         <IconSearch />
         <Field
           name="search"

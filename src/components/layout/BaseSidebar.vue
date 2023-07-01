@@ -32,7 +32,7 @@
       </div>
     </div>
     <div
-      class="flex items-center justify-between w-60  text-lg mt-12 cursor-pointer"
+      class="flex items-center justify-between w-60 text-lg mt-12 cursor-pointer"
       @click="navigateToNewsFeed"
     >
       <IconActiveHome v-if="activeHome" />
@@ -41,7 +41,7 @@
     </div>
 
     <div
-      class="flex items-center justify-between w-60  text-lg mt-8 cursor-pointer"
+      class="flex items-center justify-between w-60 text-lg mt-8 cursor-pointer"
       @click="navigateToMovieList"
     >
       <IconMovieList v-if="activeMovieList" />
