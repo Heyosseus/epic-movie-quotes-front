@@ -5,13 +5,13 @@
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div
-          class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          class="flex flex-col px-6 py-10 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
           <h1 class="text-xl md:text-2xl">{{ $t('login.title') }}</h1>
           <p class="text-sm text-gray-500">{{ $t('login.paragraph') }}</p>
-          <Form class="flex flex-col space-y-4" @submit="login">
-            <div class="flex flex-col w-full md:w-96">
+          <Form class="flex flex-col space-y-4 w-full md:w-96" @submit="login">
+            <div class="flex flex-col">
               <label for="email">{{ $t('login.email') }}</label>
               <Field
                 type="email"
@@ -71,12 +71,9 @@
               </div>
               <p class="text-center mt-6">
                 {{ $t('login.dont_have_an_account') }}
-                <router-link
-                  :to="{ name: 'register' }"
-                  class="underline text-blue-600"
-                  @click="openRegisterModal"
-                  >{{ $t('login.signup') }}</router-link
-                >
+                <router-link :to="{ name: 'register' }" class="underline text-blue-600">{{
+                  $t('login.signup')
+                }}</router-link>
               </p>
             </div>
           </Form>

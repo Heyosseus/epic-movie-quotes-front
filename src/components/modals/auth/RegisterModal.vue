@@ -2,15 +2,15 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen h-screen px-4 flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div
-          class="flex flex-col px-6 py-12 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          class="flex flex-col w-full lg:w-fit px-6 py-8 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
-          <h1 class="text-xl md:text-2xl text-center">{{ $t('register.title') }}</h1>
-          <p class="text-sm text-gray-500 text-center">{{ $t('register.paragraph') }}</p>
-          <Form class="flex flex-col space-y-4 md:w-96" @submit="register">
+          <h1 class="text-xl md:text-2xl">{{ $t('register.title') }}</h1>
+          <p class="text-sm text-gray-500">{{ $t('register.paragraph') }}</p>
+          <Form class="flex flex-col space-y-4 w-full md:w-96" @submit="register">
             <div class="flex flex-col">
               <label for="name">{{ $t('register.name') }}</label>
               <Field

@@ -22,7 +22,7 @@
             {{ $t('register.go_to_email') }}
           </a>
           <router-link
-            :to="{ name: 'update-password' }"
+            :to="{ name: 'login' }"
             class="flex items-center justify-center mt-4 md:mt-8 space-x-4"
           >
             <p class="text-[#6C757D] cursor-pointer">{{ $t('forgot.skip') }}</p>
