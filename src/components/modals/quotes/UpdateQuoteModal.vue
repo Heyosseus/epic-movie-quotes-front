@@ -2,7 +2,7 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
