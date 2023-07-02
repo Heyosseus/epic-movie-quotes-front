@@ -1,9 +1,11 @@
 <template>
   <div class="relative">
     <teleport to="body">
-      <div class="absolute w-screen min-h-screen flex items-center bg-transparentLandingBg">
+      <div
+        class="absolute w-screen min-h-screen flex items-center bg-transparentLandingBg lg:bg-none "
+      >
         <div
-          class="bg-green-200 p-5 items-center justify-between flex w-full absolute top-20"
+          class="bg-green-200 p-5 items-center justify-between flex w-full lg:w-flash lg:right-20 lg:rounded absolute top-20 lg:top-24"
           ref="modalRef"
         >
           <div class="flex">

@@ -15,7 +15,8 @@ export const theme = {
       form: '688px',
       quote: '840px',
       profile: '1200px',
-      notification: '961px'
+      notification: '961px',
+      flash: '431px',
     },
     height: {
       posterHeight: '441px',
