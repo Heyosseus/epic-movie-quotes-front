@@ -29,7 +29,7 @@
         class="py-4 flex space-x-6 lg:mt-3"
       >
         <router-link :to="{ name: 'profile' }" class="flex space-x-4">
-          <div v-if="props.comment.user">
+          <div v-if="comment.user">
             <img
               :src="getImages(comment.user.profile_picture)"
               alt=""

@@ -98,8 +98,12 @@ const profile_password = ref(null)
 const updateProfile = () => {
   const formData = new FormData()
 
-  if (innerWidth < 624) {
+  if (innerWidth < 624 && localStorage.getItem('isUserAuthenticated') === 'true') {
     formData.append('profile_picture', picture.value)
+    formData.append('password', profile_password.value)
+  } else if (localStorage.getItem('isGoogleAuthenticated') === 'true') {
+    formData.append('profile_picture', picture.value)
+    formData.append('name', new_username.value)
     formData.append('password', profile_password.value)
   } else {
     formData.append('profile_picture', picture.value)
@@ -116,7 +120,7 @@ const updateProfile = () => {
       }
     })
     .then(() => {
-      if (innerWidth < 624) {
+      if (innerWidth < 624 || localStorage.getItem('isGoogleAuthenticated') === 'true') {
         router.push({ name: 'flash-messages' })
       } else {
         router.push({ name: 'reset-password' })

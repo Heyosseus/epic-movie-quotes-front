@@ -176,7 +176,7 @@ const router = createRouter({
           children: [
             {
               path: '/email-update',
-              name: 'are-you-sure',
+              name: 'are-you-sure-for-email',
               component: AreYouSureForEmail,
               props: true
             }

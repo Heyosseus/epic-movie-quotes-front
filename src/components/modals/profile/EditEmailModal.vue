@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <teleport to="body">
-      <div
+      <Form
         class="absolute w-screen min-h-full flex flex-col justify-center items-center bg-transparentLandingBg"
       >
         <div
@@ -11,11 +11,11 @@
           <div class="flex flex-col w-full">
             <label for="enter_new_email" class="mt-6">{{ $t('profile.enter_new_email') }}</label>
             <Field
-              type="text"
+              type="email"
               name="enter_new_email"
               class="py-3 px-2 rounded mt-2 w-full text-black bg-gray-200 outline-0 lg:text-black font-normal lg:bg-field placeholder-gray-400"
               :placeholder="$t('profile.enter_new_email')"
-              rules="required"
+              rules="required|email"
               v-model="email"
             >
             </Field>
@@ -27,20 +27,19 @@
           <router-link to="/profile" class="bg-transparent">{{ $t('profile.cancel') }}</router-link>
 
           <router-link
-            :to="{ name: 'are-you-sure' }"
+            :to="{ name: 'are-you-sure-for-email' }"
             class="bg-red-700 py-3 px-4 rounded"
-            @click="updateProfile"
           >
             {{ $t('profile.save') }}
           </router-link>
           <router-view :email="email" @update:email="email = $event"></router-view>
         </div>
-      </div>
+      </Form>
     </teleport>
   </div>
 </template>
 <script setup>
-import { Field, ErrorMessage } from 'vee-validate'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 import { ref } from 'vue'
 
 const email = ref('')

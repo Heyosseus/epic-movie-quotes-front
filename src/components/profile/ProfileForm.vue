@@ -37,19 +37,28 @@
     <label for="profile_email" class="mt-6">{{ $t('login.email') }}</label>
     <div class="flex space-x-3">
       <div
-        class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
+        class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-[465px] text-black font-normal placeholder-white lg:bg-field"
       >
         <p class="text-white lg:text-black">{{ user.email }}</p>
       </div>
-      <button type="button" @click="editEmail = !editEmail" class="hidden lg:block">Edit</button>
+      <button
+        v-if="shouldUpdate"
+        type="button"
+        @click="editEmail = !editEmail"
+        class="hidden lg:block"
+      >
+        Edit
+      </button>
+
       <router-link
         :to="{ name: 'edit-email' }"
         class="block lg:hidden"
         type="button"
-        @click="editUsername = !editUsername"
+        v-if="shouldUpdate"
         >Edit</router-link
       >
     </div>
+
     <router-view></router-view>
     <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
 
@@ -140,7 +149,7 @@ const showPassword = ref(false)
 const editUsername = ref(props.edit_username)
 const editEmail = ref(props.edit_email)
 const editPassword = ref(props.edit_password)
-
+const shouldUpdate = localStorage.getItem('isGoogleAuthenticated') === 'true' ? false : true
 const props = defineProps({
   user: {
     type: Object,

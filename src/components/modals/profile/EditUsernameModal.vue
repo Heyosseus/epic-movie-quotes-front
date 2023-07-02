@@ -26,11 +26,7 @@
         <div class="flex justify-between px-4 w-full items-center mt-6">
           <router-link to="/profile" class="bg-transparent">{{ $t('profile.cancel') }}</router-link>
 
-          <router-link
-            :to="{ name: 'are-you-sure' }"
-            class="bg-red-700 py-3 px-4 rounded"
-            @click="updateProfile"
-          >
+          <router-link :to="{ name: 'are-you-sure' }" class="bg-red-700 py-3 px-4 rounded">
             {{ $t('profile.save') }}
           </router-link>
           <router-view :username="username" @update:username="username = $event"></router-view>

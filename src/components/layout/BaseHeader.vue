@@ -54,8 +54,8 @@
                     ]"
                   >
                     <img
-                      v-if="user && user.profile_picture"
-                      :src="getImages(user.profile_picture)"
+                      v-if="notifications.user.profile_picture"
+                      :src="getImages(notifications.user.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />
@@ -175,6 +175,7 @@ const logout = () => {
     .then(() => {
       router.push({ name: 'home' })
       authStore.setIsUserAuthenticated(false)
+      authStore.setIsGoogleAuthenticated(false)
     })
     .catch((err) => {
       console.log(err.response)

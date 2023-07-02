@@ -89,7 +89,7 @@
         class="absolute top-10 w-fit lg:w-form text-md lg:text-4xl sm:top-80 left-2 sm:left-40 inset-0"
       >
         <p>
-          I think we’re just gonna have to be secretly in love with earch other and leave it that
+          I think we’re just gonna have to be secretly in love with each other and leave it that
         </p>
         <p class="text-md lg:text-2xl mt-10">- The Royal Tenenbaums,2001</p>
       </div>
