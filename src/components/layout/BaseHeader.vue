@@ -122,6 +122,9 @@
           >
             {{ locale }}
           </option>
+          {{
+            $i18n.locale === 'en' ? setLocale('en') : setLocale('ka')
+          }}
         </select>
 
         <button
@@ -145,6 +148,7 @@ import { formatTimeAgo } from '@/config/axios/helpers'
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import { setLocale } from '@vee-validate/i18n'
 
 import AxiosInstance from '@/config/axios/index'
 import MenuSidebar from '../modals/MenuSidebar.vue'
