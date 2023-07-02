@@ -47,6 +47,7 @@ const router = useRouter()
 const route = useRoute()
 const quoteId = route.params.id
 const genre = ref(null)
+const quoteList = ref([])
 
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
@@ -64,6 +65,9 @@ onMounted(() => {
   AxiosInstance.get(`/api/quotes/${quoteId}`)
     .then((response) => {
       quotes.value = response.data.quote
+      quotes.value.forEach((quote) => {
+        quoteList.value.push(quote)
+      })
     })
     .catch((error) => {
       console.error(error)

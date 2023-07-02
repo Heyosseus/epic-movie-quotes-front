@@ -29,7 +29,6 @@
         :placeholder="$t('profile.new_username')"
         :value="props.new_username"
         @input="$emit('update:new_username', $event.target.value)"
-        rules="required"
       >
       </Field>
       <ErrorMessage name="new_username" class="text-red-600" />
@@ -63,7 +62,6 @@
         :placeholder="$t('profile.new_email')"
         :value="props.new_email"
         @input="$emit('update:new_email', $event.target.value)"
-        rules="required"
       >
       </Field>
       <ErrorMessage name="new_email" class="text-red-600" />
