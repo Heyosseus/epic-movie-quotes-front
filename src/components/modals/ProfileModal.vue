@@ -33,7 +33,7 @@
               </div>
             </div>
             <label for="fileInput" class="relative py-2 text-white rounded cursor-pointer">
-              <span class="flex justify-center mt-12 text-lg lg:mt-4">{{
+              <span class="flex justify-center mt-20 text-lg lg:mt-4">{{
                 $t('profile.upload')
               }}</span>
               <Field
@@ -97,10 +97,17 @@ const profile_password = ref(null)
 
 const updateProfile = () => {
   const formData = new FormData()
-  formData.append('profile_picture', picture.value)
-  formData.append('name', new_username.value)
-  formData.append('email', new_email.value)
-  formData.append('password', profile_password.value)
+
+  if (innerWidth < 624) {
+    formData.append('profile_picture', picture.value)
+    formData.append('password', profile_password.value)
+  } else {
+    formData.append('profile_picture', picture.value)
+    formData.append('name', new_username.value)
+    formData.append('email', new_email.value)
+    formData.append('password', profile_password.value)
+  }
+
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/profile`, formData, {
@@ -109,7 +116,11 @@ const updateProfile = () => {
       }
     })
     .then(() => {
-      router.push({ name: 'reset-password' })
+      if (innerWidth < 624) {
+        router.push({ name: 'flash-messages' })
+      } else {
+        router.push({ name: 'reset-password' })
+      }
     })
     .catch((err) => {
       console.log(err.response)
