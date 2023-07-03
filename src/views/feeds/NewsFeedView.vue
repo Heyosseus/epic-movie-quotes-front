@@ -7,41 +7,52 @@
           <BaseSidebar />
         </div>
         <div>
-          <SearchBar />
-          <div
-            v-for="quote in quotes"
-            :key="quote.id"
-            class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
-          >
-            <router-link
-              :to="{ name: 'profile' }"
-              v-if="quote.user"
-              class="flex items-center mt-2 lg:mt-6 space-x-4"
+          <SearchBar
+            :condition="condition"
+            :searchQuery="searchQuery"
+            :searchResults="searchResults"
+            @update:searchQuery="searchQuery = $event"
+            @update-newsfeed="updateSearchResults"
+          />
+          <div v-if="true">
+            <div
+              v-for="quote in filteredQuotes"
+              :key="quote.id"
+              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
             >
-              <div v-if="quote.user.profile_picture">
-                <img
-                  :src="getImages(quote.user.profile_picture)"
-                  alt=""
-                  class="object-fit w-10 lg:w-14 rounded-full"
-                />
-              </div>
-              <div v-else>
-                <img
-                  src="@/assets/images/default_picture.jpg"
-                  alt="profile"
-                  class="object-fit w-10 lg:w-14 rounded-full"
-                />
-              </div>
-              <h1>{{ quote.user.name }}</h1>
-            </router-link>
-            <news-feed-quote-data
-              :quotes="quotes"
-              :quote="quote"
-              :add_likes="addLikes"
-              :add_comment="addComment"
-              :comment="comment"
-              @update:comment="comment = $event"
-            ></news-feed-quote-data>
+              <router-link
+                :to="{ name: 'profile' }"
+                v-if="quote.user"
+                class="flex items-center mt-2 lg:mt-6 space-x-4"
+              >
+                <div v-if="quote.user.profile_picture">
+                  <img
+                    :src="getImages(quote.user.profile_picture)"
+                    alt=""
+                    class="object-fit w-10 lg:w-14 rounded-full"
+                  />
+                </div>
+                <div v-else>
+                  <img
+                    src="@/assets/images/default_picture.jpg"
+                    alt="profile"
+                    class="object-fit w-10 lg:w-14 rounded-full"
+                  />
+                </div>
+                <h1>{{ quote.user.name }}</h1>
+              </router-link>
+              <news-feed-quote-data
+                :quotes="quotes"
+                :quote="quote"
+                :add_likes="addLikes"
+                :add_comment="addComment"
+                :comment="comment"
+                @update:comment="comment = $event"
+              ></news-feed-quote-data>
+            </div>
+          </div>
+          <div v-if="true">
+            <div v-for="movie in filteredMovies" :key="movie.id">{{ movie.title }}</div>
           </div>
         </div>
       </div>
@@ -53,17 +64,22 @@
 <script setup>
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
+
 import SearchBar from '@/components/layout/SearchBar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
+import axiosInstance from '../../config/axios'
+// import { useSearchStore } from '@/stores/search'
 
 const quotes = ref(null)
 const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
+const movies = ref(null)
+// const searchStore = useSearchStore()
 
 onMounted(() => {
   instantiatePusher()
@@ -130,5 +146,36 @@ onMounted(() => {
     .catch((error) => {
       console.error(error)
     })
+})
+
+const condition = ref(null)
+
+const searchQuery = ref('')
+const searchResults = ref([])
+
+const filteredQuotes = computed(() => {
+  if (searchResults.value.length > 0) {
+    const filteredIds = searchResults.value.map((result) => result.id)
+    return quotes.value.filter((quote) => filteredIds.includes(quote.id))
+  } else {
+    return quotes.value
+  }
+})
+
+const filteredMovies = computed(() => {
+  if (searchResults.value.length > 0) {
+    const filteredIds = searchResults.value.map((result) => result.id)
+    return movies.value.filter((movie) => filteredIds.includes(movie.id)) && quotes.value === null
+  } else {
+    return []
+  }
+})
+
+const updateSearchResults = (results) => {
+  searchResults.value = results
+}
+
+axiosInstance.get('/api/movies').then((response) => {
+  movies.value = response.data.movies
 })
 </script>

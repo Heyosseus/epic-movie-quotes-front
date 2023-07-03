@@ -21,7 +21,8 @@
           type="text"
           class="bg-transparent ml-6 w-full outline-0 text-search"
           :placeholder="$t('base.search_placeholder')"
-          v-model="searchQuery"
+          @input="$emit('update:searchQuery', $event.target.value)"
+          :value="props.searchQuery"
         />
       </div>
 
@@ -33,48 +34,62 @@
         <p class="text-search">{{ $t('base.search_by') }}</p>
       </button>
     </div>
-    <ul>
-      <li v-for="result in searchResults" :key="result.id">
-        <p v-if="condition">{{ JSON.parse(result.body).en }}</p>
-        <p v-else>{{ result.title.en }}</p>
-      </li>
-    </ul>
   </div>
 </template>
+
 <script setup>
 import { Field } from 'vee-validate'
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '../icons/IconSearch.vue'
-import { ref, watch } from 'vue'
+import { defineProps, ref, watch } from 'vue'
 import AxiosInstance from '@/config/axios/index.js'
+import { useSearchStore } from '@/stores/search'
 
+const emit = defineEmits(['update-newsfeed'])
+
+const props = defineProps({
+  condition: {
+    type: Boolean,
+    default: false
+  },
+  searchQuery: {
+    type: String,
+    default: ''
+  },
+  searchResults: {
+    type: Array,
+    default: Array
+  }
+})
 const showSearchBar = ref(false)
 const showButton = ref(true)
 const condition = ref(null)
+const searchStore = useSearchStore()
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
   showButton.value = !showButton.value
 }
 
-const searchQuery = ref('')
-const searchResults = ref([])
+const searchResults = ref(props.searchResults)
 
 const search = () => {
-  condition.value = searchQuery.value.startsWith('#')
+  condition.value = props.searchQuery.startsWith('#')
 
-  if (searchQuery.value.startsWith('@')) {
+  if (props.searchQuery.startsWith('@')) {
     searchMovies()
-  } else if (searchQuery.value.startsWith('#')) {
+  } else if (props.searchQuery.startsWith('#')) {
     searchQuotes()
   }
 }
 
 const searchMovies = () => {
-  const query = searchQuery.value.substring(1)
+  const query = props.searchQuery.substring(1)
   AxiosInstance.get(`/api/search-movies/${query}`)
     .then((response) => {
       searchResults.value = response.data
+      searchStore.setSearchResults(searchResults)
+      emit('update-newsfeed', searchResults.value)
     })
     .catch((error) => {
       console.error(error)
@@ -82,19 +97,21 @@ const searchMovies = () => {
 }
 
 const searchQuotes = () => {
-  const query = searchQuery.value.substring(1)
+  const query = props.searchQuery.substring(1)
   AxiosInstance.get(`/api/search-quotes/${query}`)
     .then((response) => {
       searchResults.value = response.data
+      searchStore.setSearchResults(searchResults)
+      emit('update-newsfeed', searchResults.value)
     })
     .catch((error) => {
       console.error(error)
     })
 }
 
-watch(searchQuery, (newQuery) => {
+watch(props.searchQuery, (newQuery) => {
   if (!newQuery) {
-    searchResults.value = []
+    searchStore.setSearchResults([])
   }
 })
 </script>
