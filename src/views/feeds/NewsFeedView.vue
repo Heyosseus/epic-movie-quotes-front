@@ -51,8 +51,43 @@
               ></news-feed-quote-data>
             </div>
           </div>
-          <div v-if="true">
-            <div v-for="movie in filteredMovies" :key="movie.id">{{ movie.title }}</div>
+          <div
+            v-for="movie in filteredMovies"
+            :key="movie.id"
+            class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
+          >
+            <div class="flex flex-col space-y-4 w-fit text-xl my-6">
+              <div class="flex flex-col lg:flex lg:flex-row relative">
+                <img
+                  :src="getImages(movie.poster)"
+                  alt=""
+                  class="rounded-2xl object-fit h-64 lg:w-96 mr-auto cursor-pointer"
+                  @click="redirectToMovie(movie.id)"
+                />
+                <div class="ml-10">
+                  <div class="flex space-x-2 mt-4 lg:mt-0">
+                    <h1 class="uppercase">
+                      {{ $i18n.locale === 'en' ? movie.title.en : movie.title.ka }}
+                    </h1>
+                    <p class="">({{ movie.release_date }})</p>
+                  </div>
+                  <p class="hidden lg:block mr-auto mt-8 text-sm">
+                    <span class="text-gray-400">{{ $t('movie.description') }}</span>
+                    {{
+                      $i18n.locale === 'en'
+                        ? JSON.parse(movie.description).en
+                        : JSON.parse(movie.description).ka
+                    }}
+                  </p>
+                  <div
+                    @click="redirectToMovie(movie.id)"
+                    class="absolute flex items-center w-full lg:w-80 lg:bottom-0 text-sm cursor-pointer"
+                  >
+                    {{ $t('movie.click_here_to_see') }} <IconEye class="ml-2 cursor-pointer" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -67,11 +102,14 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 
 import SearchBar from '@/components/layout/SearchBar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 import axiosInstance from '../../config/axios'
+import { useRouter } from 'vue-router'
+
+import IconEye from '../../components/icons/IconEye.vue'
 // import { useSearchStore } from '@/stores/search'
 
 const quotes = ref(null)
@@ -79,6 +117,7 @@ const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
 const movies = ref(null)
+const router = useRouter()
 // const searchStore = useSearchStore()
 
 onMounted(() => {
@@ -165,12 +204,18 @@ const filteredQuotes = computed(() => {
 const filteredMovies = computed(() => {
   if (searchResults.value.length > 0) {
     const filteredIds = searchResults.value.map((result) => result.id)
-    return movies.value.filter((movie) => filteredIds.includes(movie.id)) && quotes.value === null
+    return movies.value.filter((movie) => filteredIds.includes(movie.id))
   } else {
     return []
   }
 })
 
+watch(filteredMovies, () => {
+  filteredMovies.value = []
+})
+const redirectToMovie = (movie_id) => {
+  router.push(`/movie/${movie_id}`)
+}
 const updateSearchResults = (results) => {
   searchResults.value = results
 }

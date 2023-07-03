@@ -17,5 +17,7 @@
   "view_comments": "ნახე სხვა კომენტარები",
   "hide_comments": "დამალე კომენტარები",
   "write_a_comment_placeholder": "დაწერე კომენტარი...",
-  "post": "გამოქვეყნება"
+  "post": "გამოქვეყნება",
+  "description": "აღწერა:",
+  "click_here_to_see": "დააკლიკე ფილმის სანახავად"
 }

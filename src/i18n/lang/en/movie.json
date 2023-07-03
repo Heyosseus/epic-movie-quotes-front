@@ -17,5 +17,7 @@
   "view_comments": "View other comments",
   "hide_comments": "Hide comments",
   "write_a_comment_placeholder": "Write a comment...",
-  "post": "Post"
+  "post": "Post",
+  "description": "Description:",
+  "click_here_to_see": "Click here to see the movie"
 }
