@@ -5,13 +5,14 @@
     <router-link
       :to="{ name: 'home' }"
       class="hidden sm:block text-[#DDCCAA] uppercase cursor-pointer"
-      >movie quotes</router-link
     >
+      movie quotes
+    </router-link>
     <div class="flex items-center justify-between w-full sm:w-64 sm:mt-0">
       <IconMenu class="block sm:hidden" @click="show = true" />
       <div v-if="show"><MenuSidebar /></div>
 
-      <router-link :to="{ name: 'menu' }"> </router-link>
+      <router-link :to="{ name: 'menu' }"></router-link>
       <div class="flex items-center sm:justify-between sm:w-80">
         <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
         <div>
@@ -20,7 +21,8 @@
             <div
               class="absolute top-0 right-0 rounded-full bg-red-600 text-[10px] px-1 lg:text-sm lg:px-1.5"
             >
-              {{ unread.length }}
+              {{ notification.length ?? 0 }}
+              <!-- <div v-for="notification in updateUnreadNotifications" :key="notification.id"></div> -->
             </div>
           </div>
 
@@ -30,9 +32,11 @@
           >
             <div class="flex items-center justify-between">
               <h1 class="text-lg lg:text-2xl">{{ $t('base.notifications') }}</h1>
-              <p class="text-sm underline">{{ $t('base.mark_all_as_read') }}</p>
+              <p class="text-sm underline" @click="markAllAsRead">
+                {{ $t('base.mark_all_as_read') }}
+              </p>
             </div>
-            <div v-if="notification">
+            <div v-if="notification.length > 0">
               <div
                 v-for="notifications in notification"
                 :key="notifications.id"
@@ -54,8 +58,8 @@
                     ]"
                   >
                     <img
-                      v-if="notifications.user.profile_picture"
-                      :src="getImages(notifications.user.profile_picture)"
+                      v-if="notifications.notifiable.profile_picture"
+                      :src="getImages(notifications.notifiable.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />
@@ -66,39 +70,29 @@
                       class="object-fit w-20 rounded-full"
                     />
                   </div>
-                  <div v-if="notifications.quotes" class="w-full">
-                    <router-link
-                      :to="{
-                        name: 'view-quote',
-                        params: {
-                          movie_id: notifications.quotes.movie.id,
-                          id: notifications.quotes.id
-                        }
-                      }"
+                  <div v-if="notifications" class="w-full">
+                    <span>{{ notifications.from }}</span>
+                    <div
+                      class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
                     >
-                      <span>{{ notifications.from }}</span>
                       <div
-                        class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
+                        v-if="notifications.comment"
+                        class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
                       >
-                        <div
-                          v-if="notifications.like"
-                          class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
-                        >
-                          <IconHeart class="w-5 lg:w-7" />
-                          <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
-                        </div>
-                        <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
-                          <IconComment class="w-5 lg:w-7" />
-                          <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
-                        </div>
-                        <div class="text-[10px] lg:text-sm w-40">
-                          {{ formatTimeAgo(notifications.created_at) }}
-                          <div v-if="notifications.read === 0" class="text-green-700">
-                            {{ $t('base.new') }}
-                          </div>
+                        <IconComment class="w-5 lg:w-7" />
+                        <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
+                      </div>
+                      <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
+                        <IconHeart class="w-5 lg:w-7" />
+                        <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
+                      </div>
+                      <div class="text-[10px] lg:text-sm w-40">
+                        {{ formatTimeAgo(notifications.created_at) }}
+                        <div v-if="notifications.read === 0" class="text-green-700">
+                          {{ $t('base.new') }}
                         </div>
                       </div>
-                    </router-link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -137,6 +131,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import IconNotification from '@/components/icons/IconNotification.vue'
 import IconMenu from '@/components/icons/IconMenu.vue'
@@ -145,7 +140,7 @@ import IconHeart from '@/components/icons/IconHeart.vue'
 import IconComment from '@/components/icons/IconComment.vue'
 import { getImages } from '@/config/axios/helpers'
 import { formatTimeAgo } from '@/config/axios/helpers'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { setLocale } from '@vee-validate/i18n'
@@ -162,12 +157,20 @@ const showNotifications = ref(false)
 const user = ref(null)
 const notification = ref([])
 const unread = ref([])
-const quote = ref(null)
+// const quote = ref(null)
 
 const updateUnreadNotifications = () => {
-  unread.value = notification.value.filter((notification) => {
-    return notification.read === 0
-  })
+  unread.value = notification.value.filter((notification) => notification.read === 0)
+}
+
+const markAllAsRead = () => {
+  AxiosInstance.post(`/api/notifications/mark-as-read`, { _method: 'PUT' })
+    .then(() => {
+      unread.value = []
+    })
+    .catch((error) => {
+      console.log(error.response)
+    })
 }
 
 const logout = () => {
@@ -181,46 +184,9 @@ const logout = () => {
       console.log(err.response)
     })
 }
-onMounted(async () => {
-  try {
-    const response = await AxiosInstance.get('/api/user')
-    user.value = response.data
-    AxiosInstance.get('/api/news-feed').then((response) => {
-      quote.value = response.data.quotes
-    })
-    instantiatePusher()
 
-    window.Echo.private(`notification-received.${user.value.id}`).listen(
-      'NotificationReceived',
-      (data) => {
-        const receivedNotification = data.notification
-        if (
-          receivedNotification.to === user.value.id &&
-          receivedNotification.from !== user.value.name
-        ) {
-          notification.value.push(receivedNotification)
-          unread.value.push(receivedNotification)
-        }
-      }
-    )
-    fetchNotifications()
-  } catch (error) {
-    console.log(error.response)
-  }
-})
-const fetchNotifications = () => {
-  AxiosInstance.get('/api/notifications')
-    .then((response) => {
-      notification.value = response.data
-      updateUnreadNotifications()
-    })
-    .catch((error) => {
-      console.log(error.response)
-    })
-}
-
-const markAsRead = (notification) => {
-  AxiosInstance.post(`/api/notifications/${notification}/mark-as-read`, { _method: 'PUT' })
+const markAsRead = (notificationId) => {
+  AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' })
     .then(() => {
       updateUnreadNotifications()
     })
@@ -228,6 +194,56 @@ const markAsRead = (notification) => {
       console.log(error.response)
     })
 }
+
+onMounted(async () => {
+  try {
+    const response = await AxiosInstance.get('/api/user')
+    user.value = response.data
+
+    instantiatePusher()
+
+    window.Echo.private(`notification-received.${user.value.id}`).notification((data) => {
+      const receivedNotification = data.notification
+      if (receivedNotification.notifiable_type === 'quote') {
+        // if (
+        //   receivedNotification.to === user.value.id &&
+        //   receivedNotification.from !== user.value.name
+        // ) {
+        //   notification.value.push(receivedNotification)
+        //   unread.value.push(receivedNotification)
+        //   console.log(receivedNotification)
+        // }
+        notification.value.push(receivedNotification)
+      }
+    })
+
+    AxiosInstance.get('/api/notifications')
+      .then((response) => {
+        notification.value = response.data
+        unread.value = notification.value.filter((notification) => notification.read === 0)
+      })
+      .catch((error) => {
+        console.log(error.response)
+      })
+  } catch (error) {
+    console.log(error.response)
+  }
+})
+
+// const fetchNotifications = () => {
+//   AxiosInstance.get('/api/notifications')
+//     .then((response) => {
+//       notification.value = response.data
+//       unread.value = notification.value.filter((notification) => notification.read === 0)
+//     })
+//     .catch((error) => {
+//       console.log(error.response)
+//     })
+// }
+
+watch(notification, () => {
+  updateUnreadNotifications()
+})
 
 AxiosInstance.get('/api/check-session').then((response) => {
   const isSessionActive = response.data.isSessionActive

@@ -111,7 +111,7 @@ const searchQuotes = () => {
 
 watch(props.searchQuery, (newQuery) => {
   if (!newQuery) {
-    searchStore.setSearchResults([])
+    props.searchResults([])
   }
 })
 </script>
