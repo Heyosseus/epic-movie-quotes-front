@@ -2,7 +2,9 @@
 <template>
   <div v-if="props.quotes">
     <div class="flex mt-6">
-      <p class="italic">"{{ JSON.parse(quote.body).en }}"</p>
+      <p class="italic">
+        "{{ $i18n.locale === 'en' ? JSON.parse(quote.body).en : JSON.parse(quote.body).ka }}"
+      </p>
       <span class="ml-6 uppercase text-primary">{{ quote.movie.title.en }}</span>
       <span class="ml-1">({{ quote.movie.release_date }})</span>
     </div>
@@ -16,8 +18,10 @@
         <span>{{ quote.comments.length }}</span>
         <IconComments class="w-7 lg:w-10" />
       </div>
-      <div class="flex space-x-3">
-        <span>{{ quote.likes.length ?? 0 }} </span>
+      <div class="flex space-x-3" v-if="quote.likes">
+        <span>{{ quote.likes.length }}</span>
+        <!-- <span>{{ props.likesCount }}</span> -->
+
         <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" />
       </div>
     </div>
@@ -29,7 +33,7 @@
         class="py-4 flex space-x-6 lg:mt-3"
       >
         <router-link :to="{ name: 'profile' }" class="flex space-x-4">
-          <div v-if="comment.user">
+          <div v-if="comment.user?.profile_picture">
             <img
               :src="getImages(comment.user.profile_picture)"
               alt=""
@@ -104,9 +108,13 @@ import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import { onMounted, ref } from 'vue'
-import AxiosInstance from '@/config/axios/index.js'
+import { useAuthUser } from '@/stores/user.js'
+
+// const likesCount = ref(props.likesCount)
 
 const user = ref(null)
+
+// how to display likes count automatically
 
 const props = defineProps({
   quotes: {
@@ -128,12 +136,10 @@ const props = defineProps({
   comment: {
     type: String,
     required: true
-  }
+  },
 })
 
 onMounted(() => {
-  AxiosInstance.get(`/api/user`).then((response) => {
-    user.value = response.data
-  })
+  user.value = useAuthUser()
 })
 </script>
