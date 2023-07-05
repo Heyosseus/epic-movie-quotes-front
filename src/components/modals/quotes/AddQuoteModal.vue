@@ -2,7 +2,7 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg max-h-full overflow-auto"
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
@@ -163,7 +163,6 @@ const movie = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-const genre = ref(null)
 const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
@@ -196,8 +195,7 @@ onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
-      movie.value = response.data.movie
-      genre.value = JSON.parse(response.data.movie.genre)
+      movie.value = response.data.data
     })
     .catch((error) => {
       console.error(error)

@@ -10,7 +10,6 @@
             class="py-3 px-2 rounded mt-2 w-fit text-white bg-transparent outline-0 lg:w-[466px] lg:text-black font-normal lg:bg-field placeholder-white"
           />
         </div>
-
         <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
         <div class="text-gray-400 flex items-center space-y-2 flex-col just mt-10">
           <p>Enter @ to search movies</p>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseHeader />
-    <div class="bg-[#181624] min-h-screen">
+    <div class="bg-[#181624] min-h-full">
       <div
         class="flex bg-headerBg flex-col lg:bg-transparent items-center lg:flex lg:flex-row lg:items-start"
       >
