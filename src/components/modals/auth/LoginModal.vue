@@ -2,7 +2,7 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg overflow-hidden"
       >
         <div
           class="flex flex-col px-6 py-10 md:px-20 md:pt-6 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
@@ -130,6 +130,6 @@ const login = async () => {
       }
     })
 
-  await AxiosInstance.get('/api/user')
+  // await AxiosInstance.get('/api/user')
 }
 </script>

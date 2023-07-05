@@ -2,7 +2,9 @@ import { defineStore } from 'pinia'
 
 export const useSearchStore = defineStore('search', {
   state: () => ({
-    searchResults: []
+    searchResults: [],
+    searchQuery: '',
+    condition: Boolean
   }),
   actions: {
     setSearchResults(results) {
