@@ -47,7 +47,7 @@
               :add_likes="addLikes"
               :add_comment="addComment"
               :comment="comment"
-              :likesCount="likesCount"
+              :likes="likes"
               @update:comment="comment = $event"
             ></news-feed-quote-data>
           </div>
@@ -63,17 +63,20 @@ import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import SearchBar from '@/components/layout/SearchBar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 
-const quotes = ref([null])
+const quotes = ref(null)
 const quoteId = ref(null)
 const comment = ref('')
 const commentList = ref([])
-const likesCount = ref([])
 const movies = ref([])
+const condition = ref(null)
+const searchQuery = ref('')
+const searchResults = ref([])
+const likes = reactive([])
 
 onMounted(() => {
   instantiatePusher()
@@ -85,11 +88,7 @@ onMounted(() => {
     }
   })
   window.Echo.channel('like-notification').listen('LikeNotification', (data) => {
-    const newLike = data.like
-    const quoteToUpdate = quotes.value.find((quote) => quote.id === newLike.quote_id)
-    if (quoteToUpdate) {
-      quoteToUpdate.likes.push(newLike)
-    }
+    likes.push(data.like)
   })
 })
 
@@ -102,14 +101,14 @@ const addComment = (quote) => {
   })
     .then(() => {
       comment.value = ''
-      console.log('success')
+      AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`, {
+        quote_id: quote.id,
+        user_id: quote.user.id
+      })
     })
     .catch((error) => {
       console.error(error)
     })
-  AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`, {
-    quote_id: quote.id
-  })
 }
 
 const addLikes = (quote) => {
@@ -117,40 +116,18 @@ const addLikes = (quote) => {
     quote_id: quote.id,
     user_id: quote.user.id
   })
-    .then((response) => {
-      console.log('success', response)
-      // const likesCount = quote.likes.length
-      // likesCount.value = response.data.like
+    .then(() => {
+      AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
+        quote_id: quote.id,
+        user_id: quote.user.id
+      }).then(() => {
+        quote.likes.length += 1
+      })
     })
     .catch((error) => {
       console.error(error)
     })
-  AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
-    quote_id: quote.id
-  })
 }
-
-onMounted(() => {
-  AxiosInstance.get(`/api/news-feed`)
-    .then((response) => {
-      quotes.value = response.data.quote
-      console.error(response.data.quotes)
-      commentList.value = response.data.quotes.map((quote) => {
-        return quote.comments
-      })
-      likesCount.value = response.data.quotes.map((quote) => {
-        return quote.likes
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-})
-
-const condition = ref(null)
-
-const searchQuery = ref('')
-const searchResults = ref([])
 
 const filteredQuotes = computed(() => {
   if (searchResults.value.length > 0) {
@@ -162,6 +139,19 @@ const filteredQuotes = computed(() => {
   } else {
     return quotes.value
   }
+})
+
+onMounted(() => {
+  AxiosInstance.get(`/api/news-feed`)
+    .then((response) => {
+      quotes.value = response.data.quotes
+      commentList.value = response.data.quotes.map((quote) => {
+        return quote.comments
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 })
 
 const updateSearchResults = (results) => {

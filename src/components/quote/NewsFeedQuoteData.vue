@@ -16,12 +16,11 @@
     <div class="flex space-x-6 cursor-pointer mt-5">
       <div class="flex space-x-3" v-if="quote.comments">
         <span>{{ quote.comments.length }}</span>
+
         <IconComments class="w-7 lg:w-10" />
       </div>
       <div class="flex space-x-3" v-if="quote.likes">
         <span>{{ quote.likes.length }}</span>
-        <!-- <span>{{ props.likesCount }}</span> -->
-
         <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" />
       </div>
     </div>
@@ -137,6 +136,10 @@ const props = defineProps({
     type: String,
     required: true
   },
+  likes: {
+    type: Array,
+    required: true
+  }
 })
 
 onMounted(() => {

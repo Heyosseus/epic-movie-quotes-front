@@ -21,8 +21,7 @@
             <div
               class="absolute top-0 right-0 rounded-full bg-red-600 text-[10px] px-1 lg:text-sm lg:px-1.5"
             >
-              {{ notification.length ?? 0 }}
-              <!-- <div v-for="notification in updateUnreadNotifications" :key="notification.id"></div> -->
+              {{ unread.length ?? 0 }}
             </div>
           </div>
 
@@ -162,9 +161,12 @@ const unread = ref([])
 const updateUnreadNotifications = () => {
   unread.value = notification.value.filter((notification) => notification.read === 0)
 }
+// const unreadNotificationLength = computed(() => {
+//   return unread.value.length
+// })
 
 const markAllAsRead = () => {
-  AxiosInstance.post(`/api/notifications/mark-as-read`, { _method: 'PUT' })
+  AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' })
     .then(() => {
       unread.value = []
     })
@@ -202,44 +204,36 @@ onMounted(async () => {
 
     instantiatePusher()
 
-    window.Echo.private(`notification-received.${user.value.id}`).notification((data) => {
-      const receivedNotification = data.notification
-      if (receivedNotification.notifiable_type === 'quote') {
-        // if (
-        //   receivedNotification.to === user.value.id &&
-        //   receivedNotification.from !== user.value.name
-        // ) {
-        //   notification.value.push(receivedNotification)
-        //   unread.value.push(receivedNotification)
-        //   console.log(receivedNotification)
-        // }
-        notification.value.push(receivedNotification)
+    await window.Echo.private(`notification-received.${user.value.id}`).listen(
+      'NotificationReceived',
+      (data) => {
+        const receivedNotification = data.notification
+        if (
+          receivedNotification.to === user.value.id &&
+          receivedNotification.from !== user.value.name
+        ) {
+          notification.value.push(receivedNotification)
+          unread.value.push(receivedNotification)
+        }
       }
-    })
+    )
 
-    AxiosInstance.get('/api/notifications')
-      .then((response) => {
-        notification.value = response.data
-        unread.value = notification.value.filter((notification) => notification.read === 0)
-      })
-      .catch((error) => {
-        console.log(error.response)
-      })
+    fetchNotifications()
   } catch (error) {
     console.log(error.response)
   }
 })
 
-// const fetchNotifications = () => {
-//   AxiosInstance.get('/api/notifications')
-//     .then((response) => {
-//       notification.value = response.data
-//       unread.value = notification.value.filter((notification) => notification.read === 0)
-//     })
-//     .catch((error) => {
-//       console.log(error.response)
-//     })
-// }
+const fetchNotifications = () => {
+  AxiosInstance.get('/api/notifications')
+    .then((response) => {
+      notification.value = response.data
+      unread.value = notification.value.filter((notification) => notification.read === 0)
+    })
+    .catch((error) => {
+      console.log(error.response)
+    })
+}
 
 watch(notification, () => {
   updateUnreadNotifications()
