@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseHeader />
-    <div class="bg-[#181624] min-h-screen">
+    <div class="bg-[#181624] min-h-full">
       <div class="flex flex-col md:flex-row">
         <BaseSidebar />
         <div class="w-full md:w-full px-4 md:px-16 pr-4 md:pr-56" v-if="!show">
@@ -96,9 +96,7 @@ const getMovies = () => {
   axios
     .get(`${backendURL}/api/movies`)
     .then((res) => {
-      console.log(res.data)
-      movies.value = res.data.movies
-      console.log(movies.value)
+      movies.value = res.data.data
     })
     .catch((err) => {
       console.log(err)

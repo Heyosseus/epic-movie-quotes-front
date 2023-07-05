@@ -1,7 +1,7 @@
 <template>
-  <div class="overflow-x-hidden">
+  <div class="overflow-hidden">
     <BaseHeader />
-    <div class="bg-[#181624] min-h-screen">
+    <div class="bg-[#181624] h-full">
       <div class="flex-col lg:flex lg:flex-row">
         <BaseSidebar class="hidden sm:block" />
         <div class="flex-col lg:justify-between p-4 md:p-20 md:px-32">
@@ -46,15 +46,13 @@ const quotes = ref(null)
 const router = useRouter()
 const route = useRoute()
 const quoteId = route.params.id
-const genre = ref(null)
 const quoteList = ref([])
 
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
-      movie.value = response.data.movie
-      genre.value = JSON.parse(response.data.movie.genre)
+      movie.value = response.data.data
     })
     .catch((error) => {
       console.error(error)
