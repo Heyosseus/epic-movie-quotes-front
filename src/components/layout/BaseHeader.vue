@@ -166,35 +166,25 @@ const updateUnreadNotifications = () => {
 // })
 
 const markAllAsRead = () => {
-  AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' })
-    .then(() => {
-      unread.value = []
-    })
-    .catch((error) => {
-      console.log(error.response)
-    })
+  AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' }).then(() => {
+    unread.value = []
+  })
 }
 
 const logout = () => {
-  AxiosInstance.post('/api/logout')
-    .then(() => {
-      router.push({ name: 'home' })
-      authStore.setIsUserAuthenticated(false)
-      authStore.setIsGoogleAuthenticated(false)
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+  AxiosInstance.post('/api/logout').then(() => {
+    router.push({ name: 'home' })
+    authStore.setIsUserAuthenticated(false)
+    authStore.setIsGoogleAuthenticated(false)
+  })
 }
 
 const markAsRead = (notificationId) => {
-  AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' })
-    .then(() => {
+  AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' }).then(
+    () => {
       updateUnreadNotifications()
-    })
-    .catch((error) => {
-      console.log(error.response)
-    })
+    }
+  )
 }
 
 onMounted(async () => {

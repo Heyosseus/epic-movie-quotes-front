@@ -30,7 +30,7 @@ import EditEmailModal from '@/components/modals/profile/EditEmailModal.vue'
 import AreYouSure from '@/components/modals/profile/AreYouSure.vue'
 import FlashMessages from '@/components/modals/profile/FlashMessages.vue'
 import AreYouSureForEmail from '@/components/modals/profile/AreYouSureForEmail.vue'
-
+import TriggerComp from '@/views/feeds/TriggerComp.vue'
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -145,6 +145,10 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: ErrorView
+    },
+    {
+      path: '/trigger',
+      component: TriggerComp
     },
     { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
 

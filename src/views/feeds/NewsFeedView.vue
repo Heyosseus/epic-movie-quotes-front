@@ -14,42 +14,44 @@
             @update:searchQuery="searchQuery = $event"
             @update-newsfeed="updateSearchResults"
           />
-
-          <div
-            v-for="quote in filteredQuotes"
-            :key="quote.id"
-            class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
-          >
-            <router-link
-              :to="{ name: 'profile' }"
-              v-if="quote.user"
-              class="flex items-center mt-2 lg:mt-6 space-x-4"
+          <div>
+            <div
+              v-for="quote in filteredQuotes"
+              :key="quote.id"
+              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
             >
-              <div v-if="quote.user.profile_picture">
-                <img
-                  :src="getImages(quote.user.profile_picture)"
-                  alt=""
-                  class="object-fit w-10 lg:w-14 rounded-full"
-                />
-              </div>
-              <div v-else>
-                <img
-                  src="@/assets/images/default_picture.jpg"
-                  alt="profile"
-                  class="object-fit w-10 lg:w-14 rounded-full"
-                />
-              </div>
-              <h1>{{ quote.user.name }}</h1>
-            </router-link>
-            <news-feed-quote-data
-              :quotes="quotes"
-              :quote="quote"
-              :add_likes="addLikes"
-              :add_comment="addComment"
-              :comment="comment"
-              :likes="likes"
-              @update:comment="comment = $event"
-            ></news-feed-quote-data>
+              <div ref="observerElement"></div>
+              <router-link
+                :to="{ name: 'profile' }"
+                v-if="quote.user"
+                class="flex items-center mt-2 lg:mt-6 space-x-4"
+              >
+                <div v-if="quote.user.profile_picture">
+                  <img
+                    :src="getImages(quote.user.profile_picture)"
+                    alt=""
+                    class="object-fit w-10 lg:w-14 rounded-full"
+                  />
+                </div>
+                <div v-else>
+                  <img
+                    src="@/assets/images/default_picture.jpg"
+                    alt="profile"
+                    class="object-fit w-10 lg:w-14 rounded-full"
+                  />
+                </div>
+                <h1>{{ quote.user.name }}</h1>
+              </router-link>
+              <news-feed-quote-data
+                :quotes="quotes"
+                :quote="quote"
+                :add_likes="addLikes"
+                :add_comment="addComment"
+                :comment="comment"
+                :likes="likes"
+                @update:comment="comment = $event"
+              ></news-feed-quote-data>
+            </div>
           </div>
         </div>
       </div>
@@ -58,26 +60,40 @@
 
   <router-view />
 </template>
+
 <script setup>
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import SearchBar from '@/components/layout/SearchBar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-import { ref, onMounted, computed, reactive } from 'vue'
+import { ref, onMounted, reactive, computed } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 
-const quotes = ref(null)
+const quotes = ref([])
 const quoteId = ref(null)
 const comment = ref('')
-const commentList = ref([])
+const user = ref(null)
+const likes = reactive([])
+const page = ref(1)
+
 const movies = ref([])
 const condition = ref(null)
 const searchQuery = ref('')
 const searchResults = ref([])
-const likes = reactive([])
 
+const filteredQuotes = computed(() => {
+  if (searchResults.value.length > 0) {
+    const filteredIds = searchResults.value.map((result) => result.id)
+    return quotes.value.filter((quote) => filteredIds.includes(quote.id))
+  } else if (searchResults.value.length >= 0 && condition.value === 'movie') {
+    const movieQuotes = movies.value.filter((result) => result.id).map((result) => result.quotes)
+    return movieQuotes
+  } else {
+    return quotes.value
+  }
+})
 onMounted(() => {
   instantiatePusher()
   window.Echo.channel('notification').listen('CommentNotification', (data) => {
@@ -97,6 +113,7 @@ const addComment = (quote) => {
 
   AxiosInstance.post(`/api/add-comments`, {
     quote_id: quote.id,
+    user_id: user.value.id,
     content: comment.value
   })
     .then(() => {
@@ -129,32 +146,17 @@ const addLikes = (quote) => {
     })
 }
 
-const filteredQuotes = computed(() => {
-  if (searchResults.value.length > 0) {
-    const filteredIds = searchResults.value.map((result) => result.id)
-    return quotes.value.filter((quote) => filteredIds.includes(quote.id))
-  } else if (searchResults.value.length >= 0 && condition.value === 'movie') {
-    const movieQuotes = movies.value.filter((result) => result.id).map((result) => result.quotes)
-    return movieQuotes
-  } else {
-    return quotes.value
-  }
-})
-
 onMounted(() => {
-  AxiosInstance.get(`/api/news-feed`)
+  AxiosInstance.get(`/api/quotes`)
     .then((response) => {
-      quotes.value = response.data.quotes
-      commentList.value = response.data.quotes.map((quote) => {
-        return quote.comments
-      })
+      quotes.value = response.data.data
     })
     .catch((error) => {
       console.error(error)
     })
 })
 
-const updateSearchResults = (results) => {
-  searchResults.value = results
-}
+AxiosInstance.get('/api/user').then((response) => {
+  user.value = response.data
+})
 </script>

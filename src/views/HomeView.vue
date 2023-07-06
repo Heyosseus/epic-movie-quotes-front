@@ -81,7 +81,7 @@
         <img
           src="@/assets/images/movie.png"
           alt=""
-          class="mx-auto brightness-50 shadow-2xl"
+          class="mx-auto brightness-50 shadow-2xl sticky"
           @click="scrollPage('#lotr')"
         />
       </transition>

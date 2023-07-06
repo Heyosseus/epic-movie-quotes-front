@@ -79,7 +79,7 @@ const search = () => {
   if (props.searchQuery.startsWith('@')) {
     searchMovies()
   } else if (props.searchQuery.startsWith('#')) {
-    searchQuotes()
+    // searchQuotes()
   }
 }
 
@@ -96,18 +96,18 @@ const searchMovies = () => {
     })
 }
 
-const searchQuotes = () => {
-  const query = props.searchQuery.substring(1)
-  AxiosInstance.get(`/api/search-quotes/${query}`)
-    .then((response) => {
-      searchResults.value = response.data
-      searchStore.setSearchResults(searchResults)
-      emit('update-newsfeed', searchResults.value)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
+// const searchQuotes = () => {
+//   const query = props.searchQuery.substring(1)
+//   AxiosInstance.get(`/api/search-quotes/${query}`)
+//     .then((response) => {
+//       searchResults.value = response.data
+//       searchStore.setSearchResults(searchResults)
+//       emit('update-newsfeed', searchResults.value)
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// }
 
 watch(props.searchQuery, (newQuery) => {
   if (!newQuery) {
