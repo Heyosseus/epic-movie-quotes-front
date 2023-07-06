@@ -174,7 +174,7 @@ onClickOutside(modalRef, () => {
 const addQuote = () => {
   const formData = new FormData()
   formData.append('thumbnail', image.value)
-  formData.append('user_id', movie.value.user_id)
+  formData.append('user_id', user.value.id)
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
@@ -196,6 +196,8 @@ onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movie.value = response.data.data
+      user.value = response.data.data.user
+      console.log(response.data.data)
     })
     .catch((error) => {
       console.error(error)

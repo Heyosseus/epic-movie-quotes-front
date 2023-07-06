@@ -62,7 +62,7 @@ onMounted(() => {
 onMounted(() => {
   AxiosInstance.get(`/api/quotes/${quoteId}`)
     .then((response) => {
-      quotes.value = response.data.quote
+      quotes.value = response.data.data
       quotes.value.forEach((quote) => {
         quoteList.value.push(quote)
       })
