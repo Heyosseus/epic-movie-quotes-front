@@ -25,6 +25,7 @@
             :handle_delete_quote="handleQuoteDelete"
           ></quote-data>
         </div>
+        <div v-for="quote in quotes" :key="quote.id">{{ quote }}</div>
       </div>
     </div>
   </div>
@@ -53,24 +54,26 @@ onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
       movie.value = response.data.data
+      quotes.value = response.data.data.quotes
+      console.log(response.data.data)
     })
     .catch((error) => {
       console.error(error)
     })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/quotes/${quoteId}`)
-    .then((response) => {
-      quotes.value = response.data.data
-      quotes.value.forEach((quote) => {
-        quoteList.value.push(quote)
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-})
+// onMounted(() => {
+//   AxiosInstance.get(`/api/quotes`)
+//     .then((response) => {
+//       quotes.value = response.data.data
+//       quotes.value.forEach((quote) => {
+//         quoteList.value.push(quote)
+//       })
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// })
 
 const handleMovieDelete = () => {
   const movieId = router.currentRoute.value.params.id

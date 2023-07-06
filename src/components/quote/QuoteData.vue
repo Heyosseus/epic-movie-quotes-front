@@ -47,7 +47,7 @@
               <IconComments />
             </div>
             <div class="flex space-x-3">
-              <span>{{ quote.likes.length ?? 0 }} </span>
+              <span>{{ quote.likes.length ?? 0 }} </span> 
               <IconLikes />
             </div>
           </div>
