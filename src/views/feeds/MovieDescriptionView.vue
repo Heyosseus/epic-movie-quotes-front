@@ -33,7 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
@@ -45,9 +45,6 @@ import QuoteData from '@/components/quote/QuoteData.vue'
 const movie = ref(null)
 const quotes = ref(null)
 const router = useRouter()
-const route = useRoute()
-const quoteId = route.params.id
-const quoteList = ref([])
 
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
@@ -61,19 +58,6 @@ onMounted(() => {
       console.error(error)
     })
 })
-
-// onMounted(() => {
-//   AxiosInstance.get(`/api/quotes`)
-//     .then((response) => {
-//       quotes.value = response.data.data
-//       quotes.value.forEach((quote) => {
-//         quoteList.value.push(quote)
-//       })
-//     })
-//     .catch((error) => {
-//       console.error(error)
-//     })
-// })
 
 const handleMovieDelete = () => {
   const movieId = router.currentRoute.value.params.id

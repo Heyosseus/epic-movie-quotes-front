@@ -1,81 +1,70 @@
 <template>
-  <div ref="container" @scroll="handleScroll" style="overflow-y: auto; height: 400px">
-    <div v-for="quote in quotes" :key="quote.id">
-      <div v-if="quote.user.profile_picture">
-        <img
-          :src="getImages(quote.user.profile_picture)"
-          alt=""
-          class="object-fit w-10 lg:w-14 rounded-full"
-        />
-      </div>
-      <div v-else>
-        <img
-          src="@/assets/images/default_picture.jpg"
-          alt="profile"
-          class="object-fit w-10 lg:w-14 rounded-full"
-        />
-      </div>
-      <h1>{{ quote.user.name }}</h1>
-
-      <news-feed-quote-data
-        :quotes="quotes"
-        :quote="quote"
-        :add_likes="addLikes"
-        :add_comment="addComment"
-        :comment="comment"
-        :likes="likes"
-        @update:comment="comment = $event"
-      ></news-feed-quote-data>
+  <div class="text-center">
+    <label class="checkbox">
+      <input :checked="isActive" type="checkbox" name="enabled" />
+      <span>Enable</span>
+    </label>
+  </div>
+  <div ref="root" class="root">
+    <p class="notice">Scroll me down!</p>
+    <div ref="target" class="target">
+      <p>Hello world!</p>
     </div>
   </div>
+  <div class="text-center">
+    Element
+    <div v-if="isVisible">inside</div>
+    <div v-else>outside</div>
+    the viewport
+  </div>
+  <div></div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 import AxiosInstance from '@/config/axios/index'
-import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
-
 const quotes = ref([])
-const page = ref(1)
-const container = ref(null)
-const totalPages = ref(null)    
+const root = ref(null)
+const target = ref(null)
+const isVisible = ref(false)
 
-const fetchQuotes = () => {
-  AxiosInstance.get(`/api/news-feed?page=${page.value}`)
-    .then((response) => {
-      const { data, current_page, last_page } = response.data.quotes
-      if (current_page === 1) {
-        quotes.value = data
-        console.log(quotes.value)
-      } else {
-        quotes.value.push(...data)
-        console.log(quotes.value)
-      }
-      page.value = current_page + 1
-      totalPages.value = last_page
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
-
-const handleScroll = () => {
-  const scrollY = container.value.scrollTop
-  const height = container.value.scrollHeight - container.value.clientHeight
-
-  if (scrollY === height) {
-    fetchQuotes()
-    console.log(scrollY, height)
-    console.log('bottom')
-  }
-}
-
-onMounted(() => {
-  fetchQuotes()
-  container.value.addEventListener('scroll', handleScroll)
-})
-
-onBeforeUnmount(() => {
-  container.value.removeEventListener('scroll', handleScroll)
-})
+const { isActive } = useIntersectionObserver(
+  target,
+  ([{ isIntersecting }]) => {
+    isVisible.value = isIntersecting
+    if (isIntersecting) {
+      AxiosInstance.get(`/api/quotes`)
+        .then((response) => {
+          quotes.value = response.data.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  },
+  { root }
+)
 </script>
+<style scoped>
+.root {
+  border: 2px dashed #ccc;
+  height: 200px;
+  margin: 2rem 1rem;
+  overflow-y: scroll;
+}
+.notice {
+  text-align: center;
+  padding: 2em 0;
+  margin-bottom: 300px;
+  font-style: italic;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+.target {
+  border: 2px dashed var(--vp-c-brand);
+  padding: 10px;
+  max-height: 150px;
+  margin: 0 2rem 400px;
+}
+</style>

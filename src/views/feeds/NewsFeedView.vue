@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="root" ref="root">
     <BaseHeader />
-    <div class="bg-[#181624] min-h-screen">
+    <div class="bg-[#181624] min-h-screen overflow-y-auto">
       <div class="flex flex-col md:flex-row">
         <div class="md:w-1/4">
           <BaseSidebar />
@@ -20,7 +20,6 @@
               :key="quote.id"
               class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
             >
-              <div ref="observerElement"></div>
               <router-link
                 :to="{ name: 'profile' }"
                 v-if="quote.user"
@@ -51,6 +50,7 @@
                 :likes="likes"
                 @update:comment="comment = $event"
               ></news-feed-quote-data>
+              <div ref="target"></div>
             </div>
           </div>
         </div>
@@ -70,6 +70,7 @@ import { ref, onMounted, reactive, computed } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const quotes = ref([])
 const quoteId = ref(null)
@@ -77,7 +78,6 @@ const comment = ref('')
 const user = ref(null)
 const likes = reactive([])
 const page = ref(1)
-
 const movies = ref([])
 const condition = ref(null)
 const searchQuery = ref('')
@@ -159,4 +159,37 @@ onMounted(() => {
 AxiosInstance.get('/api/user').then((response) => {
   user.value = response.data
 })
+const root = ref(null)
+const target = ref(null)
+const isVisible = ref(false)
+// let lastQuoteId = ref(null)
+
+const { isActive } = useIntersectionObserver(
+  target,
+  ([{ isIntersecting }]) => {
+    isVisible.value = isIntersecting
+    if (isIntersecting) {
+      AxiosInstance.get(`/api/quotes?page=${page.value}`)
+        .then((response) => {
+          const newQuotes = response.data.data
+
+          quotes.value.push(...newQuotes)
+          page.value += 1
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+      console.log('intersecting')
+    }
+  },
+  { root }
+)
 </script>
+<style>
+.root {
+  border: 2px dashed #ccc;
+  height: 800px;
+  margin: 2rem 1rem;
+  overflow-y: scroll;
+}
+</style>
