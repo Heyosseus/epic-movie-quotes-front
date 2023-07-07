@@ -20,7 +20,7 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
@@ -43,11 +43,11 @@
                     <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
                   </div>
                 </div>
-                <div class="flex space-x-4">
+                <div class="flex flex-wrap ">
                   <div
                     v-for="genre in movie.genres"
                     :key="genre.id"
-                    class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
+                    class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer m-2"
                   >
                     {{
                       $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
