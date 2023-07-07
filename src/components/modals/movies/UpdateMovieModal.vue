@@ -53,6 +53,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.ka"
                   v-model="title_ka"
+                  rules="georgian"
                 />
               </div>
               <div
@@ -131,6 +132,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.director).ka"
                   v-model="director_ka"
+                  rules="georgian"
                 />
               </div>
               <div
@@ -157,6 +159,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_ka"
+                  rules="georgian"
                 />
               </div>
 

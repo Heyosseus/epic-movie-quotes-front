@@ -29,3 +29,10 @@ defineRule('update_confirmed', (value, [target]) => {
   }
   return true
 })
+
+defineRule('georgian', (value) => {
+  if (!/^[\u10D0-\u10F0]+$/.test(value)) {
+    return 'This field must be georgian'
+  }
+  return true
+})

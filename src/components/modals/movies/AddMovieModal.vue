@@ -46,7 +46,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="ფილმის სახელი"
               v-model="title_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="title_ka" class="text-red-600 mt-2" />
@@ -107,7 +107,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="რეჟისორი"
               v-model="director_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="director_ka" class="text-red-600 mt-2" />
@@ -129,7 +129,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md"
               placeholder="ფილმის აღწერა"
               v-model="description_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="description_ka" class="text-red-600 mt-2" />
@@ -236,18 +236,6 @@ const selectedGenreData = () => {
 }
 
 const addMovie = () => {
-  AxiosInstance.post('/api/add-genres', {
-    genres: selected.value
-  })
-    .then((res) => {
-      console.log(res.data.movies)
-      console.log('genres added')
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
-  console.log(genres_id.value)
-
   const formData = new FormData()
   formData.append('poster', image.value)
   formData.append('title_en', title_en.value)

@@ -43,7 +43,7 @@
                     <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
                   </div>
                 </div>
-                <div class="flex flex-wrap ">
+                <div class="flex flex-wrap">
                   <div
                     v-for="genre in movie.genres"
                     :key="genre.id"
@@ -88,7 +88,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md text-lg"
               placeholder='"ციტატა ქართულ ენაზე."'
               v-model="quote_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />

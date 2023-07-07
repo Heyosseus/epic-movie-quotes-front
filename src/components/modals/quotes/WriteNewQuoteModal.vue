@@ -50,7 +50,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md text-lg"
               placeholder='"ციტატა ქართულ ენაზე."'
               v-model="quote_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
@@ -160,7 +160,7 @@ const AddQuote = () => {
 onMounted(() => {
   AxiosInstance.get(`/api/movies`)
     .then((response) => {
-      movies.value = response.data.data 
+      movies.value = response.data.data
       console.log(movies.value)
     })
     .catch((error) => {
