@@ -1,36 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import Activation from '@/views/ActivationView.vue'
-import ThankYouView from '@/views/ThankYouView.vue'
-import NewsFeedView from '@/views/feeds/NewsFeedView.vue'
-import MovieListView from '@/views/feeds/MovieListView.vue'
-import LoginModal from '@/components/modals/auth/LoginModal.vue'
-import RegisterModal from '@/components/modals/auth/RegisterModal.vue'
-import ErrorView from '@/views/errors/ErrorView.vue'
-import ForbiddenView from '@/views/errors/ForbiddenView.vue'
-import ForgotPassword from '@/components/modals/forgot_password/ForgotPassword.vue'
-import ResetPassword from '@/components/modals/forgot_password/ResetPassword.vue'
-import UpdatePassword from '@/components/modals/forgot_password/UpdatePassword.vue'
-import SuccessModal from '@/components/modals/forgot_password/SuccessModal.vue'
-import LinkExpired from '@/components/modals/forgot_password/LinkExpired.vue'
-import SessionExpired from '@/components/modals/forgot_password/SessionExpired.vue'
-import AddMovieModal from '@/components/modals/movies/AddMovieModal.vue'
-import MovieDescriptionView from '@/views/feeds/MovieDescriptionView.vue'
-import AddQuoteModal from '@/components/modals/quotes/AddQuoteModal.vue'
-import ProfileModal from '@/components/modals/ProfileModal.vue'
-import MenuSidebar from '@/components/modals/MenuSidebar.vue'
-import SearchHeader from '@/components/modals/SearchHeader.vue'
-import UpdateQuoteModal from '@/components/modals/quotes/UpdateQuoteModal.vue'
-import UpdateMovieModal from '@/components/modals/movies/UpdateMovieModal.vue'
-import ViewQuoteModal from '@/components/modals/quotes/ViewQuoteModal.vue'
-import SuccessEmail from '@/components/modals/forgot_password/SuccessEmail.vue'
-import WriteNewQuoteModal from '@/components/modals/quotes/WriteNewQuoteModal.vue'
-import EditUsernameModal from '@/components/modals/profile/EditUsernameModal.vue'
-import EditEmailModal from '@/components/modals/profile/EditEmailModal.vue'
-import AreYouSure from '@/components/modals/profile/AreYouSure.vue'
-import FlashMessages from '@/components/modals/profile/FlashMessages.vue'
-import AreYouSureForEmail from '@/components/modals/profile/AreYouSureForEmail.vue'
-import TriggerComp from '@/views/feeds/TriggerComp.vue'
+
+const HomeView = () => import('@/views/HomeView.vue')
+const Activation = () => import('@/views/ActivationView.vue')
+const ThankYouView = () => import('@/views/ThankYouView.vue')
+const NewsFeedView = () => import('@/views/feeds/NewsFeedView.vue')
+const MovieListView = () => import('@/views/feeds/MovieListView.vue')
+const LoginModal = () => import('@/components/modals/auth/LoginModal.vue')
+const RegisterModal = () => import('@/components/modals/auth/RegisterModal.vue')
+const ErrorView = () => import('@/views/errors/ErrorView.vue')
+const ForbiddenView = () => import('@/views/errors/ForbiddenView.vue')
+const ForgotPassword = () => import('@/components/modals/forgot_password/ForgotPassword.vue')
+const ResetPassword = () => import('@/components/modals/forgot_password/ResetPassword.vue')
+const UpdatePassword = () => import('@/components/modals/forgot_password/UpdatePassword.vue')
+const SuccessModal = () => import('@/components/modals/forgot_password/SuccessModal.vue')
+const LinkExpired = () => import('@/components/modals/forgot_password/LinkExpired.vue')
+const SessionExpired = () => import('@/components/modals/forgot_password/SessionExpired.vue')
+const AddMovieModal = () => import('@/components/modals/movies/AddMovieModal.vue')
+const MovieDescriptionView = () => import('@/views/feeds/MovieDescriptionView.vue')
+const AddQuoteModal = () => import('@/components/modals/quotes/AddQuoteModal.vue')
+const ProfileModal = () => import('@/components/modals/ProfileModal.vue')
+const MenuSidebar = () => import('@/components/modals/MenuSidebar.vue')
+const SearchHeader = () => import('@/components/modals/SearchHeader.vue')
+const UpdateQuoteModal = () => import('@/components/modals/quotes/UpdateQuoteModal.vue')
+const UpdateMovieModal = () => import('@/components/modals/movies/UpdateMovieModal.vue')
+const ViewQuoteModal = () => import('@/components/modals/quotes/ViewQuoteModal.vue')
+const SuccessEmail = () => import('@/components/modals/forgot_password/SuccessEmail.vue')
+const WriteNewQuoteModal = () => import('@/components/modals/quotes/WriteNewQuoteModal.vue')
+const EditUsernameModal = () => import('@/components/modals/profile/EditUsernameModal.vue')
+const EditEmailModal = () => import('@/components/modals/profile/EditEmailModal.vue')
+const AreYouSure = () => import('@/components/modals/profile/AreYouSure.vue')
+const FlashMessages = () => import('@/components/modals/profile/FlashMessages.vue')
+const AreYouSureForEmail = () => import('@/components/modals/profile/AreYouSureForEmail.vue')
+const TriggerComp = () => import('@/views/feeds/TriggerComp.vue')
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
