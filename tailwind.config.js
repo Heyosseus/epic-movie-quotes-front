@@ -9,14 +9,14 @@ export const theme = {
       search: '#CED4DA',
       movie: '#11101A',
       field: '#CED4DA',
-      genre: '#6C757D',
+      genre: '#6C757D'
     },
     width: {
       form: '688px',
       quote: '840px',
       profile: '1200px',
       notification: '961px',
-      flash: '431px',
+      flash: '431px'
     },
     height: {
       posterHeight: '441px',

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div >
     <BaseHeader />
-    <div class="bg-[#181624] min-h-full overflow-y-auto">
+    <div class="bg-[#181624] min-h-full overflow-y-auto overflow-x-hidden">
       <div class="flex flex-col md:flex-row">
         <div class="md:w-1/4">
           <BaseSidebar />

@@ -160,7 +160,7 @@ const AddQuote = () => {
 onMounted(() => {
   AxiosInstance.get(`/api/movies`)
     .then((response) => {
-      movies.value = response.data.movies
+      movies.value = response.data.data 
       console.log(movies.value)
     })
     .catch((error) => {

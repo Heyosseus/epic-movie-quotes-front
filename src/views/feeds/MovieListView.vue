@@ -96,7 +96,8 @@ const getMovies = () => {
   axios
     .get(`${backendURL}/api/movies`)
     .then((res) => {
-      movies.value = res.data.data
+      const moviesList = res.data.data
+      movies.value.push(...moviesList)
     })
     .catch((err) => {
       console.log(err)

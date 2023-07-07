@@ -7,7 +7,7 @@ export const useAuthUser = defineStore('user', {
   }),
   actions: {
     setAuthUser() {
-      AxiosInstance.get('/api/user').then((response) => {
+      return AxiosInstance.get('/api/user').then((response) => {
         this.authUser = response.data
       })
     }

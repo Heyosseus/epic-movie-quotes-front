@@ -25,7 +25,6 @@
             :handle_delete_quote="handleQuoteDelete"
           ></quote-data>
         </div>
-        <div v-for="quote in quotes" :key="quote.id">{{ quote }}</div>
       </div>
     </div>
   </div>

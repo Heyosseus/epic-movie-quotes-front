@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-headerBg flex flex-col sm:flex-row justify-between items-center px-6 sm:px-14 py-2 sm:py-5"
+    class="bg-headerBg flex flex-col sm:flex-row justify-between z-50 items-center px-6 sm:px-14 py-2 sm:py-5"
   >
     <router-link
       :to="{ name: 'home' }"
@@ -41,7 +41,14 @@
                 :key="notifications.id"
                 class="mt-4 hover:bg-gray-900"
               >
-                <div
+                <router-link
+                  :to="{
+                    name: 'view-quote',
+                    params: {
+                      movie_id: notifications.notifiable.movie_id,
+                      id: notifications.notifiable.id
+                    }
+                  }"
                   class="flex items-center space-x-5 border border-gray-700 rounded p-4 lg:p-6"
                   @click="markAsRead(notifications.id)"
                 >
@@ -57,8 +64,8 @@
                     ]"
                   >
                     <img
-                      v-if="notifications.notifiable.profile_picture"
-                      :src="getImages(notifications.notifiable.profile_picture)"
+                      v-if="user.profile_picture"
+                      :src="getImages(user.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />
@@ -75,7 +82,7 @@
                       class="flex flex-col lg:items-center lg:flex lg:flex-row lg:w-full space-y-0.5"
                     >
                       <div
-                        v-if="notifications.comment"
+                        v-if="notifications.type === 'comment'"
                         class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
                       >
                         <IconComment class="w-5 lg:w-7" />
@@ -93,7 +100,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </router-link>
               </div>
             </div>
             <p v-else class="flex justify-center items-center mx-auto mt-10 text-lg">
@@ -156,14 +163,10 @@ const showNotifications = ref(false)
 const user = ref(null)
 const notification = ref([])
 const unread = ref([])
-// const quote = ref(null)
 
 const updateUnreadNotifications = () => {
   unread.value = notification.value.filter((notification) => notification.read === 0)
 }
-// const unreadNotificationLength = computed(() => {
-//   return unread.value.length
-// })
 
 const markAllAsRead = () => {
   AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' }).then(() => {
@@ -197,14 +200,8 @@ onMounted(async () => {
     await window.Echo.private(`notification-received.${user.value.id}`).listen(
       'NotificationReceived',
       (data) => {
-        const receivedNotification = data.notification
-        if (
-          receivedNotification.to === user.value.id &&
-          receivedNotification.from !== user.value.name
-        ) {
-          notification.value.push(receivedNotification)
-          unread.value.push(receivedNotification)
-        }
+        notification.value.push(data.notification)
+        unread.value.push(data.notification)
       }
     )
 

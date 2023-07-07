@@ -45,7 +45,7 @@ const authGuard = (to, from, next) => {
     next()
   } else {
     next('/login')
-  }
+  } 
 }
 
 const router = createRouter({

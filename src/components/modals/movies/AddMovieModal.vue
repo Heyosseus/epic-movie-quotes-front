@@ -262,15 +262,10 @@ const addMovie = () => {
 
   console.log(formData)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/add-movies`, formData)
-    .then((res) => {
-      console.log(res)
-      router.push({ name: 'movie-list' })
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+  axios.post(`${backendUrl}/api/add-movies`, formData).then((res) => {
+    console.log(res)
+    router.push({ name: 'movie-list' })
+  })
 }
 
 onMounted(async () => {
