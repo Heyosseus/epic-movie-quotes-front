@@ -11,12 +11,11 @@
     <img
       :src="getImages(quote.thumbnail)"
       alt=""
-      class="w-full mt-4 sm:w-form sm:h-posterHeight object-contain rounded-md mx-auto"
+      class="w-full mt-6 sm:w-form sm:h-posterHeight object-contain rounded-md mx-auto"
     />
-    <div class="flex space-x-6 cursor-pointer mt-5">
+    <div class="flex space-x-6 cursor-pointer mt-8">
       <div class="flex space-x-3" v-if="quote.comments">
         <span>{{ quote.comments.length }}</span>
-
         <IconComments class="w-7 lg:w-10" />
       </div>
       <div class="flex space-x-3" v-if="quote.likes">
@@ -26,24 +25,24 @@
     </div>
     <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
 
-    <div v-for="(comment, index) in quote.comments" :key="comment.id">
+    <div v-for="(comment, index) in quote.comments" :key="comment.id" class="mt-8">
       <div
         v-if="comment.quote_id === quote.id && (index < 2 || quote.showAllComments)"
-        class="py-4 flex space-x-6 lg:mt-3"
+        class="py-4 flex space-x-6 lg:mt-6"
       >
         <router-link :to="{ name: 'profile' }" class="flex space-x-4">
           <div v-if="comment.user?.profile_picture">
             <img
               :src="getImages(comment.user.profile_picture)"
               alt=""
-              class="object-fit w-10 mt-2 lg:w-14 rounded-full"
+              class="object-fit w-10 mt-2 lg:w-16 rounded-full"
             />
           </div>
           <div v-else>
             <img
               src="@/assets/images/default_picture.jpg"
               alt="profile"
-              class="object-fit w-10 lg:w-14 rounded-full"
+              class="object-fit w-10 lg:w-16 rounded-full"
             />
           </div>
         </router-link>
@@ -84,7 +83,7 @@
       <div v-else class="w-full flex space-x-3 items-center">
         <img
           src="@/assets/images/default_picture.jpg"
-          class="object-fit w-10 lg:w-14 rounded-full"
+          class="object-fit w-10 lg:w-16 rounded-full"
         />
         <Form class="w-full" @submit="add_comment(quote)">
           <Field
