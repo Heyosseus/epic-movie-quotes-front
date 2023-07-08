@@ -29,3 +29,23 @@ body {
   background: #181624;
   color: white;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: gray rgb(31, 30, 30);
+}
+
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: black;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 14px;
+  border: 3px solid black;
+}
