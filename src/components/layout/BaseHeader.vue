@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-headerBg flex flex-col sm:flex-row justify-between z-50 items-center px-6 sm:px-14 py-2 sm:py-5"
+    class="bg-headerBg flex flex-col sm:flex-row justify-between z-0 items-center px-6 sm:px-14 py-3 sm:py-5"
   >
     <router-link
       :to="{ name: 'home' }"
@@ -17,21 +17,25 @@
         <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
         <div>
           <div class="relative cursor-pointer" @click="showNotifications = !showNotifications">
-            <IconNotification class="mt-2 ml-2 w-6 lg:w-10 relative" />
+            <IconNotification class="mt-2 ml-2 w-6 lg:w-10 relative z-0" />
             <div
               class="absolute top-0 right-0 rounded-full bg-red-600 text-[10px] px-1 lg:text-sm lg:px-1.5"
             >
               {{ unread.length ?? 0 }}
             </div>
           </div>
+          <div
+            v-if="showNotifications"
+            class="absolute bg-black block z-0 sm:hidden lg:block z-50 w-12 h-8 lg:w-14 lg:h-14 rotate-45 top-16 right-24 lg:top-20 lg:right-64"
+          ></div>
 
           <div
             v-if="showNotifications"
-            class="w-full right-0 h-screen top-14 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[861px] overflow-y-auto cursor-pointer rounded-md"
+            class="w-full right-0 h-screen top-16 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[841px] overflow-y-auto cursor-pointer rounded-md"
           >
             <div class="flex items-center justify-between">
               <h1 class="text-lg lg:text-2xl">{{ $t('base.notifications') }}</h1>
-              <p class="text-sm underline" @click="markAllAsRead">
+              <p class="text-sm underline z-10" @click="markAllAsRead">
                 {{ $t('base.mark_all_as_read') }}
               </p>
             </div>
@@ -81,7 +85,10 @@
                         <IconComment class="w-5 lg:w-7" />
                         <p class="text-[11px] lg:text-lg">{{ $t('base.comment') }}</p>
                       </div>
-                      <div v-else class="flex items-center w-full space-x-2 mt-0 lg:mt-4">
+                      <div
+                        v-if="notifications.type === 'like'"
+                        class="flex items-center w-full space-x-2 mt-0 lg:mt-4"
+                      >
                         <IconHeart class="w-5 lg:w-7" />
                         <p class="text-[11px] lg:text-lg">{{ $t('base.react') }}</p>
                       </div>
