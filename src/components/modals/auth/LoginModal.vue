@@ -14,13 +14,12 @@
             <div class="flex flex-col">
               <label for="email">{{ $t('login.email') }}</label>
               <Field
-                type="email"
+                type="text"
                 name="email"
                 class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
                 :class="{ 'text-red-500': errors.email }"
                 :placeholder="$t('login.placeholder_email')"
-                v-model="email"
-                rules="required|email"
+                v-model="emailOrName"
               />
               <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
               <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
@@ -97,7 +96,7 @@ const router = useRouter()
 const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
 const showPassword = ref(false)
-const email = ref('')
+const emailOrName = ref('')
 const password = ref('')
 const errors = ref({
   email: '',
@@ -112,10 +111,17 @@ onClickOutside(modalRef, () => {
 const login = async () => {
   await AxiosInstance.get('/sanctum/csrf-cookie')
 
-  await AxiosInstance.post('/api/login', {
-    email: email.value,
+  const loginData = {
     password: password.value
-  })
+  }
+
+  if (emailOrName.value.includes('@')) {
+    loginData.email = emailOrName.value
+  } else {
+    loginData.name = emailOrName.value
+  }
+
+  await AxiosInstance.post('/api/login', loginData)
     .then(() => {
       authStore.setIsUserAuthenticated(true)
       router.push({ name: 'news-feed' })
