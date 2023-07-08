@@ -1,12 +1,14 @@
 <template>
-  <div class="overflow-hidden">
+  <div class="">
     <BaseHeader />
     <div class="bg-[#181624] h-full">
       <div class="flex-col lg:flex lg:flex-row">
         <BaseSidebar class="hidden sm:block" />
-        <div class="flex-col lg:justify-between p-4 md:p-20 md:px-32">
+        <div
+          class="flex-col lg:justify-between p-4 md:p-20 md:px-32 max-h-[90vh] overflow-y-auto w-full"
+        >
           <div class="hidden sm:block text-2xl">{{ $t('base.description') }}</div>
-          <div v-if="movie" class="w-full mb-8 sm:mt-10">
+          <div v-if="movie" class="w-full mb-4 sm:mt-10">
             <div class="flex flex-col md:flex-row space-x-0 md:space-x-12 w-full">
               <div class="w-full h-[240px] rounded sm:w-form sm:h-posterHeight">
                 <img

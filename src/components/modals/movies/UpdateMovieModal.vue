@@ -2,9 +2,9 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg max-h-full overflow-auto"
+        class="fixed inset-0 w-screen min-h-full flex flex-col items-center justify-center bg-transparentLandingBg overflow-auto"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8 max-h-full" ref="modalRef">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto">{{ $t('movie.edit_movie') }}</h1>
             <IconClose @click="router.back()" />

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-headerBg flex flex-col sm:flex-row justify-between z-0 items-center px-6 sm:px-14 py-3 sm:py-5"
+    class="bg-headerBg h-full flex flex-col sm:flex-row justify-between z-0 items-center px-6 sm:px-14 py-3 sm:py-5"
   >
     <router-link
       :to="{ name: 'home' }"
@@ -30,8 +30,13 @@
           ></div>
 
           <div
+            class="bg-transparentLandingBg w-full h-[92.8vh] absolute top-20 left-0 z-0"
             v-if="showNotifications"
-            class="w-full right-0 h-screen top-16 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[841px] overflow-y-auto cursor-pointer rounded-md"
+          ></div>
+          <div
+            v-if="showNotifications"
+            class="w-full right-0 h-screen top-16 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[841px] overflow-y-auto cursor-pointer rounded-md z-50"
+            ref="modalRef"
           >
             <div class="flex items-center justify-between">
               <h1 class="text-lg lg:text-2xl">{{ $t('base.notifications') }}</h1>
@@ -111,7 +116,7 @@
         <select
           name=""
           id=""
-          class="hidden bg-transparent w-16 outline-0 ml-4 sm:ml-0 mt-4 sm:mt-0 sm:block"
+          class="hidden bg-transparent w-16 outline-0 ml-4 sm:ml-0 mt-4 sm:mt-0 sm:block cursor-pointer"
           v-model="$i18n.locale"
         >
           <option
@@ -150,12 +155,11 @@ import { onMounted, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { setLocale } from '@vee-validate/i18n'
+import { onClickOutside } from '@vueuse/core'
 
 import AxiosInstance from '@/config/axios/index'
 import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
-
-const router = useRouter()
 
 const authStore = useAuthStore()
 const show = ref(false)
@@ -163,6 +167,13 @@ const showNotifications = ref(false)
 const user = ref(null)
 const notification = ref([])
 const unread = ref([])
+const modalRef = ref(null)
+
+const router = useRouter()
+
+onClickOutside(modalRef, () => {
+  showNotifications.value = false
+})
 
 const updateUnreadNotifications = () => {
   unread.value = notification.value.filter((notification) => notification.read === 0)

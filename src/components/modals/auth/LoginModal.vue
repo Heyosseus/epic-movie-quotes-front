@@ -20,6 +20,7 @@
                 :class="{ 'text-red-500': errors.email }"
                 :placeholder="$t('login.placeholder_email')"
                 v-model="emailOrName"
+                rules="required"
               />
               <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
               <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
@@ -135,7 +136,5 @@ const login = async () => {
         errors.value.password = ''
       }
     })
-
-  // await AxiosInstance.get('/api/user')
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center lg:space-x-12 mt-20">
+    <div class="flex items-center lg:space-x-12 mt-6">
       <h1 v-if="props.quote" class="hidden sm:block text-sm lg:text-xl">
         {{ $t('base.total') }}({{ props.quote.length }})
       </h1>
@@ -47,7 +47,7 @@
               <IconComments />
             </div>
             <div class="flex space-x-3">
-              <span>{{ quote.likes.length ?? 0 }} </span> 
+              <span>{{ quote.likes.length ?? 0 }} </span>
               <IconLikes />
             </div>
           </div>

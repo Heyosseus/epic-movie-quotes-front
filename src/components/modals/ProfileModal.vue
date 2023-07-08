@@ -32,6 +32,7 @@
                 />
               </div>
             </div>
+
             <label for="fileInput" class="relative py-2 text-white rounded cursor-pointer">
               <span class="flex justify-center mt-20 text-lg lg:mt-4">{{
                 $t('profile.upload')

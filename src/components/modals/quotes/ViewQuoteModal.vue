@@ -2,9 +2,9 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-full min-h-full flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="fixed inset-0 flex items-center justify-center bg-transparentLandingBg overflow-y-auto"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8 max-h-full" ref="modalRef">
           <div class="flex items-center" v-if="view_quotes">
             <router-link :to="{ name: 'update-quote', params: { movie_id: movieId, id: quote_id } }"
               ><IconEdit class="cursor-pointer"
