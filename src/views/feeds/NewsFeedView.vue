@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <BaseHeader />
     <div class="bg-[#181624] min-h-full overflow-y-auto overflow-x-hidden">
       <div class="flex flex-col md:flex-row">
@@ -201,7 +201,6 @@ const loadQuotes = () => {
       const movieQuery = searchQuery.value.substring(1)
       AxiosInstance.get(`/api/movies/?query=${movieQuery}`).then((response) => {
         quotes.value = response.data.data
-        console.error(quotes.value)
       })
     }
   } else {
@@ -236,7 +235,6 @@ const { stop } = useIntersectionObserver(
             quotes.value.push(...newQuotes)
             page.value += 1
             isLoading.value = false
-            console.log(response.data.meta)
           } else {
             stop()
           }

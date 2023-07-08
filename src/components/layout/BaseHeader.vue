@@ -26,7 +26,7 @@
           </div>
           <div
             v-if="showNotifications"
-            class="absolute bg-black block z-0 sm:hidden lg:block z-50 w-12 h-8 lg:w-14 lg:h-14 rotate-45 top-16 right-24 lg:top-20 lg:right-64"
+            class="absolute bg-black block z-0 sm:hidden lg:block w-12 h-8 lg:w-14 lg:h-14 rotate-45 top-16 right-24 lg:top-20 lg:right-64"
           ></div>
 
           <div

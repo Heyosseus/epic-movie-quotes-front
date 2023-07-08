@@ -7,8 +7,8 @@
   </div>
   <div ref="root" class="root">
     <p class="notice">Scroll me down!</p>
-    <div ref="target" class="target">
-      <p>Hello world!</p>
+    <div ref="target" class="target" v-for="item in items" :key="item.id">
+      <p>{{ item }}Hello world!</p>
     </div>
   </div>
   <div class="text-center">
@@ -23,24 +23,21 @@
 <script setup>
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import AxiosInstance from '@/config/axios/index'
-const quotes = ref([])
+// import AxiosInstance from '@/config/axios/index'
+// const quotes = ref([])
 const root = ref(null)
 const target = ref(null)
 const isVisible = ref(false)
+const items = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+const fetchedItem = ref(null)
 
 const { isActive } = useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     isVisible.value = isIntersecting
-    if (isIntersecting) {
-      AxiosInstance.get(`/api/quotes`)
-        .then((response) => {
-          quotes.value = response.data.data
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+    if (isIntersecting && fetchedItem.value === null) {
+      // Fetch one item from items
+      fetchedItem.value = items.value[0] // Fetching the first item
     }
   },
   { root }

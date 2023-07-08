@@ -60,7 +60,12 @@
         </button>
       </div>
     </div>
-    <div class="relative cursor-pointer" id="interstellar" @click="show = !show">
+    <div
+      class="relative cursor-pointer"
+      id="interstellar"
+      @click="show = !show"
+      :class="{ active: show }"
+    >
       <transition name="fade-in" key="interstellar" appear>
         <img
           src="@/assets/images/interstelar.png"
@@ -76,7 +81,7 @@
         <p class="text-lg lg:text-2xl mt-10">- interstellar, 2014</p>
       </div>
     </div>
-    <section class="relative cursor-pointer" id="royal">
+    <section class="relative cursor-pointer" id="royal" :class="{ active: show }">
       <transition name="fade-in" key="royal" appear>
         <img
           src="@/assets/images/movie.png"
@@ -94,7 +99,7 @@
         <p class="text-md lg:text-2xl mt-10">- The Royal Tenenbaums,2001</p>
       </div>
     </section>
-    <section class="relative cursor-pointer" id="lotr">
+    <section class="relative cursor-pointer" id="lotr" :class="{ active: show }">
       <transition name="fade-in" key="lotr" appear>
         <img
           src="@/assets/images/lotr.png"
@@ -173,6 +178,20 @@ const scrollPage = (section) => {
 }
 
 .active {
-  animation: scrollAnimation 1s ease-in-out;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  animation: scrollAnimation 1.5s ease-in-out;
+  background: black;
+}
+@keyframes scrollAnimation {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }
 </style>

@@ -84,7 +84,7 @@ const handleSearch = () => {
   axios
     .get(`${searchUrl}?search=${search.value}`)
     .then((res) => {
-      movies.value = res.data.movies
+      movies.value = res.data.data
     })
     .catch((err) => {
       console.log(err)
