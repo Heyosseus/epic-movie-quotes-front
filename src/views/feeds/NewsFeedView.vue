@@ -1,12 +1,12 @@
 <template>
   <div>
     <BaseHeader />
-    <div class="bg-[#181624] min-h-full overflow-y-auto overflow-x-hidden">
+    <div class="bg-[#181624] min-h-full w-full">
       <div class="flex flex-col md:flex-row">
         <div class="md:w-1/4">
           <BaseSidebar />
         </div>
-        <div>
+        <div class="w-full">
           <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 justify-between lg:w-[921px]">
             <div
               class="w-full sm:bg-transparent flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
@@ -46,11 +46,11 @@
               </button>
             </div>
           </div>
-          <div class="root mt-6" ref="root">
+          <div class="root lg:mt-6" ref="root">
             <div
               v-for="quote in filteredQuotes"
               :key="quote.id"
-              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20"
+              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20 w-notification"
             >
               <router-link
                 :to="{ name: 'profile' }"
@@ -256,19 +256,5 @@ const { stop } = useIntersectionObserver(
   scroll-behavior: smooth;
   overflow-y: scroll;
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-
-.root::-webkit-scrollbar {
-  width: 0.5rem;
-  background-color: transparent;
-}
-
-.root::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
-.root::-webkit-scrollbar-track {
-  background-color: transparent;
 }
 </style>

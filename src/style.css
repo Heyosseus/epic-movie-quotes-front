@@ -36,11 +36,11 @@ body {
 }
 
 *::-webkit-scrollbar {
-  width: 15px;
+  width: 12px;
 }
 
 *::-webkit-scrollbar-track {
-  background: black;
+  background: transparent;
   border-radius: 5px;
 }
 

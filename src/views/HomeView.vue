@@ -48,7 +48,7 @@
         </nav>
       </div>
       <div class="flex flex-col mt-8 sm:mt-56 w-fit mx-auto">
-        <h1 class="text-[24px] mt-10 sm:text-[60px] text-center text-primary">
+        <h1 class="text-[24px] mt-16 lg:mt-10 sm:text-[60px] text-center text-primary">
           Find any quote in <br />
           millions of movie lines
         </h1>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div
-      class="relative cursor-pointer"
+      class="relative cursor-pointer mt-28  lg:mt-0"
       id="interstellar"
       @click="show = !show"
       :class="{ active: show }"
