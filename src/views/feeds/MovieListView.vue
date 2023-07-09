@@ -2,11 +2,11 @@
   <div>
     <BaseHeader />
     <div class="bg-[#181624] min-h-full">
-      <div class="flex flex-col md:flex-row">
+      <div class="flex flex-col w-full md:flex-row">
         <BaseSidebar />
-        <div class="w-full md:w-full px-4 md:px-16 pr-4 md:pr-56" v-if="!show">
-          <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4">
-            <h1 class="text-sm w-full md:w-full mt-2 md:mt-10 lg:text-xl">
+        <div class="w-full  md:pl-16" v-if="!show">
+          <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4 lg:pr-56">
+            <h1 class="text-sm w-full mb-2 md:w-full md:mt-10 lg:text-xl">
               {{ $t('base.list') }} ({{ movies.length }})
             </h1>
             <Form method="GET" @keydown.enter.prevent="handleSearch" class="hidden lg:flex mt-6">
@@ -21,10 +21,13 @@
                 />
               </div>
             </Form>
-            <AddMovie />
+            <AddMovie class="ml-1"/>
           </div>
 
-          <div class="mt-8 md:mt-20" v-if="movies && movies.length > 0">
+          <div
+            class="mt-8 md:mt-20 max-h-[870px] overflow-y-auto lg:pr-40"
+            v-if="movies && movies.length > 0"
+          >
             <div class="flex flex-wrap">
               <div
                 v-for="movie in movies"
@@ -41,8 +44,8 @@
                     <h1 class="uppercase">{{ movie.title.en }}</h1>
                     <p class="">({{ movie.release_date }})</p>
                   </div>
-                  <div class="flex space-x-3 items-center mr-auto">
-                    <span>{{ movie.quotes.length }}</span>
+                  <div class="flex space-x-3 items-center mr-auto" v-if="movie">
+                    <span>{{ movie?.quotes?.length }}</span>
                     <IconComment />
                   </div>
                 </div>
@@ -68,6 +71,9 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { getImages } from '@/config/axios/helpers'
+import { useMovieStore } from '@/stores/movie.js'
+
+const movieStore = useMovieStore()
 
 const search = ref('')
 const movies = ref([])
@@ -85,6 +91,7 @@ const handleSearch = () => {
     .get(`${searchUrl}?search=${search.value}`)
     .then((res) => {
       movies.value = res.data.data
+      movieStore.movies = res.data.data
     })
     .catch((err) => {
       console.log(err)
@@ -96,8 +103,8 @@ const getMovies = () => {
   axios
     .get(`${backendURL}/api/movies`)
     .then((res) => {
-      const moviesList = res.data.data
-      movies.value.push(...moviesList)
+      movies.value = res.data.data
+      movieStore.movies = res.data.data
     })
     .catch((err) => {
       console.log(err)

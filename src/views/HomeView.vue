@@ -61,7 +61,7 @@
       </div>
     </div>
     <div
-      class="relative cursor-pointer mt-28  lg:mt-0"
+      class="relative cursor-pointer mt-28 bg-zinc-950 lg:mt-0"
       id="interstellar"
       @click="show = !show"
       :class="{ active: show }"
@@ -81,7 +81,7 @@
         <p class="text-lg lg:text-2xl mt-10">- interstellar, 2014</p>
       </div>
     </div>
-    <section class="relative cursor-pointer" id="royal" :class="{ active: show }">
+    <section class="relative cursor-pointer bg-zinc-950" id="royal" :class="{ active: show }">
       <transition name="fade-in" key="royal" appear>
         <img
           src="@/assets/images/movie.png"
@@ -99,7 +99,7 @@
         <p class="text-md lg:text-2xl mt-10">- The Royal Tenenbaums,2001</p>
       </div>
     </section>
-    <section class="relative cursor-pointer" id="lotr" :class="{ active: show }">
+    <section class="relative cursor-pointer bg-zinc-950" id="lotr" :class="{ active: show }">
       <transition name="fade-in" key="lotr" appear>
         <img
           src="@/assets/images/lotr.png"
@@ -180,9 +180,8 @@ const scrollPage = (section) => {
 .active {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 0;
   animation: scrollAnimation 1.5s ease-in-out;
-  background: black;
 }
 @keyframes scrollAnimation {
   0% {

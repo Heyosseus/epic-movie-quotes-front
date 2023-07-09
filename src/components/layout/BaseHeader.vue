@@ -66,8 +66,8 @@
                     ]"
                   >
                     <img
-                      v-if="user.profile_picture"
-                      :src="getImages(user.profile_picture)"
+                      v-if="notification.notifiable"
+                      :src="getImages(notification.notifiable.user.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />

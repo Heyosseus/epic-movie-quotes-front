@@ -43,11 +43,11 @@
           <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
           <div class="flex space-x-6">
             <div class="flex space-x-3">
-              <span>{{ quote.comments.length ?? 0 }}</span>
+              <span>{{ quote?.comments?.length ?? 0 }}</span>
               <IconComments />
             </div>
             <div class="flex space-x-3">
-              <span>{{ quote.likes.length ?? 0 }} </span>
+              <span>{{ quote?.likes?.length ?? 0 }} </span>
               <IconLikes />
             </div>
           </div>

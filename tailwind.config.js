@@ -16,6 +16,7 @@ export const theme = {
       quote: '840px',
       profile: '1200px',
       notification: '961px',
+      content: '904px',
       flash: '431px'
     },
     height: {

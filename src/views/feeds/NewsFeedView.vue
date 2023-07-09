@@ -6,7 +6,7 @@
         <div class="md:w-1/4">
           <BaseSidebar />
         </div>
-        <div class="w-full">
+        <div class="w-full lg:ml-28">
           <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 justify-between lg:w-[921px]">
             <div
               class="w-full sm:bg-transparent flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
@@ -50,7 +50,7 @@
             <div
               v-for="quote in filteredQuotes"
               :key="quote.id"
-              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20 w-notification"
+              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20 w-full lg:w-content"
             >
               <router-link
                 :to="{ name: 'profile' }"
@@ -178,12 +178,19 @@ const addLikes = (quote) => {
     user_id: quote.user.id
   })
     .then(() => {
-      AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
-        quote_id: quote.id,
-        user_id: quote.user.id
-      }).then(() => {
-        quote.likes.length += 1
-      })
+      const existingLikeIndex = quote.likes.findIndex((like) => like === quote.user.id)
+      if (!quote.likes.includes(quote.user.id)) {
+        AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
+          quote_id: quote.id,
+          user_id: quote.user.id
+        }).then(() => {
+          quote.likes.push(quote.user.id)
+        })
+      } else {
+        if (existingLikeIndex !== -1) {
+          quote.likes.splice(existingLikeIndex, 1)
+        }
+      }
     })
     .catch((error) => {
       console.error(error)

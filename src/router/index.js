@@ -101,11 +101,6 @@ const router = createRouter({
           path: '/link-expired',
           name: 'link-expired',
           component: LinkExpired
-        },
-        {
-          path: '/session-expired',
-          name: 'session-expired',
-          component: SessionExpired
         }
       ]
     },
@@ -235,6 +230,11 @@ const router = createRouter({
           component: ViewQuoteModal
         }
       ]
+    },
+    {
+      path: '/session-expired',
+      name: 'session-expired',
+      component: SessionExpired
     }
   ]
 })

@@ -42,7 +42,9 @@ import { getImages } from '@/config/axios/helpers'
 
 import MovieData from '@/components/movie/MovieData.vue'
 import QuoteData from '@/components/quote/QuoteData.vue'
+import { useQuoteStore } from '@/stores/quotes.js'
 
+const quoteStore = useQuoteStore()
 const movie = ref(null)
 const quotes = ref(null)
 const router = useRouter()
@@ -53,6 +55,7 @@ onMounted(() => {
     .then((response) => {
       movie.value = response.data.data
       quotes.value = response.data.data.quotes
+      quoteStore.quotes = response.data.data.quotes
       console.log(response.data.data)
     })
     .catch((error) => {
