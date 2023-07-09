@@ -231,6 +231,7 @@ const image = ref(null)
 const genres = ref([])
 const user = ref(null)
 const modalRef = ref(null)
+const selectedGenre = ref(null)
 
 onClickOutside(modalRef, () => {
   router.back()
@@ -239,7 +240,7 @@ onClickOutside(modalRef, () => {
 const editMovie = () => {
   const formData = new FormData()
   formData.append('poster', image.value)
-  formData.append('genre', genres.value)
+  formData.append('genre', selectedGenre.value)
   formData.append('release_date', release_date.value)
   formData.append('director_en', director_en.value)
   formData.append('director_ka', director_ka.value)
@@ -247,6 +248,7 @@ const editMovie = () => {
   formData.append('description_ka', description_ka.value)
   formData.append('title_en', title_en.value)
   formData.append('title_ka', title_ka.value)
+  formData.append('user_id', user.value.id)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
@@ -257,6 +259,7 @@ const editMovie = () => {
     })
     .catch((err) => {
       console.log(err.response.data)
+      console.log(genres.value)
     })
 }
 

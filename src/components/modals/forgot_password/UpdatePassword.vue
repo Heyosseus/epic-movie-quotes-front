@@ -2,10 +2,10 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen h-full flex flex-col items-center justify-center bg-transparentLandingBg overflow-y-auto"
       >
         <div
-          class="flex flex-col px-6 py-12 md:px-20 md:pt-12 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
+          class="flex flex-col px-6 py-12 md:px-20 md:pt-12 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4 max-h-[800px]"
           ref="modalRef"
         >
           <h1 class="text-2xl md:text-4xl">{{ $t('forgot.create_new_password') }}</h1>

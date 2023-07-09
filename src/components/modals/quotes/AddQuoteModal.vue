@@ -157,7 +157,9 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import { useQuoteStore } from '@/stores/quotes.js'
 
+const quoteStore = useQuoteStore()
 const router = useRouter()
 const movie = ref(null)
 
@@ -183,7 +185,7 @@ const addQuote = () => {
   axios
     .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
-      console.log(res)
+      quoteStore.addQuote(res.data.quote)
       router.back()
     })
     .catch((err) => {
@@ -197,7 +199,6 @@ onMounted(() => {
     .then((response) => {
       movie.value = response.data.data
       user.value = response.data.data.user
-      console.log(response.data.data)
     })
     .catch((error) => {
       console.error(error)

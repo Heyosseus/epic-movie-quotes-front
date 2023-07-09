@@ -199,6 +199,9 @@ import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
+import { useMovieStore } from '@/stores/movie.js'
+
+const movieStore = useMovieStore()
 
 const user = ref(null)
 const router = useRouter()
@@ -252,6 +255,7 @@ const addMovie = () => {
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios.post(`${backendUrl}/api/add-movies`, formData).then((res) => {
     console.log(res)
+    movieStore.addMovie(res.data.data)
     router.push({ name: 'movie-list' })
   })
 }
