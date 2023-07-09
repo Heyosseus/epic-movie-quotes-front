@@ -20,7 +20,7 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />

@@ -50,7 +50,14 @@
                 :key="notifications.id"
                 class="mt-4 hover:bg-gray-900"
               >
-                <div
+                <router-link
+                  :to="{
+                    name: 'view-quote',
+                    params: {
+                      movie_id: notifications.quotes.movie_id,
+                      id: notifications?.quote_id
+                    }
+                  }"
                   class="flex items-center space-x-5 border border-gray-700 rounded p-4 lg:p-6"
                   @click="markAsRead(notifications.id)"
                 >
@@ -66,8 +73,8 @@
                     ]"
                   >
                     <img
-                      v-if="notification.notifiable"
-                      :src="getImages(notification.notifiable.user.profile_picture)"
+                      v-if="notifications.user.profile_picture"
+                      :src="getImages(notifications.user.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />
@@ -105,7 +112,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </router-link>
               </div>
             </div>
             <p v-else class="flex justify-center items-center mx-auto mt-10 text-lg">

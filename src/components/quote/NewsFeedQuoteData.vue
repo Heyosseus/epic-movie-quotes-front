@@ -106,13 +106,10 @@ import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import { onMounted, ref } from 'vue'
-import { useAuthUser } from '@/stores/user.js'
-
-// const likesCount = ref(props.likesCount)
+import AxiosInstance from '@/config/axios/index'
 
 const user = ref(null)
 
-// how to display likes count automatically
 
 const props = defineProps({
   quotes: {
@@ -142,6 +139,8 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  user.value = useAuthUser()
+  AxiosInstance.get('/api/user').then((response) => {
+    user.value = response.data
+  })
 })
 </script>

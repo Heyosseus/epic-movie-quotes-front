@@ -18,7 +18,7 @@
             </div>
             <form
               action=""
-              class="h-16 ml-10 mt-3 w-[1840px]"
+              class="h-12 ml-10 mt-3 w-[1840px]"
               v-if="showSearchBar"
               @submit.prevent="loadQuotes"
             >
