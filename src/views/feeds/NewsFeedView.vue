@@ -44,6 +44,12 @@
               <button class="bg-[#181624] h-14 w-28 rounded-full flex items-center justify-center">
                 <p class="text-search">{{ $t('base.search_by') }}</p>
               </button>
+              <router-view
+                :search-query="searchQuery"
+                :search-results="quotes"
+                @update:searchQuery="searchQuery = $event"
+                @update:searchResults="quotes = $event"
+              />
             </div>
           </div>
           <div class="root lg:mt-6" ref="root">
@@ -89,6 +95,7 @@
       </div>
     </div>
   </div>
+  <div v-for="movie in movies" :key="movie.id">{{ movie }}</div>
 
   <router-view />
 </template>
@@ -99,7 +106,6 @@ import IconPencil from '@/components/icons/IconPencil.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
-// import SearchBar from '@/components/layout/SearchBar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 import { ref, onMounted, reactive, computed } from 'vue'
 import AxiosInstance from '@/config/axios/index'
@@ -107,6 +113,9 @@ import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
+import { useAuthUser } from '@/stores/user'
+
+const authUserStore = useAuthUser()
 const quotes = ref([])
 const quoteId = ref(null)
 const comment = ref('')
@@ -129,9 +138,9 @@ const filteredQuotes = computed(() => {
   if (searchResults.value.length > 0) {
     const filteredIds = searchResults.value.map((result) => result.id)
     return quotes.value.filter((quote) => filteredIds.includes(quote.id))
-  } else if (searchResults.value.length >= 0 && condition.value === 'movie') {
-    const movieQuotes = movies.value.filter((result) => result.id).map((result) => result.quotes)
-    return movieQuotes
+  } else if (condition.value === 'movie') {
+    const movieQuotes = movies.value.map((result) => result.quotes).flat()
+    return quotes.value.filter((quote) => movieQuotes.includes(quote.id))
   } else {
     return quotes.value
   }
@@ -206,8 +215,9 @@ const loadQuotes = () => {
       })
     } else if (searchQuery.value.startsWith('@')) {
       const movieQuery = searchQuery.value.substring(1)
+      condition.value = 'movie'
       AxiosInstance.get(`/api/movies/?query=${movieQuery}`).then((response) => {
-        quotes.value = response.data.data
+        quotes.value = response.data.data.map((movie) => movie.quotes).flat()
       })
     }
   } else {
@@ -218,9 +228,8 @@ const loadQuotes = () => {
   }
 }
 
-AxiosInstance.get('/api/user').then((response) => {
-  user.value = response.data
-})
+authUserStore.setAuthUser()
+user.value = authUserStore.authUser
 const root = ref(null)
 const target = ref(null)
 const isVisible = ref(false)

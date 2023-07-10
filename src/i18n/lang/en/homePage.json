@@ -7,5 +7,7 @@
   "paragraph": "We can't see the page you are looking for",
   "return_home": "Return home",
   "shall_not_pass": "You shall not pass!",
-  "permission": "Sorry, but  you don’t have permission to access this page"
+  "permission": "Sorry, but  you don’t have permission to access this page",
+  "expired": "Session expired!",
+  "please_login": "Please login again"
 }

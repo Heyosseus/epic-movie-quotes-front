@@ -60,12 +60,14 @@ import IconHome from '../icons/IconHome.vue'
 import IconActiveMovieList from '../icons/IconActiveMovieList.vue'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
+import { useAuthUser } from '@/stores/user'
 
 const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
+const authUserStore = useAuthUser()
+
 const user = ref(null)
 const activeProfile = ref(false)
 
@@ -84,13 +86,9 @@ if (window.location.pathname === '/news-feed') {
 } else {
   activeMovieList.value = !activeMovieList.value
 }
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 </script>

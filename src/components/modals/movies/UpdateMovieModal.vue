@@ -215,6 +215,9 @@ import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 
 import IconPhoto from '@/components/icons/IconPhoto.vue'
+import { useAuthUser } from '@/stores/user'
+
+const authUserStore = useAuthUser()
 const router = useRouter()
 const route = useRoute()
 const movies = ref(null)
@@ -274,14 +277,9 @@ onMounted(() => {
     })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 
 const removeGenre = (genre) => {

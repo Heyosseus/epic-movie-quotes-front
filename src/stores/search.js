@@ -1,19 +1,12 @@
 import { defineStore } from 'pinia'
 
-export const useSearchStore = defineStore('search', {
+export const useQuoteStore = defineStore('quoteStore', {
   state: () => ({
-    searchResults: [],
-    searchQuery: '',
-    condition: Boolean
+    quotes: []
   }),
   actions: {
-    setSearchResults(results) {
-      this.searchResults = results
-    }
-  },
-  getters: {
-    getSearchResults() {
-      return this.searchResults
+    updateQuotes(quotes) {
+      this.quotes = quotes
     }
   }
 })

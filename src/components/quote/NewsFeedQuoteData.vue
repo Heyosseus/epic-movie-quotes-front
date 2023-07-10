@@ -106,10 +106,10 @@ import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import { onMounted, ref } from 'vue'
-import AxiosInstance from '@/config/axios/index'
+import { useAuthUser } from '@/stores/user'
 
+const authUserStore = useAuthUser()
 const user = ref(null)
-
 
 const props = defineProps({
   quotes: {
@@ -138,9 +138,8 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  AxiosInstance.get('/api/user').then((response) => {
-    user.value = response.data
-  })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 </script>

@@ -154,29 +154,6 @@
               </Field>
               <ErrorMessage name="image" class="text-red-600 mt-2" />
             </label>
-
-            <!-- <label
-              class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
-            >
-              <IconPhoto class="inline-block" />
-              <span class="ml-2 text-sm lg:text-lg">Drag & drop your image here or</span>
-              <span
-                class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-                @click="chooseFile"
-              >
-                Choose File
-              </span>
-              <input
-                type="file"
-                name="image"
-                class="hidden"
-                placeholder="ფილმის აღწერა"
-                ref="fileInput"
-                @change="handleFileChange"
-              />
-              <ErrorMessage name="image" class="text-red-600 mt-2" />
-            </label> -->
-
             <button
               class="bg-red-600 py-3 rounded flex items-center outline-0 mt-4 sm:mt-6 justify-center text-lg"
               type="submit"
@@ -193,14 +170,15 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { onMounted, ref } from 'vue'
-import AxiosInstance from '../../../config/axios'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 import { useMovieStore } from '@/stores/movie.js'
+import { useAuthUser } from '@/stores/user'
 
+const authUserStore = useAuthUser()
 const movieStore = useMovieStore()
 
 const user = ref(null)
@@ -267,52 +245,8 @@ onMounted(async () => {
   genres_id.value = res.data.genres.map((genre) => genre.id)
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
-// const fileInput = ref(null)
-
-// const chooseFile = () => {
-//   fileInput.value.click()
-// }
-
-// const handleFileChange = () => {
-//   const file = fileInput.value.files[0]
-//   const reader = new FileReader()
-//   reader.onload = () => {
-//     image.value = reader.result
-//   }
-//   reader.readAsDataURL(file)
-// }
-
-// const draggableElement = ref(null)
-// const dropTarget = ref(null)
-
-// const handleDragOver = (event) => {
-//   event.preventDefault()
-// }
-
-// const handleDrop = (event) => {
-//   event.preventDefault()
-
-//   const draggedElement = draggableElement.value
-//   if (dropTarget.value) {
-//     dropTarget.value.appendChild(draggedElement)
-//     const droppedFile = event.dataTransfer.files[0]
-
-//     const reader = new FileReader()
-//     reader.onload = () => {
-//       image.value = reader.result
-//     }
-//     reader.readAsDataURL(droppedFile)
-//   }
-//   draggableElement.value = null
-//   dropTarget.value = null
-// }
 </script>

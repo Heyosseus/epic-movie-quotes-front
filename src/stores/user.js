@@ -6,10 +6,13 @@ export const useAuthUser = defineStore('user', {
     authUser: null
   }),
   actions: {
-    setAuthUser() {
-      return AxiosInstance.get('/api/user').then((response) => {
+    async setAuthUser() {
+      try {
+        const response = await AxiosInstance.get('/api/user')
         this.authUser = response.data
-      })
+      } catch (error) {
+        console.error('Error setting authenticated user:', error)
+      }
     }
   },
   getters: {

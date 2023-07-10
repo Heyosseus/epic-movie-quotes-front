@@ -35,7 +35,7 @@
           ></div>
           <div
             v-if="showNotifications"
-            class="w-full right-0 h-screen top-16 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[841px] overflow-y-auto cursor-pointer rounded-md z-50"
+            class="w-full right-0 h-screen top-16 bg-black lg:w-notification absolute lg:top-20 lg:right-[100px] px-6 py-10 max-h-[791px] overflow-y-auto cursor-pointer rounded-md z-50"
             ref="modalRef"
           >
             <div class="flex items-center justify-between">
@@ -54,7 +54,7 @@
                   :to="{
                     name: 'view-quote',
                     params: {
-                      movie_id: notifications.quotes.movie_id,
+                      movie_id: notifications.quotes?.movie_id,
                       id: notifications?.quote_id
                     }
                   }"
@@ -163,11 +163,13 @@ import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { setLocale } from '@vee-validate/i18n'
 import { onClickOutside } from '@vueuse/core'
+import { useAuthUser } from '@/stores/user'
 
 import AxiosInstance from '@/config/axios/index'
 import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 
+const authUserStore = useAuthUser()
 const authStore = useAuthStore()
 const show = ref(false)
 const showNotifications = ref(false)
@@ -210,8 +212,8 @@ const markAsRead = (notificationId) => {
 
 onMounted(async () => {
   try {
-    const response = await AxiosInstance.get('/api/user')
-    user.value = response.data
+    await authUserStore.setAuthUser()
+    user.value = authUserStore.authUser
 
     instantiatePusher()
 
@@ -251,8 +253,7 @@ AxiosInstance.get('/api/check-session').then((response) => {
   if (isSessionActive || isGoogleAuthenticated) {
     authStore.setIsUserAuthenticated(true)
   } else {
-    authStore.setIsUserAuthenticated(false)
-    router.push({ name: 'forbidden' })
+    router.push({ name: 'session-expired' })
   }
 })
 </script>

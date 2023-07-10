@@ -119,6 +119,7 @@ const router = createRouter({
       name: 'news-feed',
       component: NewsFeedView,
       beforeEnter: authGuard,
+      props: true,
       children: [
         {
           path: '/menu',
@@ -128,10 +129,11 @@ const router = createRouter({
         {
           path: '/search',
           name: 'search',
-          component: SearchHeader
+          component: SearchHeader,
+          props: true
         },
         {
-          path: 'write-quote',
+          path: '/write-quote',
           name: 'write-quote',
           component: WriteNewQuoteModal
         }
@@ -237,6 +239,14 @@ const router = createRouter({
       component: SessionExpired
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.statusCode === 403) {
+    next({ name: 'forbidden' })
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -158,7 +158,9 @@ import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import { useQuoteStore } from '@/stores/quotes.js'
+import { useAuthUser } from '@/stores/user'
 
+const authUserStore = useAuthUser()
 const quoteStore = useQuoteStore()
 const router = useRouter()
 const movie = ref(null)
@@ -205,13 +207,8 @@ onMounted(() => {
     })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 </script>
