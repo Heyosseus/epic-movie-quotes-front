@@ -167,7 +167,7 @@
                 <img
                   :src="getImages(movies.poster)"
                   alt=""
-                  class="w-full object-contain h-40 lg:h-52 rounded-md"
+                  class="w-32 lg:w-80 object-contain h-40 lg:h-52 rounded-md"
                 />
                 <label
                   class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"

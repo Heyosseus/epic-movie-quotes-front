@@ -50,14 +50,7 @@
                 :key="notifications.id"
                 class="mt-4 hover:bg-gray-900"
               >
-                <router-link
-                  :to="{
-                    name: 'view-quote',
-                    params: {
-                      movie_id: notifications.quotes?.movie_id,
-                      id: notifications?.quote_id
-                    }
-                  }"
+                <div
                   class="flex items-center space-x-5 border border-gray-700 rounded p-4 lg:p-6"
                   @click="markAsRead(notifications.id)"
                 >
@@ -112,7 +105,7 @@
                       </div>
                     </div>
                   </div>
-                </router-link>
+                </div>
               </div>
             </div>
             <p v-else class="flex justify-center items-center mx-auto mt-10 text-lg">

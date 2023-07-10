@@ -194,7 +194,6 @@ const addQuote = (e) => {
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
-  console.log(state.files[0])
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios

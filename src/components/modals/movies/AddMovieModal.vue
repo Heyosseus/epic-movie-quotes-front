@@ -31,7 +31,7 @@
             </div>
             <h1>{{ user.name }}</h1>
           </router-link>
-          <Form class="flex flex-col mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
+          <Form class="flex flex-col mt-4 sm:mt-6" enctype="multipart/form-data">
             <Field
               name="title_en"
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
@@ -135,6 +135,9 @@
             <ErrorMessage name="description_ka" class="text-red-600 mt-2" />
             <label
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
             >
               <IconPhoto class="inline-block" />
               <span class="ml-2 text-sm lg:text-lg">{{ $t('movie.drag_and_drop') }}</span>
@@ -143,20 +146,21 @@
               >
                 {{ $t('movie.choose_file') }}
               </span>
-              <Field
+              <input
                 type="file"
+                multiple
                 name="image"
+                id="fileInput"
                 class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
+                @change="onChange"
+                ref="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
               <ErrorMessage name="image" class="text-red-600 mt-2" />
             </label>
             <button
               class="bg-red-600 py-3 rounded flex items-center outline-0 mt-4 sm:mt-6 justify-center text-lg"
-              type="submit"
+              @click="addMovie"
             >
               {{ $t('movie.add_movie') }}
             </button>
@@ -169,7 +173,7 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
@@ -190,7 +194,7 @@ const director_ka = ref('')
 const description_en = ref('')
 const description_ka = ref('')
 const release_date = ref('')
-const image = ref(null)
+
 
 const genres = ref(null)
 const genres_id = ref([])
@@ -216,9 +220,10 @@ const selectedGenreData = () => {
   }
 }
 
-const addMovie = () => {
+const addMovie = (e) => {
+  e.preventDefault()
   const formData = new FormData()
-  formData.append('poster', image.value)
+  formData.append('poster', state.files[0])
   formData.append('title_en', title_en.value)
   formData.append('title_ka', title_ka.value)
   formData.append('director_en', director_en.value)
@@ -249,4 +254,33 @@ onMounted(async () => {
   await authUserStore.setAuthUser()
   user.value = authUserStore.authUser
 })
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
+
+const onChange = () => {
+  state.files.push(...fileInput.value.files)
+}
+
+const dragover = (e) => {
+  e.preventDefault()
+  state.isDragging = true
+}
+
+const dragleave = (e) => {
+  e.preventDefault()
+  state.isDragging = false
+}
+
+const drop = (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.files) {
+    state.files = Array.from(e.dataTransfer.files)
+    onChange()
+    console.log(state.files)
+  }
+  state.isDragging = false
+}
 </script>
