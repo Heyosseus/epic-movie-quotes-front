@@ -2,7 +2,7 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg max-h-full overflow-auto"
+        class="absolute w-full min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg max-h-full overflow-auto"
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
@@ -64,11 +64,7 @@
           <div v-else></div>
 
           <!-- ----------------------------------------- -->
-          <Form
-            class="flex flex-col w-full mt-4 sm:mt-6"
-            @submit="addQuote"
-            enctype="multipart/form-data"
-          >
+          <Form class="flex flex-col w-full mt-4 sm:mt-6" enctype="multipart/form-data">
             <Field
               as="textarea"
               type="text"
@@ -95,49 +91,61 @@
 
             <label
               class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.drag_and_drop') }}</span>
-              <span
-                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-              >
-                {{ $t('movie.choose_file') }}
-              </span>
-              <Field
-                type="file"
-                name="image"
-                class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
-            </label>
 
-            <label
-              class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
-            >
-              <IconPhoto class="inline-block" />
               <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
                 {{ $t('movie.choose_file') }}
               </span>
-              <Field
+
+              <input
                 type="file"
+                multiple
                 name="image"
+                id="fileInput"
                 class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
+                @change="onChange"
+                ref="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
+            </label>
+
+            <label
+              class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
+            >
+              <IconPhoto class="inline-block" />
+
+              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
+              <span
+                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-              </Field>
+                {{ $t('movie.choose_file') }}
+              </span>
+
+              <input
+                type="file"
+                multiple
+                name="image"
+                id="fileInput"
+                class="hidden"
+                @change="onChange"
+                ref="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
             </label>
 
             <button
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
-              type="submit"
+              @click="addQuote"
             >
               {{ $t('movie.add_quote') }}
             </button>
@@ -151,7 +159,7 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,  reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
@@ -167,21 +175,26 @@ const movie = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
 
-onClickOutside(modalRef, () => {
-  router.back()
-})
+onClickOutside(
+  modalRef,
+  () => {
+    router.back()
+  },
+  { passive: true }
+)
 
-const addQuote = () => {
+const addQuote = (e) => {
+  e.preventDefault()
   const formData = new FormData()
-  formData.append('thumbnail', image.value)
+  formData.append('thumbnail', state.files[0])
   formData.append('user_id', user.value.id)
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
+  console.log(state.files[0])
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
@@ -206,6 +219,36 @@ onMounted(() => {
       console.error(error)
     })
 })
+
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
+
+const onChange = () => {
+  state.files.push(...fileInput.value.files)
+}
+
+const dragover = (e) => {
+  e.preventDefault()
+  state.isDragging = true
+}
+
+const dragleave = (e) => {
+  e.preventDefault()
+  state.isDragging = false
+}
+
+const drop = (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.files) {
+    state.files = Array.from(e.dataTransfer.files)
+    onChange()
+    console.log(state.files)
+  }
+  state.isDragging = false
+}
 
 onMounted(async () => {
   await authUserStore.setAuthUser()
