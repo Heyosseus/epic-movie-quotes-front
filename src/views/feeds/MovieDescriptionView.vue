@@ -74,7 +74,12 @@ const handleMovieDelete = () => {
       console.error(error)
     })
 }
-const handleQuoteDelete = (quoteId) => {
-  AxiosInstance.delete(`/api/quotes/${quoteId}`)
+const handleQuoteDelete = async (quoteId) => {
+  try {
+    await AxiosInstance.delete(`/api/quotes/${quoteId}`)
+    quoteStore.deleteQuote(quoteId)
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>

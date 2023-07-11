@@ -13,15 +13,19 @@
           <Form class="flex flex-col space-y-4 w-full md:w-96" @submit="login">
             <div class="flex flex-col">
               <label for="email">{{ $t('login.email') }}</label>
-              <Field
-                type="text"
-                name="email"
-                class="py-2 px-2 rounded-md outline-0 text-black font-normal bg-field"
-                :class="{ 'text-red-500': errors.email }"
-                :placeholder="$t('login.placeholder_email')"
-                v-model="emailOrName"
-                rules="required"
-              />
+              <div class="relative">
+                <Field
+                  type="text"
+                  name="email"
+                  class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-field"
+                  :class="{ 'border-2 border-red-500': errors.email }"
+                  :placeholder="$t('login.placeholder_email')"
+                  v-model="emailOrName"
+                  rules="required"
+                />
+                <div v-if="errors.email" class="absolute right-2 top-3"><IconInvalid /></div>
+              </div>
+
               <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
               <span class="text-red-500 text-sm font-normal">{{ errors.email }}</span>
             </div>
@@ -39,14 +43,16 @@
                 <IconShowPassword
                   class="absolute right-2 top-3"
                   @click="showPassword = !showPassword"
+                  v-if="!errors.password"
                 />
+                <div v-if="errors.password" class="absolute right-2 top-3"><IconInvalid /></div>
               </div>
               <ErrorMessage name="password" class="text-red-500 text-sm font-normal" />
               <span class="text-red-500 text-sm font-normal">{{ errors.password }}</span>
             </div>
             <div class="flex justify-between">
               <div class="space-x-2">
-                <Field type="checkbox" name="remember" />
+                <Field type="checkbox" v-model="remember_me" name="remember" />
                 <label for="remember">{{ $t('login.remember_me') }}</label>
               </div>
               <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600">{{
@@ -85,7 +91,7 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-
+import IconInvalid from '../../icons/IconInvalid.vue'
 import IconGoogle from '../../icons/IconGoogle.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
@@ -99,6 +105,7 @@ const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 const showPassword = ref(false)
 const emailOrName = ref('')
 const password = ref('')
+const remember_me = ref(false)
 const errors = ref({
   email: '',
   password: ''
@@ -121,6 +128,9 @@ const login = async () => {
   } else {
     loginData.name = emailOrName.value
   }
+  if (remember_me.value) {
+    loginData.remember_me = true
+  }
 
   await AxiosInstance.post('/api/login', loginData)
     .then(() => {
@@ -128,9 +138,11 @@ const login = async () => {
       router.push({ name: 'news-feed' })
     })
     .catch((err) => {
-      if (err.response.status === 401 && err.response.data.message === 'Invalid credentials') {
-        errors.value.email = 'Invalid email or password'
-        errors.value.password = 'Invalid email or password'
+      if (err.response.status === 401 && err.response.data.errors) {
+        const fieldErrors = err.response.data.errors
+
+        errors.value.email = fieldErrors.email ? fieldErrors.email[0] : ''
+        errors.value.password = fieldErrors.password ? fieldErrors.password[0] : ''
       } else {
         errors.value.email = ''
         errors.value.password = ''

@@ -66,7 +66,7 @@
                     ]"
                   >
                     <img
-                      v-if="notifications.user.profile_picture"
+                      v-if="notifications.user"
                       :src="getImages(notifications.user.profile_picture)"
                       alt=""
                       class="object-fit w-20 rounded-full"
@@ -195,8 +195,8 @@ const logout = () => {
   })
 }
 
-const markAsRead = (notificationId) => {
-  AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' }).then(
+const markAsRead = async(notificationId) => {
+  await AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' }).then(
     () => {
       updateUnreadNotifications()
     }
