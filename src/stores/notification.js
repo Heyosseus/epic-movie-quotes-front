@@ -8,7 +8,7 @@ export const useNotificationStore = defineStore('notification', {
   actions: {
     updateUnreadNotifications() {
       this.unread = this.unreadNotifications.filter((notification) => notification.read === 0)
-      return this.unreadNotifications
+      return this.unread
     }
   }
 })

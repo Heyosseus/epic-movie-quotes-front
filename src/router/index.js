@@ -31,7 +31,7 @@ const EditEmailModal = () => import('@/components/modals/profile/EditEmailModal.
 const AreYouSure = () => import('@/components/modals/profile/AreYouSure.vue')
 const FlashMessages = () => import('@/components/modals/profile/FlashMessages.vue')
 const AreYouSureForEmail = () => import('@/components/modals/profile/AreYouSureForEmail.vue')
-const TriggerComp = () => import('@/views/feeds/TriggerComp.vue')
+const ThanksForGoogle = () => import('@/views/ThanksForGoogle.vue')
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -115,6 +115,11 @@ const router = createRouter({
       component: ThankYouView
     },
     {
+      path: '/thanks-google',
+      name: 'thanks-google',
+      component: ThanksForGoogle
+    },
+    {
       path: '/news-feed',
       name: 'news-feed',
       component: NewsFeedView,
@@ -143,10 +148,6 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: ErrorView
-    },
-    {
-      path: '/trigger',
-      component: TriggerComp
     },
     { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
 
