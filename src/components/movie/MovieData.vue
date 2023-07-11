@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-80">
     <div class="flex flex-col">
       <div class="flex space-x-12 items-center mr-auto mb-10 mt-4 text-[#DDCCAA]">
         <div class="flex space-x-2 text-xl">

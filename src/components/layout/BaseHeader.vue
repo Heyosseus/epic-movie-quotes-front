@@ -28,7 +28,7 @@
           </div>
           <div
             v-if="showNotifications"
-            class="absolute bg-black block z-0 sm:hidden lg:block w-12 h-8 lg:w-14 lg:h-14 rotate-45 top-16 right-24 lg:top-20 lg:right-64"
+            class="absolute bg-black block z-0 sm:hidden lg:block w-9 h-7 lg:w-12 lg:h-12 rotate-45 top-16 right-24 lg:top-20 lg:right-60"
           ></div>
 
           <div
@@ -234,11 +234,10 @@ onMounted(async () => {
 })
 
 const fetchNotifications = () => {
-  AxiosInstance.get('/api/notifications')
-    .then((response) => {
-      notification.value = response.data
-      unread.value = notification.value.filter((notification) => notification.read === 0)
-    })
+  AxiosInstance.get('/api/notifications').then((response) => {
+    notification.value = response.data
+    unread.value = notification.value.filter((notification) => notification.read === 0)
+  })
 }
 
 watch(notification, () => {
@@ -251,6 +250,8 @@ AxiosInstance.get('/api/check-session').then((response) => {
 
   if (isSessionActive || isGoogleAuthenticated) {
     authStore.setIsUserAuthenticated(true)
+  } else if (router.currentRoute.value.name === 'home' || router.currentRoute.value.name === 'login') {
+    return
   } else {
     router.push({ name: 'session-expired' })
   }
