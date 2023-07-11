@@ -1,37 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const HomeView = () => import('@/views/HomeView.vue')
-const Activation = () => import('@/views/ActivationView.vue')
-const ThankYouView = () => import('@/views/ThankYouView.vue')
-const NewsFeedView = () => import('@/views/feeds/NewsFeedView.vue')
-const MovieListView = () => import('@/views/feeds/MovieListView.vue')
-const LoginModal = () => import('@/components/modals/auth/LoginModal.vue')
-const RegisterModal = () => import('@/components/modals/auth/RegisterModal.vue')
-const ErrorView = () => import('@/views/errors/ErrorView.vue')
-const ForbiddenView = () => import('@/views/errors/ForbiddenView.vue')
-const ForgotPassword = () => import('@/components/modals/forgot_password/ForgotPassword.vue')
-const ResetPassword = () => import('@/components/modals/forgot_password/ResetPassword.vue')
-const UpdatePassword = () => import('@/components/modals/forgot_password/UpdatePassword.vue')
-const SuccessModal = () => import('@/components/modals/forgot_password/SuccessModal.vue')
-const LinkExpired = () => import('@/components/modals/forgot_password/LinkExpired.vue')
-const SessionExpired = () => import('@/components/modals/forgot_password/SessionExpired.vue')
-const AddMovieModal = () => import('@/components/modals/movies/AddMovieModal.vue')
-const MovieDescriptionView = () => import('@/views/feeds/MovieDescriptionView.vue')
-const AddQuoteModal = () => import('@/components/modals/quotes/AddQuoteModal.vue')
-const ProfileModal = () => import('@/components/modals/ProfileModal.vue')
-const MenuSidebar = () => import('@/components/modals/MenuSidebar.vue')
-const SearchHeader = () => import('@/components/modals/SearchHeader.vue')
-const UpdateQuoteModal = () => import('@/components/modals/quotes/UpdateQuoteModal.vue')
-const UpdateMovieModal = () => import('@/components/modals/movies/UpdateMovieModal.vue')
-const ViewQuoteModal = () => import('@/components/modals/quotes/ViewQuoteModal.vue')
-const SuccessEmail = () => import('@/components/modals/forgot_password/SuccessEmail.vue')
-const WriteNewQuoteModal = () => import('@/components/modals/quotes/WriteNewQuoteModal.vue')
-const EditUsernameModal = () => import('@/components/modals/profile/EditUsernameModal.vue')
-const EditEmailModal = () => import('@/components/modals/profile/EditEmailModal.vue')
-const AreYouSure = () => import('@/components/modals/profile/AreYouSure.vue')
-const FlashMessages = () => import('@/components/modals/profile/FlashMessages.vue')
-const AreYouSureForEmail = () => import('@/components/modals/profile/AreYouSureForEmail.vue')
-const ThanksForGoogle = () => import('@/views/ThanksForGoogle.vue')
 import { useAuthStore } from '@/stores/auth.js'
 
 const authGuard = (to, from, next) => {
@@ -54,119 +22,123 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: import('@/views/HomeView.vue'),
       props: true,
       children: [
         {
           path: '/login',
           name: 'login',
-          component: LoginModal
+          component: import('@/components/modals/auth/LoginModal.vue')
         },
         {
           path: '/register',
           name: 'register',
-          component: RegisterModal
+          component: import('@/components/modals/auth/RegisterModal.vue')
         },
         {
           path: '/forgot-password',
           name: 'forgot-password',
-          component: ForgotPassword,
+          component: import('@/components/modals/forgot_password/ForgotPassword.vue'),
           beforeEnter: authGuard
         },
         {
           path: '/reset-password',
           name: 'reset-password',
-          component: ResetPassword,
+          component: import('@/components/modals/forgot_password/ResetPassword.vue'),
           beforeEnter: authGuard
         },
         {
           path: '/update-password',
           name: 'update-password',
           props: true,
-          component: UpdatePassword,
+          component: import('@/components/modals/forgot_password/UpdatePassword.vue'),
           beforeEnter: authGuard
         },
         {
           path: '/success',
           name: 'success',
           props: true,
-          component: SuccessModal
+          component: import('@/components/modals/forgot_password/SuccessModal.vue')
         },
         {
           path: '/success-email',
           name: 'success-email',
-          component: SuccessEmail
+          component: import('@/components/modals/forgot_password/SuccessEmail.vue')
         },
         {
           path: '/link-expired',
           name: 'link-expired',
-          component: LinkExpired
+          component: import('@/components/modals/forgot_password/LinkExpired.vue')
         }
       ]
     },
     {
       path: '/activation',
       name: 'activation',
-      component: Activation
+      component: import('@/views/ActivationView.vue')
     },
     {
       path: '/thank-you',
       name: 'thank-you',
-      component: ThankYouView
+      component: import('@/views/ThankYouView.vue')
     },
     {
       path: '/thanks-google',
       name: 'thanks-google',
-      component: ThanksForGoogle
+      component: import('@/views/ThanksForGoogle.vue')
     },
     {
       path: '/news-feed',
       name: 'news-feed',
-      component: NewsFeedView,
+      component: () => import('@/views/feeds/NewsFeedView.vue'),
       beforeEnter: authGuard,
       props: true,
       children: [
         {
           path: '/menu',
           name: 'menu',
-          component: MenuSidebar
+          component: import('@/components/modals/MenuSidebar.vue')
         },
         {
           path: '/search',
           name: 'search',
-          component: SearchHeader,
+          component: import('@/components/modals/SearchHeader.vue'),
           props: true
         },
         {
           path: '/write-quote',
           name: 'write-quote',
-          component: WriteNewQuoteModal
+          component: import('@/components/modals/quotes/WriteNewQuoteModal.vue')
         }
       ]
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: ErrorView
+      component: import('@/views/errors/ErrorView.vue')
     },
-    { path: '/forbidden', name: 'forbidden', component: ForbiddenView },
+    {
+      path: '/forbidden',
+      name: 'forbidden',
+      component: import('@/views/errors/ForbiddenView.vue')
+    },
 
     {
       path: '/profile',
       name: 'profile',
       beforeEnter: authGuard,
-      component: ProfileModal,
+      component: import('@/components/modals/ProfileModal.vue'),
       children: [
         {
           path: '/edit-username',
           name: 'edit-username',
-          component: EditUsernameModal,
+          component: import('@/components/modals/profile/EditUsernameModal.vue'),
           props: true,
           children: [
             {
               path: '/username-update',
               name: 'are-you-sure',
-              component: AreYouSure,
+              component: import('@/components/modals/profile/AreYouSure.vue'),
               props: true
             }
           ]
@@ -174,13 +146,13 @@ const router = createRouter({
         {
           path: '/edit-email',
           name: 'edit-email',
-          component: EditEmailModal,
+          component: import('@/components/modals/profile/EditEmailModal.vue'),
           props: true,
           children: [
             {
               path: '/email-update',
               name: 'are-you-sure-for-email',
-              component: AreYouSureForEmail,
+              component: import('@/components/modals/profile/AreYouSureForEmail.vue'),
               props: true
             }
           ]
@@ -189,55 +161,55 @@ const router = createRouter({
         {
           path: '/flash-messages',
           name: 'flash-messages',
-          component: FlashMessages
+          component: import('@/components/modals/profile/FlashMessages.vue')
         }
       ]
     },
     {
       path: '/movie-list',
       name: 'movie-list',
-      component: MovieListView,
+      component: import('@/views/feeds/MovieListView.vue'),
       beforeEnter: authGuard,
       children: [
         {
           path: '/add-movie',
           name: 'add-movie',
-          component: AddMovieModal
+          component: import('@/components/modals/movies/AddMovieModal.vue')
         },
         {
           path: '/update-movie/:id',
           name: 'update-movie',
-          component: UpdateMovieModal
+          component: import('@/components/modals/movies/UpdateMovieModal.vue')
         }
       ]
     },
     {
       path: '/movie/:id',
       name: 'description',
-      component: MovieDescriptionView,
+      component: import('@/views/feeds/MovieDescriptionView.vue'),
       beforeEnter: authGuard,
       children: [
         {
           path: '/add-quote/:id',
           name: 'add-quote',
-          component: AddQuoteModal
+          component: import('@/components/modals/quotes/AddQuoteModal.vue')
         },
         {
           path: '/movie/:movie_id/update-quote/:id',
           name: 'update-quote',
-          component: UpdateQuoteModal
+          component: import('@/components/modals/quotes/UpdateQuoteModal.vue')
         },
         {
           path: '/movie/:movie_id/view-quote/:id',
           name: 'view-quote',
-          component: ViewQuoteModal
+          component: import('@/components/modals/quotes/ViewQuoteModal.vue')
         }
       ]
     },
     {
       path: '/session-expired',
       name: 'session-expired',
-      component: SessionExpired
+      component: import('@/components/modals/forgot_password/SessionExpired.vue')
     }
   ]
 })

@@ -14,7 +14,9 @@
 
       <router-link :to="{ name: 'menu' }"></router-link>
       <div class="flex items-center sm:justify-between sm:w-80">
-        <IconSearch class="mt-2 w-14 lg:hidden" @click="router.push({ name: 'search' })" />
+        <router-link :to="{ name: 'search' }">
+          <IconSearch class="mt-2 w-14 lg:hidden"
+        /></router-link>
         <div>
           <div class="relative cursor-pointer" @click="showNotifications = !showNotifications">
             <IconNotification class="mt-2 ml-2 w-6 lg:w-10 relative z-0" />
@@ -66,13 +68,20 @@
                     ]"
                   >
                     <img
-                      v-if="notifications"
-                      :src="getImages(notifications.profile_picture || notifications.user.profile_picture)"
+                      v-if="!null"
+                      :src="
+                        getImages(
+                          notifications.profile_picture || notifications.user?.profile_picture
+                        )
+                      "
                       alt=""
                       class="object-fit w-20 rounded-full"
                     />
                     <img
-                      v-else
+                      v-if="
+                        notifications.user?.profile_picture === null ||
+                        notifications.profile_picture === null
+                      "
                       src="@/assets/images/default_picture.jpg"
                       alt="profile"
                       class="object-fit w-20 rounded-full"
@@ -195,12 +204,12 @@ const logout = () => {
   })
 }
 
-const markAsRead = async(notificationId) => {
-  await AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, { _method: 'PUT' }).then(
-    () => {
-      updateUnreadNotifications()
-    }
-  )
+const markAsRead = async (notificationId) => {
+  await AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, {
+    _method: 'PUT'
+  }).then(() => {
+    updateUnreadNotifications()
+  })
 }
 
 onMounted(async () => {
@@ -229,9 +238,6 @@ const fetchNotifications = () => {
     .then((response) => {
       notification.value = response.data
       unread.value = notification.value.filter((notification) => notification.read === 0)
-    })
-    .catch((error) => {
-      console.log(error.response)
     })
 }
 

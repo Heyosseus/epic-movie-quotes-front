@@ -100,7 +100,6 @@ import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import { onClickOutside } from '@vueuse/core'
 const router = useRouter()
-const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
 const showPassword = ref(false)
 const emailOrName = ref('')

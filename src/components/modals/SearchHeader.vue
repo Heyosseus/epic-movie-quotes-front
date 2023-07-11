@@ -42,7 +42,6 @@ const search = () => {
       quotes.value = response.data.data
       quoteStore.updateQuotes(quotes)
       router.push({ name: 'news-feed' })
-      console.log(quotes.value)
     })
   } else if (searchQuery.value.startsWith('#')) {
     const quoteQuery = searchQuery.value.substring(1)
@@ -50,7 +49,6 @@ const search = () => {
       quotes.value = response.data.data
       quoteStore.updateQuotes(quotes)
       router.push({ name: 'news-feed' })
-      console.log(quotes.value)
     })
   }
 }

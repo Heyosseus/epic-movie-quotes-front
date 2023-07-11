@@ -134,8 +134,7 @@ const register = async () => {
     password: password.value,
     password_confirmation: password_confirmation.value
   })
-    .then((res) => {
-      console.log(res)
+    .then(() => {
       router.push({ name: 'activation' })
     })
     .catch((err) => {

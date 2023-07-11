@@ -1,16 +1,14 @@
 <template>
   <div>
     <BaseHeader />
-    <div class="bg-[#181624] min-h-full">
+    <div class="bg-home min-h-full">
       <div
         class="flex bg-headerBg flex-col lg:bg-transparent items-center lg:flex lg:flex-row lg:items-start"
       >
         <BaseSidebar />
         <div class="py-4 px-0 w-full lg:py-12 lg:px-20 lg:w-profile flex flex-col">
-          <p class="hidden bg-[#181624] lg:block text-xl">{{ $t('profile.profile') }}</p>
-          <router-link
-            :to="{ name: 'news-feed' }"
-            class="block bg-[#181624] py-6 px-8 w-full lg:hidden"
+          <p class="hidden bg-home lg:block text-xl">{{ $t('profile.profile') }}</p>
+          <router-link :to="{ name: 'news-feed' }" class="block bg-home py-6 px-8 w-full lg:hidden"
             ><IconArrowBack
           /></router-link>
           <div class="relative"></div>
@@ -79,7 +77,6 @@ import { useRouter } from 'vue-router'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import AxiosInstance from '@/config/axios/index'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import ProfileForm from '@/components/profile/ProfileForm.vue'
@@ -113,33 +110,23 @@ const updateProfile = () => {
     formData.append('password', profile_password.value)
   }
 
-  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/profile`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then(() => {
-      if (innerWidth < 624 || localStorage.getItem('isGoogleAuthenticated') === 'true') {
-        router.push({ name: 'flash-messages' })
-      } else {
-        router.push({ name: 'reset-password' })
-      }
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+  AxiosInstance.post(`/api/profile`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(() => {
+    if (innerWidth < 624 || localStorage.getItem('isGoogleAuthenticated') === 'true') {
+      router.push({ name: 'flash-messages' })
+    } else {
+      router.push({ name: 'reset-password' })
+    }
+  })
 }
 
 onMounted(() => {
-  AxiosInstance.get('/api/user')
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+  AxiosInstance.get('/api/user').then((res) => {
+    user.value = res.data
+  })
 })
 </script>
 <style>

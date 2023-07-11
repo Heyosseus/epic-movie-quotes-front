@@ -279,7 +279,6 @@ const drop = (e) => {
   if (e.dataTransfer.files) {
     state.files = Array.from(e.dataTransfer.files)
     onChange()
-    console.log(state.files)
   }
   state.isDragging = false
 }

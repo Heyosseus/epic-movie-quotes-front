@@ -113,9 +113,6 @@ import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
-import { useAuthUser } from '@/stores/user'
-
-const authUserStore = useAuthUser()
 const quotes = ref([])
 const quoteId = ref(null)
 const comment = ref('')
@@ -128,6 +125,11 @@ const searchQuery = ref('')
 const searchResults = ref([])
 const showSearchBar = ref(false)
 const showButton = ref(true)
+const root = ref(null)
+const target = ref(null)
+const isVisible = ref(false)
+const perPage = 2
+const isLoading = ref(false)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
@@ -201,9 +203,7 @@ const addLikes = (quote) => {
         }
       }
     })
-    .catch((error) => {
-      console.error(error)
-    })
+
 }
 
 const loadQuotes = () => {
@@ -227,15 +227,12 @@ const loadQuotes = () => {
     })
   }
 }
+onMounted(() => {
+  AxiosInstance.get('/api/user').then((response) => {
+    user.value = response.data
+  })
+})
 
-authUserStore.setAuthUser()
-user.value = authUserStore.authUser
-const root = ref(null)
-const target = ref(null)
-const isVisible = ref(false)
-const perPage = 2
-
-const isLoading = ref(false)
 const { stop } = useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {

@@ -254,27 +254,16 @@ const editMovie = () => {
   formData.append('user_id', user.value.id)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/update-movies/${movieId}`, formData)
-    .then((res) => {
-      console.log(res)
-      router.back()
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-      console.log(genres.value)
-    })
+  axios.post(`${backendUrl}/api/update-movies/${movieId}`, formData).then((res) => {
+    console.log(res)
+    router.back()
+  })
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/movies/${movieId}`)
-    .then((response) => {
-      movies.value = response.data.data
-      console.log(movies.value)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  AxiosInstance.get(`/api/movies/${movieId}`).then((response) => {
+    movies.value = response.data.data
+  })
 })
 
 onMounted(async () => {

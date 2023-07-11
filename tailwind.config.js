@@ -9,7 +9,8 @@ export const theme = {
       search: '#CED4DA',
       movie: '#11101A',
       field: '#CED4DA',
-      genre: '#6C757D'
+      genre: '#6C757D',
+      home: '#181624'
     },
     width: {
       form: '688px',
