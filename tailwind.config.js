@@ -10,12 +10,15 @@ export const theme = {
       movie: '#11101A',
       field: '#CED4DA',
       genre: '#6C757D',
+      home: '#181624'
     },
     width: {
       form: '688px',
       quote: '840px',
       profile: '1200px',
-      notification: '961px'
+      notification: '961px',
+      content: '904px',
+      flash: '431px'
     },
     height: {
       posterHeight: '441px',

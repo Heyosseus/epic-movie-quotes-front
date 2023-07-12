@@ -2,12 +2,12 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="fixed inset-0 w-screen min-h-full flex flex-col items-center justify-center bg-transparentLandingBg overflow-auto"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8 max-h-full" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Edit Movie</h1>
-            <IconClose @click="router.back()"/>
+            <h1 class="text-2xl mx-auto">{{ $t('movie.edit_movie') }}</h1>
+            <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
           <div v-if="user" class="flex items-center mt-6 space-x-4">
@@ -37,7 +37,7 @@
                 <Field
                   type="text"
                   name="title_en"
-                  class="outline-0 bg-transparent w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.en"
                   v-model="title_en"
                 />
@@ -50,27 +50,32 @@
                 <Field
                   type="text"
                   name="title_ka"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.ka"
                   v-model="title_ka"
+                  rules="georgian"
                 />
               </div>
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
-                <label for="" class="text-gray-400 text-sm w-40">genre:</label>
+                <label for="" class="text-gray-400 text-sm w-10 lg:w-[164px]">{{
+                  $t('movie.genres')
+                }}</label>
                 <div
                   v-for="genre in movies.genres"
                   :key="genre.id"
                   class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer"
                   @click="removeGenre(genre)"
                 >
-                  {{ JSON.parse(genre.name).en }}
+                  {{
+                    $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                  }}
                 </div>
                 <select
                   name="genres"
                   id=""
-                  class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded w-40"
+                  class="bg-transparent py-2 outline-0 text-white bg-genre lg:px-3 rounded"
                   v-model="selectedGenre"
                   @change="selectedGenreData"
                 >
@@ -78,9 +83,11 @@
                     v-for="genre in genres"
                     :key="genre.id"
                     :value="genre.id"
-                    class="py-2 mt-2 bg-slate-900 w-40"
+                    class="py-2 mt-2 bg-slate-900"
                   >
-                    {{ JSON.parse(genre.name).en }}
+                    {{
+                      $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                    }}
                   </option>
                 </select>
                 <div
@@ -98,7 +105,7 @@
                 <Field
                   type="number"
                   name="release_date"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.release_date"
                   v-model="release_date"
                 />
@@ -110,7 +117,7 @@
                 <Field
                   type="text"
                   name="director_en"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.director).en"
                   v-model="director_en"
                 />
@@ -122,9 +129,10 @@
                 <Field
                   type="text"
                   name="director_ka"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.director).ka"
                   v-model="director_ka"
+                  rules="georgian"
                 />
               </div>
               <div
@@ -135,7 +143,7 @@
                   as="textarea"
                   type="text"
                   name="description_en"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_en"
                 />
@@ -148,9 +156,10 @@
                   as="textarea"
                   type="text"
                   name="description_ka"
-                  class="outline-0 bg-transparent w-full sm:w-full px-2 mt-6 rounded-md text-lg placeholder-white"
+                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_ka"
+                  rules="georgian"
                 />
               </div>
 
@@ -158,18 +167,18 @@
                 <img
                   :src="getImages(movies.poster)"
                   alt=""
-                  class="w-full object-contain h-52 rounded-md"
+                  class="w-32 lg:w-80 object-contain h-40 lg:h-52 rounded-md"
                 />
                 <label
                   class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
                 >
-                  <p class="uppercase text-primary mb-6">replace photo</p>
+                  <p class="uppercase text-primary mb-6">{{ $t('movie.replace_photo') }}</p>
                   <IconPhoto class="inline-block" />
-                  <span class="ml-2 text-sm lg:text-md">Drag & drop your image here or</span>
+                  <span class="ml-2 text-sm lg:text-md">{{ $t('movie.drag_and_drop') }}</span>
                   <span
                     class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
                   >
-                    Choose File
+                    {{ $t('movie.choose_file') }}
                   </span>
                   <Field
                     type="file"
@@ -186,7 +195,7 @@
                 class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
                 type="submit"
               >
-                Save changes
+                {{ $t('profile.save') }}
               </button>
             </div>
           </Form>
@@ -206,6 +215,9 @@ import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 
 import IconPhoto from '@/components/icons/IconPhoto.vue'
+import { useAuthUser } from '@/stores/user'
+
+const authUserStore = useAuthUser()
 const router = useRouter()
 const route = useRoute()
 const movies = ref(null)
@@ -222,6 +234,7 @@ const image = ref(null)
 const genres = ref([])
 const user = ref(null)
 const modalRef = ref(null)
+const selectedGenre = ref(null)
 
 onClickOutside(modalRef, () => {
   router.back()
@@ -230,7 +243,7 @@ onClickOutside(modalRef, () => {
 const editMovie = () => {
   const formData = new FormData()
   formData.append('poster', image.value)
-  formData.append('genre', genres.value)
+  formData.append('genre', selectedGenre.value)
   formData.append('release_date', release_date.value)
   formData.append('director_en', director_en.value)
   formData.append('director_ka', director_ka.value)
@@ -238,39 +251,24 @@ const editMovie = () => {
   formData.append('description_ka', description_ka.value)
   formData.append('title_en', title_en.value)
   formData.append('title_ka', title_ka.value)
+  formData.append('user_id', user.value.id)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/update-movies/${movieId}`, formData)
-    .then((res) => {
-      console.log(res)
-      router.back()
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+  axios.post(`${backendUrl}/api/update-movies/${movieId}`, formData).then((res) => {
+    console.log(res)
+    router.back()
+  })
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/movies/${movieId}`)
-    .then((response) => {
-      movies.value = response.data.movie
-      genres.value = response.data.movie.genre
-      console.log(movies.value)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  AxiosInstance.get(`/api/movies/${movieId}`).then((response) => {
+    movies.value = response.data.data
+  })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 
 const removeGenre = (genre) => {

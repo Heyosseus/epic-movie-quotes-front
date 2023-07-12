@@ -1,57 +1,40 @@
 # epic-movie-quotes-front
 
-This template should help get you started developing with Vue 3 in Vite.
+Welcome to my epic movie quotes website! My platform provides a seamless experience for users to create an account, add their favorite movies, and share memorable quotes from those films.
 
-## Recommended IDE Setup
+As a registered user, you can explore a vast collection of movie quotes contributed by others, like, and comment on their posts. Real-time notification system ensures that you never miss out on any activity, keeping you up to date with the latest quotes, likes, and comments on your own posts.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Installation 
 
-## Customize configuration
+Clone the repository:
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+```sh
+https://github.com/RedberryInternship/rati-rukhadze-epic-movie-quotes-front.git
+```
 
-## Project Setup
+Navigate to the project directory:
+
+```sh
+ cd epic-movie-quotes-front
+```
+
+Install the dependencies:
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+Start the development server:
 
 ```sh
-npm run dev
+npm run serve
 ```
 
-### Compile and Minify for Production
+### Tech Stack:
 
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- Vue.js: JavaScript framework for building user interfaces.
+- VeeValidate: for validation
+- Pinia: for state management
+- Vue Router: for routing
+- tailwind css: for styling
+- pusher.js: for broadcasting

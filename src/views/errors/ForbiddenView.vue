@@ -6,16 +6,16 @@
     </div>
 
     <div>
-      <h1 class="text-2xl lg:text-5xl text-center">You shall not pass!</h1>
+      <h1 class="text-2xl lg:text-5xl text-center">{{ $t('home.shall_not_pass') }}</h1>
       <p class="text-sm lg:text-lg mt-6 text-center">
-        Sorry, but you don't have permission to access this page
+        {{ $t('home.permission') }}
       </p>
     </div>
     <router-link
       :to="{ name: 'home' }"
       class="py-2 px-6 bg-red-700 text-white rounded flex items-center justify-center mx-auto mt-6"
     >
-      Return home
+      {{ $t('home.return_home') }}
     </router-link>
   </div>
 </template>

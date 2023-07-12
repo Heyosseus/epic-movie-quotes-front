@@ -2,11 +2,11 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-full min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg max-h-full overflow-auto"
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Add Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.add_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -20,7 +20,7 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
@@ -37,21 +37,25 @@
               <div class="flex flex-col">
                 <div class="flex space-x-4 mr-auto mb-4 sm:mb-10 mt-2 sm:mt-4 text-[#DDCCAA]">
                   <div class="flex space-x-2">
-                    <h1 class="uppercase text-sm lg:text-lg">{{ movie.title.en }}</h1>
+                    <h1 class="uppercase text-sm lg:text-lg">
+                      {{ $i18n.locale === 'en' ? movie.title.en : movie.title.ka }}
+                    </h1>
                     <p class="text-sm lg:text-lg">({{ movie.release_date }})</p>
                   </div>
                 </div>
-                <div class="flex space-x-4">
+                <div class="flex flex-wrap">
                   <div
-                    v-for="item in genre"
-                    :key="item.id"
-                    class="text-white bg-genre py-1 px-3 rounded"
+                    v-for="genre in movie.genres"
+                    :key="genre.id"
+                    class="text-white bg-genre py-1 px-3 rounded text-sm cursor-pointer m-2"
                   >
-                    {{ item.value }}
+                    {{
+                      $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                    }}
                   </div>
                 </div>
                 <div class="flex space-x-4 mt-2 sm:mt-6">
-                  <p class="text-gray-400 text-sm lg:text-lg">Director:</p>
+                  <p class="text-gray-400 text-sm lg:text-lg">{{ $t('movie.director') }}</p>
                   <p class="text-white text-sm lg:text-lg">{{ JSON.parse(movie.director).en }}</p>
                 </div>
               </div>
@@ -60,11 +64,7 @@
           <div v-else></div>
 
           <!-- ----------------------------------------- -->
-          <Form
-            class="flex flex-col w-full mt-4 sm:mt-6"
-            @submit="addQuote"
-            enctype="multipart/form-data"
-          >
+          <Form class="flex flex-col w-full mt-4 sm:mt-6" enctype="multipart/form-data">
             <Field
               as="textarea"
               type="text"
@@ -84,58 +84,70 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md text-lg"
               placeholder='"ციტატა ქართულ ენაზე."'
               v-model="quote_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
             <label
               class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Drag & drop your image here or</span>
+
+              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
-              <Field
+
+              <input
                 type="file"
+                multiple
                 name="image"
+                id="fileInput"
                 class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
+                @change="onChange"
+                ref="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
             </label>
 
             <label
               class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
             >
               <IconPhoto class="inline-block" />
-              <span class="text-sm ml-2 lg:text-md">Upload image</span>
+
+              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
-              <Field
+
+              <input
                 type="file"
+                multiple
                 name="image"
+                id="fileInput"
                 class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
+                @change="onChange"
+                ref="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
             </label>
 
             <button
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
-              type="submit"
+              @click="addQuote"
             >
-              Add quote
+              {{ $t('movie.add_quote') }}
             </button>
           </Form>
         </div>
@@ -147,31 +159,38 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,  reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
+import { useQuoteStore } from '@/stores/quotes.js'
+import { useAuthUser } from '@/stores/user'
 
+const authUserStore = useAuthUser()
+const quoteStore = useQuoteStore()
 const router = useRouter()
 const movie = ref(null)
 
 const quote_en = ref('')
 const quote_ka = ref('')
-const genre = ref(null)
-const image = ref(null)
 const user = ref(null)
 const modalRef = ref(null)
 
-onClickOutside(modalRef, () => {
-  router.back()
-})
+onClickOutside(
+  modalRef,
+  () => {
+    router.back()
+  },
+  { passive: true }
+)
 
-const addQuote = () => {
+const addQuote = (e) => {
+  e.preventDefault()
   const formData = new FormData()
-  formData.append('thumbnail', image.value)
-  formData.append('user_id', movie.value.user_id)
+  formData.append('thumbnail', state.files[0])
+  formData.append('user_id', user.value.id)
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', movie.value.id)
@@ -180,7 +199,7 @@ const addQuote = () => {
   axios
     .post(`${backendUrl}/api/add-quotes`, formData)
     .then((res) => {
-      console.log(res)
+      quoteStore.addQuote(res.data.quote)
       router.back()
     })
     .catch((err) => {
@@ -192,21 +211,46 @@ onMounted(() => {
   const movieId = router.currentRoute.value.params.id
   AxiosInstance.get(`/api/movies/${movieId}`)
     .then((response) => {
-      movie.value = response.data.movie
-      genre.value = JSON.parse(response.data.movie.genre)
+      movie.value = response.data.data
+      user.value = response.data.data.user
     })
     .catch((error) => {
       console.error(error)
     })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
+
+const onChange = () => {
+  state.files.push(...fileInput.value.files)
+}
+
+const dragover = (e) => {
+  e.preventDefault()
+  state.isDragging = true
+}
+
+const dragleave = (e) => {
+  e.preventDefault()
+  state.isDragging = false
+}
+
+const drop = (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.files) {
+    state.files = Array.from(e.dataTransfer.files)
+    onChange()
+    console.log(state.files)
+  }
+  state.isDragging = false
+}
+
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 </script>

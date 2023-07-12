@@ -1,0 +1,23 @@
+{
+  "add_movie": "Add Movie",
+  "choose_file": "Choose File",
+  "drag_and_drop": "Drag & drop your image here or",
+  "edit_movie": "Edit Movie",
+  "replace_photo": "Replace Photo",
+  "upload_photo": "Upload Photo",
+  "genres": "Genres:",
+  "add_quote": "Add Quote",
+  "view_quote": "View Quote",
+  "director": "Director:",
+  "edit": "Edit",
+  "delete": "Delete",
+  "edit_quote": "Edit Quote",
+  "write_quote": "Write new quote",
+  "change_photo": "Change Photo",
+  "view_comments": "View other comments",
+  "hide_comments": "Hide comments",
+  "write_a_comment_placeholder": "Write a comment...",
+  "post": "Post",
+  "description": "Description:",
+  "click_here_to_see": "Click here to see the movie"
+}

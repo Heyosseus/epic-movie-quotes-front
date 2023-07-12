@@ -2,11 +2,11 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="fixed inset-0 w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg overflow-auto"
       >
-        <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie px-4 sm:px-8 py-4 sm:py-8 max-h-auto" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto">Add Movie</h1>
+            <h1 class="text-2xl mx-auto">{{ $t('movie.add_movie') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-4 sm:mt-6"></div>
@@ -31,7 +31,7 @@
             </div>
             <h1>{{ user.name }}</h1>
           </router-link>
-          <Form class="flex flex-col mt-4 sm:mt-6" @submit="addMovie" enctype="multipart/form-data">
+          <Form class="flex flex-col mt-4 sm:mt-6" enctype="multipart/form-data">
             <Field
               name="title_en"
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
@@ -46,17 +46,18 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="ფილმის სახელი"
               v-model="title_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="title_ka" class="text-red-600 mt-2" />
             <div
-              class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md"
+              class="flex w-full space-x-6 mt-4 border border-gray-500 bg-transparent sm:w-form sm:mt-6 px-2 py-3 rounded-md overflow-x-auto"
             >
+              <p class="text-gray-400 mt-1">{{ $t('movie.genres') }}</p>
               <select
                 name="genres"
                 id=""
-                class="bg-transparent py-2 outline-0 text-white bg-genre px-3 rounded"
+                class="bg-transparent py-2 outline-0 text-white bg-genre px-2 rounded"
                 v-model="selectedGenre"
                 @change="selectedGenreData"
               >
@@ -66,7 +67,9 @@
                   :value="genre.id"
                   class="py-2 mt-2 bg-slate-900"
                 >
-                  {{ JSON.parse(genre.name).en }}
+                  {{
+                    $i18n.locale === 'en' ? JSON.parse(genre.name).en : JSON.parse(genre.name).ka
+                  }}
                 </option>
               </select>
               <div
@@ -104,7 +107,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="რეჟისორი"
               v-model="director_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="director_ka" class="text-red-600 mt-2" />
@@ -126,59 +129,40 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md"
               placeholder="ფილმის აღწერა"
               v-model="description_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="description_ka" class="text-red-600 mt-2" />
             <label
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+              @dragover="dragover"
+              @dragleave="dragleave"
+              @drop="drop"
             >
               <IconPhoto class="inline-block" />
-              <span class="ml-2 text-sm lg:text-lg">Drag & drop your image here or</span>
+              <span class="ml-2 text-sm lg:text-lg">{{ $t('movie.drag_and_drop') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
-                Choose File
-              </span>
-              <Field
-                type="file"
-                name="image"
-                class="hidden"
-                placeholder="ფილმის აღწერა"
-                v-model="image"
-                rules="required"
-              >
-              </Field>
-              <ErrorMessage name="image" class="text-red-600 mt-2" />
-            </label>
-
-            <!-- <label
-              class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
-            >
-              <IconPhoto class="inline-block" />
-              <span class="ml-2 text-sm lg:text-lg">Drag & drop your image here or</span>
-              <span
-                class="inline-block bg-[#9747FF] px-2 py-3 rounded items-center outline-0 mt-4 sm:mt-6 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-                @click="chooseFile"
-              >
-                Choose File
+                {{ $t('movie.choose_file') }}
               </span>
               <input
                 type="file"
+                multiple
                 name="image"
+                id="fileInput"
                 class="hidden"
-                placeholder="ფილმის აღწერა"
+                @change="onChange"
                 ref="fileInput"
-                @change="handleFileChange"
+                accept=".pdf,.jpg,.jpeg,.png"
               />
               <ErrorMessage name="image" class="text-red-600 mt-2" />
-            </label> -->
-
+            </label>
             <button
               class="bg-red-600 py-3 rounded flex items-center outline-0 mt-4 sm:mt-6 justify-center text-lg"
-              type="submit"
+              @click="addMovie"
             >
-              Add movie
+              {{ $t('movie.add_movie') }}
             </button>
           </Form>
         </div>
@@ -189,13 +173,17 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
-import { onMounted, ref } from 'vue'
-import AxiosInstance from '../../../config/axios'
+import { onMounted, ref, reactive } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
+import { useMovieStore } from '@/stores/movie.js'
+import { useAuthUser } from '@/stores/user'
+
+const authUserStore = useAuthUser()
+const movieStore = useMovieStore()
 
 const user = ref(null)
 const router = useRouter()
@@ -206,7 +194,7 @@ const director_ka = ref('')
 const description_en = ref('')
 const description_ka = ref('')
 const release_date = ref('')
-const image = ref(null)
+
 
 const genres = ref(null)
 const genres_id = ref([])
@@ -232,21 +220,10 @@ const selectedGenreData = () => {
   }
 }
 
-const addMovie = () => {
-  AxiosInstance.post('/api/add-genres', {
-    genres: selected.value
-  })
-    .then((res) => {
-      console.log(res.data.movies)
-      console.log('genres added')
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
-  console.log(genres_id.value)
-
+const addMovie = (e) => {
+  e.preventDefault()
   const formData = new FormData()
-  formData.append('poster', image.value)
+  formData.append('poster', state.files[0])
   formData.append('title_en', title_en.value)
   formData.append('title_ka', title_ka.value)
   formData.append('director_en', director_en.value)
@@ -259,15 +236,11 @@ const addMovie = () => {
 
   console.log(formData)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/add-movies`, formData)
-    .then((res) => {
-      console.log(res)
-      router.push({ name: 'movie-list' })
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+  axios.post(`${backendUrl}/api/add-movies`, formData).then((res) => {
+    console.log(res)
+    movieStore.addMovie(res.data.data)
+    router.push({ name: 'movie-list' })
+  })
 }
 
 onMounted(async () => {
@@ -277,52 +250,36 @@ onMounted(async () => {
   genres_id.value = res.data.genres.map((genre) => genre.id)
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
-// const fileInput = ref(null)
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
 
-// const chooseFile = () => {
-//   fileInput.value.click()
-// }
+const onChange = () => {
+  state.files.push(...fileInput.value.files)
+}
 
-// const handleFileChange = () => {
-//   const file = fileInput.value.files[0]
-//   const reader = new FileReader()
-//   reader.onload = () => {
-//     image.value = reader.result
-//   }
-//   reader.readAsDataURL(file)
-// }
+const dragover = (e) => {
+  e.preventDefault()
+  state.isDragging = true
+}
 
-// const draggableElement = ref(null)
-// const dropTarget = ref(null)
+const dragleave = (e) => {
+  e.preventDefault()
+  state.isDragging = false
+}
 
-// const handleDragOver = (event) => {
-//   event.preventDefault()
-// }
-
-// const handleDrop = (event) => {
-//   event.preventDefault()
-
-//   const draggedElement = draggableElement.value
-//   if (dropTarget.value) {
-//     dropTarget.value.appendChild(draggedElement)
-//     const droppedFile = event.dataTransfer.files[0]
-
-//     const reader = new FileReader()
-//     reader.onload = () => {
-//       image.value = reader.result
-//     }
-//     reader.readAsDataURL(droppedFile)
-//   }
-//   draggableElement.value = null
-//   dropTarget.value = null
-// }
+const drop = (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.files) {
+    state.files = Array.from(e.dataTransfer.files)
+    onChange()
+  }
+  state.isDragging = false
+}
 </script>

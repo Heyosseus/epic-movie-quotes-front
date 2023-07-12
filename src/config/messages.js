@@ -17,7 +17,8 @@ configure({
         max: 'This field must be less than 15 characters',
         alpha: 'This field may only contain alphabetic characters',
         confirmed: 'Password confirmation does not match',
-        min_value: 'no film before 1860 year'
+        min_value: 'No film before 1860 year',
+        georgian: 'This field must be georgian'
       },
       names: {}
     },
@@ -31,7 +32,8 @@ configure({
         max: ' ველი უნდა შედგებოდეს 15 სიმბოლოსგან',
         alpha: 'სახელის ველი უნდა შეიცავდეს მხოლოდ ანბანის ასოებს',
         confirmed: 'პაროლი არ ემთხვევა',
-        min_value: 'ფილმი არ არსებობდა 1860 წლამდე'
+        min_value: 'ფილმი არ არსებობდა 1860 წლამდე',
+        georgian: 'ველი უნდა შეიცავდეს მხოლოდ ქართულ ასოებს'
       },
       names: {
         email: 'იმეილი',

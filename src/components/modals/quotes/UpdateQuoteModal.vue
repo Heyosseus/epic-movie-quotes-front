@@ -2,11 +2,11 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="absolute w-screen min-h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
         <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
           <div class="flex items-center">
-            <h1 class="text-2xl mx-auto sm:pl-8">Edit Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.edit_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -20,7 +20,7 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
@@ -52,7 +52,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 py-2 rounded-md text-lg"
               placeholder='"ციტატა ქართულ ენაზე."'
               v-model="quote_ka"
-              rules="required"
+              rules="required|georgian"
             >
             </Field>
             <ErrorMessage name="quote_ka" class="text-red-600" />
@@ -71,7 +71,7 @@
                     class="flex flex-col items-center justify-center text-md lg:text-md lg:mt-4 bg-transparentLandingBg rounded-xl px-4 py-6"
                   >
                     <IconPhotoVue />
-                    <p class="mt-2">Change photo</p>
+                    <p class="mt-2">{{ $t('movie.change_photo') }}</p>
                   </span>
                   <Field
                     name="fileInput"
@@ -88,7 +88,7 @@
               class="bg-red-600 py-2 rounded flex items-center outline-0 mt-4 sm:mt-6 sm:py-3 justify-center text-lg"
               type="submit"
             >
-              Save changes
+              {{ $t('profile.save') }}
             </button>
           </Form>
         </div>
@@ -106,7 +106,9 @@ import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import IconPhotoVue from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
+import { useAuthUser } from '@/stores/user'
 
+const authUserStore = useAuthUser()
 const router = useRouter()
 const route = useRoute()
 const quotes = ref(null)
@@ -162,13 +164,8 @@ onMounted(() => {
     })
 })
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+onMounted(async () => {
+  await authUserStore.setAuthUser()
+  user.value = authUserStore.authUser
 })
 </script>

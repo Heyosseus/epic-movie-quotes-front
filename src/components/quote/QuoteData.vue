@@ -1,26 +1,28 @@
 <template>
   <div>
-    <div class="flex items-center lg:space-x-12 mt-20">
+    <div class="flex items-center lg:space-x-12 mt-6">
       <h1 v-if="props.quote" class="hidden sm:block text-sm lg:text-xl">
-        Quotes total ({{ props.quote.length }})
+        {{ $t('base.total') }}({{ props.quote.length }})
       </h1>
-      <h1 v-else class="hidden sm:block text-xl">No quotes yet</h1>
+      <h1 v-else class="hidden sm:block text-xl">{{ $t('base.no_quotes') }}</h1>
       <div
         class="px-2 py-2 bg-red-600 sm:w-48 sm:text-lg sm:bg-red-600 md:px-4 md:py-3 rounded flex items-center space-x-2"
       >
         <IconAddMovie />
-        <button class="" v-if="props.movie">
-          <router-link :to="{ name: 'add-quote', params: { id: movie.id } }">Add Quote</router-link>
+        <button class="w-36 lg:w-52" v-if="props.movie">
+          <router-link :to="{ name: 'add-quote', params: { id: movie.id } }">{{
+            $t('base.add_quote')
+          }}</router-link>
         </button>
         <router-view />
       </div>
     </div>
     <div v-if="props.quote" class="lg:w-form mt-10">
-      <div class="w-[900px] relative">
+      <div class="w-full lg:w-[900px] relative">
         <div
           v-for="quote in props.quote"
           :key="quote.id"
-          class="space-y-6 mt-16 bg-movie px-6 py-8 w-96 lg:w-[800px] rounded-xl relative"
+          class="space-y-6 mt-16 bg-movie px-6 py-8 w-full lg:w-[800px] rounded-xl relative"
         >
           <div class="grid lg:flex items-center space-x-2 break-words relative w-fit lg:w-full">
             <router-link :to="{ name: 'view-quote', params: { movie_id: movie.id, id: quote.id } }">
@@ -40,12 +42,12 @@
 
           <div class="h-[1px] w-full lg:w-form bg-gray-600 mt-6"></div>
           <div class="flex space-x-6">
-            <div class="flex space-x-3" v-if="quote.comments">
-              <span>{{ quote.comments.length }}</span>
+            <div class="flex space-x-3">
+              <span>{{ quote?.comments?.length ?? 0 }}</span>
               <IconComments />
             </div>
             <div class="flex space-x-3">
-              <span>{{ quote.likes.length ?? 0 }} </span>
+              <span>{{ quote?.likes?.length ?? 0 }} </span>
               <IconLikes />
             </div>
           </div>
@@ -61,7 +63,7 @@
               class="flex items-center space-x-4"
             >
               <IconEye />
-              <p class="text-sm lg:text-md">View Quote</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.view_quote') }}</p>
             </router-link>
             <router-link
               v-if="props.movie"
@@ -72,14 +74,14 @@
               class="flex items-center space-x-4"
             >
               <IconEdit />
-              <p class="text-sm lg:text-md">Edit</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.edit') }}</p>
             </router-link>
             <div
               class="flex items-center space-x-4 cursor-pointer"
               @click="handle_delete_quote(quote.id)"
             >
               <IconTrash />
-              <p class="text-sm lg:text-md">Delete</p>
+              <p class="text-sm lg:text-md">{{ $t('movie.delete') }}</p>
             </div>
           </div>
         </div>

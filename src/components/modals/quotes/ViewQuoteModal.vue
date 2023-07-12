@@ -2,16 +2,16 @@
   <div class="relative">
     <teleport to="body">
       <div
-        class="absolute w-full min-h-full flex flex-col items-center justify-center bg-transparentLandingBg"
+        class="fixed inset-0 flex items-center justify-center bg-transparentLandingBg overflow-y-auto"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8 max-h-full" ref="modalRef">
           <div class="flex items-center" v-if="view_quotes">
             <router-link :to="{ name: 'update-quote', params: { movie_id: movieId, id: quote_id } }"
               ><IconEdit class="cursor-pointer"
             /></router-link>
             <div class="w-[1px] bg-gray-500 h-6 ml-6"></div>
             <IconTrash class="cursor-pointer ml-5" @click="handleDeleteQuote" />
-            <h1 class="text-2xl mx-auto sm:pl-8">View Quote</h1>
+            <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.view_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
           <div class="h-[1px] w-full bg-gray-700 mt-6"></div>
@@ -25,7 +25,7 @@
             </div>
             <div v-else>
               <img
-                src="@/assets/images/profile.jpg"
+                src="@/assets/images/default_picture.jpg"
                 alt="profile"
                 class="object-fit w-20 rounded-full"
               />
@@ -107,10 +107,14 @@
             </div>
             <div class="text-sm flex lg:items-center lg:justify-center mt-2 lg:text-lg">
               <div v-if="!view_quotes.showAllComments && view_quotes.comments.length > 2">
-                <button @click="view_quotes.showAllComments = true">View Other Comments</button>
+                <button @click="view_quotes.showAllComments = true">
+                  {{ $t('movie.view_comments') }}
+                </button>
               </div>
               <div v-if="view_quotes.showAllComments">
-                <button @click="view_quotes.showAllComments = false">Hide Comments</button>
+                <button @click="view_quotes.showAllComments = false">
+                  {{ $t('movie.hide_comments') }}
+                </button>
               </div>
             </div>
             <div v-if="view_quotes && view_quotes.user">
@@ -142,7 +146,7 @@
                   <input
                     name="comment"
                     class="w-full rounded-md outline-0 flex lg:flex bg-headerBg py-3 px-6 space-x-4 items-center lg:w-full"
-                    placeholder="write a comment"
+                    :placeholder="$t('movie.write_a_comment_placeholder')"
                     v-model="comment"
                   />
                 </Form>
