@@ -5,7 +5,7 @@
       <div class="flex-col lg:flex lg:flex-row">
         <BaseSidebar class="hidden sm:block" />
         <div
-          class="flex-col lg:justify-between p-4 md:p-20 md:px-32 max-h-[90vh] sm:overflow-y-auto sm:w-full"
+          class="flex-col lg:justify-between p-4 md:p-20 md:px-32 max-h-[90vh] overflow-x-hidden sm:overflow-y-auto sm:w-full"
         >
           <div class="hidden sm:block text-2xl">{{ $t('base.description') }}</div>
           <div v-if="movie" class="w-full mb-4 sm:mt-10">
@@ -51,28 +51,19 @@ const router = useRouter()
 
 onMounted(() => {
   const movieId = router.currentRoute.value.params.id
-  AxiosInstance.get(`/api/movies/${movieId}`)
-    .then((response) => {
-      movie.value = response.data.data
-      quotes.value = response.data.data.quotes
-      quoteStore.quotes = response.data.data.quotes
-      console.log(response.data.data)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  AxiosInstance.get(`/api/movies/${movieId}`).then((response) => {
+    movie.value = response.data.data
+    quotes.value = response.data.data.quotes
+    quoteStore.quotes = response.data.data.quotes
+  })
 })
 
 const handleMovieDelete = () => {
   const movieId = router.currentRoute.value.params.id
-  AxiosInstance.delete(`/api/movies/${movieId}`)
-    .then((response) => {
-      console.log(response)
-      router.push({ name: 'movie-list' })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  AxiosInstance.delete(`/api/movies/${movieId}`).then((response) => {
+    console.log(response)
+    router.push({ name: 'movie-list' })
+  })
 }
 const handleQuoteDelete = async (quoteId) => {
   try {

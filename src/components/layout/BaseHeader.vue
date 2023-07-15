@@ -9,7 +9,7 @@
       movie quotes
     </router-link>
     <div class="flex items-center justify-between w-full sm:w-64 sm:mt-0">
-      <IconMenu class="block sm:hidden" @click="show = true" />
+      <IconMenu class="block cursor-pointer sm:hidden" @click="show = true" />
       <div v-if="show"><MenuSidebar /></div>
 
       <router-link :to="{ name: 'menu' }"></router-link>
@@ -28,7 +28,7 @@
           </div>
           <div
             v-if="showNotifications"
-            class="absolute bg-black block z-0 sm:hidden lg:block w-9 h-7 lg:w-12 lg:h-12 rotate-45 top-16 right-24 lg:top-20 lg:right-60"
+            class="absolute bg-black block z-0 sm:hidden lg:block w-9 h-7 lg:w-12 lg:h-12 rotate-45 top-16 right-4 lg:top-20 lg:right-60"
           ></div>
 
           <div
@@ -68,7 +68,7 @@
                     ]"
                   >
                     <img
-                      v-if="!null"
+                      v-if="notifications.profile_picture || notifications.user?.profile_picture"
                       :src="
                         getImages(
                           notifications.profile_picture || notifications.user?.profile_picture
@@ -78,10 +78,7 @@
                       class="object-fit w-20 rounded-full"
                     />
                     <img
-                      v-if="
-                        notifications.user?.profile_picture === null ||
-                        notifications.profile_picture === null
-                      "
+                      v-else
                       src="@/assets/images/default_picture.jpg"
                       alt="profile"
                       class="object-fit w-20 rounded-full"
@@ -142,7 +139,7 @@
         </select>
 
         <button
-          class="border border-white rounded-md px-2 py-2 ml-4 sm:ml-0 mt-2 sm:mt-0 sm:px-4 sm:py-3 text-[11px]"
+          class="hidden sm:flex border border-white rounded-md px-2 py-2 ml-4 sm:ml-0 mt-2 sm:mt-0 sm:px-4 sm:py-3 text-[11px]"
           @click="logout"
         >
           {{ $t('base.logout') }}
@@ -250,9 +247,8 @@ AxiosInstance.get('/api/check-session').then((response) => {
 
   if (isSessionActive || isGoogleAuthenticated) {
     authStore.setIsUserAuthenticated(true)
-  } else if (router.currentRoute.value.name === 'home' || router.currentRoute.value.name === 'login') {
-    return
   } else {
+    authStore.setIsUserAuthenticated(false)
     router.push({ name: 'session-expired' })
   }
 })

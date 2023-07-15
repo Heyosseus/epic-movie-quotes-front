@@ -21,6 +21,8 @@
                   :class="{ 'border-2 border-red-500': errors.email }"
                   :placeholder="$t('login.placeholder_email')"
                   v-model="emailOrName"
+                  :value="emailOrName"
+                  autocomplete="email"
                   rules="required"
                 />
                 <div v-if="errors.email" class="absolute right-2 top-3"><IconInvalid /></div>
@@ -39,6 +41,8 @@
                   :placeholder="$t('login.password')"
                   v-model="password"
                   rules="required|min:8"
+                  :value="password"
+                  autocomplete
                 />
                 <IconShowPassword
                   class="absolute right-2 top-3"
@@ -52,7 +56,7 @@
             </div>
             <div class="flex justify-between">
               <div class="space-x-2">
-                <Field type="checkbox" v-model="remember_me" name="remember" />
+                <input type="checkbox" v-model="remember_me" name="remember" />
                 <label for="remember">{{ $t('login.remember_me') }}</label>
               </div>
               <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600">{{
@@ -102,9 +106,11 @@ import { onClickOutside } from '@vueuse/core'
 const router = useRouter()
 
 const showPassword = ref(false)
-const emailOrName = ref('')
-const password = ref('')
+const emailOrName = ref(null)
+const password = ref(null)
 const remember_me = ref(false)
+const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
+
 const errors = ref({
   email: '',
   password: ''
@@ -119,16 +125,14 @@ const login = async () => {
   await AxiosInstance.get('/sanctum/csrf-cookie')
 
   const loginData = {
-    password: password.value
+    password: password.value,
+    remember_me: remember_me.value
   }
 
   if (emailOrName.value.includes('@')) {
     loginData.email = emailOrName.value
   } else {
     loginData.name = emailOrName.value
-  }
-  if (remember_me.value) {
-    loginData.remember_me = true
   }
 
   await AxiosInstance.post('/api/login', loginData)
@@ -148,4 +152,9 @@ const login = async () => {
       }
     })
 }
+
+AxiosInstance.get('/api/cookie-credentials').then((res) => {
+  emailOrName.value = res.data.email 
+  password.value = res.data.password
+})
 </script>

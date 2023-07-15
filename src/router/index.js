@@ -136,13 +136,13 @@ const router = createRouter({
           name: 'search',
           component: SearchHeader,
           props: true
-        },
-        {
-          path: '/write-quote',
-          name: 'write-quote',
-          component: WriteNewQuoteModal
         }
       ]
+    },
+    {
+      path: '/write-quote',
+      name: 'write-quote',
+      component: WriteNewQuoteModal
     },
     {
       path: '/:pathMatch(.*)*',

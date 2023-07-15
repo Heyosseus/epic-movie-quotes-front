@@ -90,7 +90,7 @@
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
             <label
-              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 py-5 rounded-md"
+              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 h-20 items-center lg:flex rounded-md"
               @dragover="dragover"
               @dragleave="dragleave"
               @drop="drop"
@@ -117,7 +117,7 @@
             </label>
 
             <label
-              class="block sm:hidden border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
+              class="flex sm:hidden border border-gray-500 bg-transparent w-full h-20 items-center  sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
               @dragover="dragover"
               @dragleave="dragleave"
               @drop="drop"
@@ -159,7 +159,7 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
-import { ref, onMounted,  reactive } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'

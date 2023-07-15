@@ -138,11 +138,18 @@ const register = async () => {
       router.push({ name: 'activation' })
     })
     .catch((err) => {
-      if (err.response.status === 401 && err.response.data.message === 'Invalid credentials') {
-        errors.value.email = 'Email already exists'
-        errors.value.name = 'User already exists'
-      } else {
-        errors.value.email = ''
+      if (err.response && err.response.data && err.response.data.errors) {
+        const responseErrors = err.response.data.errors
+        if (responseErrors.email && responseErrors.email.length > 0) {
+          errors.value.email = 'email already exists'
+        } else {
+          errors.value.email = ''
+        }
+        if (responseErrors.name && responseErrors.name.length > 0) {
+          errors.value.name = 'name already exists'
+        } else {
+          errors.value.name = ''
+        }
       }
     })
 }

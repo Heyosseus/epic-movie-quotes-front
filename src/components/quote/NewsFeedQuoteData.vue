@@ -135,6 +135,10 @@ const props = defineProps({
   likes: {
     type: Array,
     required: true
+  },
+  movies: {
+    type: Array,
+    required: true
   }
 })
 
