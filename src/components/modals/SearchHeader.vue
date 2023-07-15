@@ -12,7 +12,6 @@
           />
         </form>
         <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
-        <button @click="search">send</button>
 
         <div class="text-gray-400 flex items-center space-y-2 flex-col just mt-10">
           <p>Enter @ to search movies</p>
@@ -25,9 +24,11 @@
 <script setup>
 import IconArrowBackVue from '../icons/IconArrowBack.vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { useQuoteStore } from '@/stores/search.js'
+import { defineEmits } from 'vue'
+const emit = defineEmits(['update:searchQuery', 'update:searchResults'])
 
 const quoteStore = useQuoteStore()
 const router = useRouter()
@@ -52,4 +53,7 @@ const search = () => {
     })
   }
 }
+watch(quotes, (newQuotes) => {
+  emit('update:searchResults', newQuotes)
+})
 </script>

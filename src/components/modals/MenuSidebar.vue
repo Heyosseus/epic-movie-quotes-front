@@ -28,23 +28,29 @@
                 }}</router-link>
               </div>
             </div>
-            <div
+            <router-link
+              :to="{ name: 'news-feed' }"
               class="flex items-center justify-between w-60 text-lg mt-12 cursor-pointer"
-              @click="navigateToNewsFeed"
             >
               <IconActiveHome v-if="activeHome" />
               <IconHome v-else />
               <p class="w-36">{{ $t('base.news_feed') }}</p>
-            </div>
+            </router-link>
 
-            <div
+            <router-link
+              :to="{ name: 'movie-list' }"
               class="flex items-center justify-between w-60 text-lg mt-8 cursor-pointer"
-              @click="navigateToMovieList"
             >
               <IconMovieList v-if="activeMovieList" />
               <IconActiveMovieList v-else />
               <p class="w-36">{{ $t('base.movie_list') }}</p>
-            </div>
+            </router-link>
+            <button
+              class="fixed bottom-20 border border-white w-[80vw] rounded-md py-3 sm:ml-0 mt-2 sm:mt-0 sm:px-4 sm:py-3 text-sm hover:bg-red-700 hover:border-none hover:py-3.5"
+              @click="logout"
+            >
+              {{ $t('base.logout') }}
+            </button>
           </div>
 
           <div v-else class="absolute inset-0 flex items-center justify-center">
@@ -61,16 +67,18 @@ import IconMovieList from '@/components/icons/IconMovieList.vue'
 import IconHome from '../icons/IconHome.vue'
 import IconActiveMovieList from '../icons/IconActiveMovieList.vue'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { onClickOutside } from '@vueuse/core'
 import { getImages } from '@/config/axios/helpers'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const activeHome = ref(false)
 const activeMovieList = ref(true)
 const user = ref(null)
 const modalRef = ref(null)
+const authStore = useAuthStore()
 
 onClickOutside(modalRef, () => {
   if (window.location.pathname === '/news-feed') {
@@ -79,31 +87,24 @@ onClickOutside(modalRef, () => {
     router.push({ name: 'news-feed' })
   }
 })
-const navigateToMovieList = () => {
-  router.push('/movie-list')
-}
-
-const navigateToNewsFeed = () => {
-  router.push('/news-feed')
-}
 
 if (window.location.pathname === '/news-feed') {
   activeHome.value = !activeHome.value
-}
-
-if (window.location.pathname === '/movie-list') {
+} else {
   activeMovieList.value = !activeMovieList.value
 }
 
-onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+AxiosInstance.get(`/api/user`).then((res) => {
+  user.value = res.data
 })
+
+const logout = () => {
+  AxiosInstance.post('/api/logout').then(() => {
+    router.push({ name: 'home' })
+    authStore.setIsUserAuthenticated(false)
+    authStore.setIsGoogleAuthenticated(false)
+  })
+}
 </script>
 <style>
 .slide-out-enter-active,

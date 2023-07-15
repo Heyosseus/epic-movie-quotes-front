@@ -195,12 +195,17 @@ const description_en = ref('')
 const description_ka = ref('')
 const release_date = ref('')
 
-
 const genres = ref(null)
 const genres_id = ref([])
 const selectedGenre = ref(null)
 const selected = ref([])
 const modalRef = ref(null)
+
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
 
 onClickOutside(modalRef, () => {
   router.back()
@@ -253,11 +258,6 @@ onMounted(async () => {
 onMounted(async () => {
   await authUserStore.setAuthUser()
   user.value = authUserStore.authUser
-})
-const fileInput = ref(null)
-const state = reactive({
-  files: [],
-  isDragging: false
 })
 
 const onChange = () => {

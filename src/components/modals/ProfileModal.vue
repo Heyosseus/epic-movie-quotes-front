@@ -99,8 +99,16 @@ const updateProfile = () => {
   if (innerWidth < 624 && localStorage.getItem('isUserAuthenticated') === 'true') {
     formData.append('profile_picture', picture.value)
     formData.append('password', profile_password.value)
-  } else if (localStorage.getItem('isGoogleAuthenticated') === 'true') {
+  } else if (
+    localStorage.getItem('isUserAuthenticated') === 'true' &&
+    new_username.value === null
+  ) {
     formData.append('profile_picture', picture.value)
+    formData.append('password', profile_password.value)
+  } else if (
+    localStorage.getItem('isUserAuthenticated') === 'true' &&
+    new_username.value !== null
+  ) {
     formData.append('name', new_username.value)
     formData.append('password', profile_password.value)
   } else {
@@ -115,7 +123,7 @@ const updateProfile = () => {
       'Content-Type': 'multipart/form-data'
     }
   }).then(() => {
-    if (innerWidth < 624 || localStorage.getItem('isGoogleAuthenticated') === 'true') {
+    if (new_email.value === null) {
       router.push({ name: 'flash-messages' })
     } else {
       router.push({ name: 'reset-password' })

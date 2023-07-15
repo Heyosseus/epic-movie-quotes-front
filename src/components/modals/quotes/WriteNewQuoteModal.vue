@@ -4,7 +4,7 @@
       <div
         class="absolute w-screen h-screen flex flex-col items-center justify-center bg-transparentLandingBg"
       >
-        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modalRef">
+        <div class="bg-movie w-full lg:w-quote px-4 sm:px-8 py-4 sm:py-8" ref="modal">
           <div class="flex items-center">
             <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.write_quote') }}</h1>
           </div>
@@ -127,11 +127,11 @@ const quote_en = ref('')
 const quote_ka = ref('')
 const thumbnail = ref(null)
 const user = ref(null)
-const modalRef = ref(null)
+const modal = ref(null)
 const selectedMovieId = ref(null)
 
-onClickOutside(modalRef, () => {
-  router.back()
+onClickOutside(modal, () => {
+  router.push({ name: 'news-feed' })
 })
 
 const AddQuote = (e) => {
@@ -157,17 +157,15 @@ const AddQuote = (e) => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/movies`)
-    .then((response) => {
-      movies.value = response.data.data
-    })
+  AxiosInstance.get(`/api/movies`).then((response) => {
+    movies.value = response.data.data
+  })
 })
 
 onMounted(() => {
-  AxiosInstance.get(`/api/user`)
-    .then((res) => {
-      user.value = res.data
-    })
+  AxiosInstance.get(`/api/user`).then((res) => {
+    user.value = res.data
+  })
 })
 const fileInput = ref(null)
 const state = reactive({

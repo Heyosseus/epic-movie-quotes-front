@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <div class="flex space-x-12 items-center mr-auto mb-10 mt-4 text-[#DDCCAA]">
         <div class="flex space-x-2 text-xl">
-          <h1 class="uppercase">
+          <h1 class="uppercase w-fit">
             {{ $i18n.locale === 'en' ? props.movie.title.en : props.movie.title.ka }}
           </h1>
           <p class="">({{ props.movie.release_date }})</p>

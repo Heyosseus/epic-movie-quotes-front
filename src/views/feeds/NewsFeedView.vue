@@ -8,14 +8,13 @@
         </div>
         <div class="w-full lg:ml-28">
           <div class="flex mx-auto w-full mt-4 ml-0 sm:flex lg:mt-10 justify-between lg:w-[921px]">
-            <div
+            <router-link
+              :to="{ name: 'write-quote' }"
               class="w-full sm:bg-transparent flex lg:flex lg:bg-headerBg py-3 px-6 space-x-4 h-14 items-center lg:w-full"
             >
               <IconPencil />
-              <router-link :to="{ name: 'write-quote' }" class="text-search">{{
-                $t('base.write_quote')
-              }}</router-link>
-            </div>
+              <p class="text-search">{{ $t('base.write_quote') }}</p>
+            </router-link>
             <form
               action=""
               class="h-12 ml-10 mt-3 w-[1840px]"
@@ -44,15 +43,15 @@
               <button class="bg-[#181624] h-14 w-28 rounded-full flex items-center justify-center">
                 <p class="text-search">{{ $t('base.search_by') }}</p>
               </button>
-              <router-view
+              <!-- 
+              <SearchHeader
                 :search-query="searchQuery"
-                :search-results="quotes"
                 @update:searchQuery="searchQuery = $event"
-                @update:searchResults="quotes = $event"
-              />
+                @update:searchResults="searchResults = $event"
+              /> -->
             </div>
           </div>
-          <div class="root lg:mt-6" ref="root">
+          <div class="root lg:mt-6" ref="root" v-if="quotes">
             <div
               v-for="quote in filteredQuotes"
               :key="quote.id"
@@ -63,7 +62,7 @@
                 v-if="quote.user"
                 class="flex items-center mt-2 lg:mt-6 space-x-4"
               >
-                <div v-if="quote.user.profile_picture">
+                <div v-if="quote.user.profile_picture || !null">
                   <img
                     :src="getImages(quote.user.profile_picture)"
                     alt=""
@@ -82,6 +81,7 @@
               <news-feed-quote-data
                 :quotes="quotes"
                 :quote="quote"
+                :movies="movies"
                 :add_likes="addLikes"
                 :add_comment="addComment"
                 :comment="comment"
@@ -90,14 +90,60 @@
               ></news-feed-quote-data>
               <div ref="target"></div>
             </div>
+            <div
+              v-for="movie in movies"
+              :key="movie.id"
+              class="flex flex-col bg-movie px-6 py-4 rounded-lg mt-4 lg:mt-10 mb-20 w-full lg:w-content"
+            >
+              <router-link
+                :to="{ name: 'profile' }"
+                v-if="movie.user"
+                class="flex items-center mt-2 lg:mt-6 space-x-4"
+              >
+                <div v-if="movie.user.profile_picture || !null">
+                  <img
+                    :src="getImages(movie.user.profile_picture)"
+                    alt=""
+                    class="object-fit w-10 lg:w-16 rounded-full"
+                  />
+                </div>
+                <div v-else>
+                  <img
+                    src="@/assets/images/default_picture.jpg"
+                    alt="profile"
+                    class="object-fit w-10 lg:w-16 rounded-full"
+                  />
+                </div>
+                <h1>{{ movie.user.name }}</h1>
+              </router-link>
+              <div>
+                <div class="flex mt-6">
+                  <p class="italic">
+                    "{{ $i18n.locale === 'en' ? movie.title.en : movie.title.ka }}"
+                  </p>
+                  <span class="ml-2">({{ movie.release_date }})</span>
+                </div>
+                <img
+                  :src="getImages(movie.poster)"
+                  alt=""
+                  class="w-full mt-6 sm:w-form sm:h-posterHeight object-contain rounded-md mx-auto"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="relative">
+      <teleport to="body">
+        <router-view
+          :search-query="searchQuery"
+          @update:searchQuery="searchQuery = $event"
+          @update:searchResults="searchResults = $event"
+        ></router-view>
+      </teleport>
+    </div>
   </div>
-  <div v-for="movie in movies" :key="movie.id">{{ movie }}</div>
-
-  <router-view />
 </template>
 
 <script setup>
@@ -178,32 +224,27 @@ const addComment = (quote) => {
         user_id: quote.user.id
       })
     })
-    .catch((error) => {
-      console.error(error)
-    })
 }
 
 const addLikes = (quote) => {
   AxiosInstance.post(`/api/quotes/${quote.id}/like/${quote.user.id}`, {
     quote_id: quote.id,
     user_id: quote.user.id
-  })
-    .then(() => {
-      const existingLikeIndex = quote.likes.findIndex((like) => like === quote.user.id)
-      if (!quote.likes.includes(quote.user.id)) {
-        AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
-          quote_id: quote.id,
-          user_id: quote.user.id
-        }).then(() => {
-          quote.likes.push(quote.user.id)
-        })
-      } else {
-        if (existingLikeIndex !== -1) {
-          quote.likes.splice(existingLikeIndex, 1)
-        }
+  }).then(() => {
+    const existingLikeIndex = quote.likes.findIndex((like) => like === quote.user.id)
+    if (!quote.likes.includes(quote.user.id)) {
+      AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
+        quote_id: quote.id,
+        user_id: quote.user.id
+      }).then(() => {
+        quote.likes.push(quote.user.id)
+      })
+    } else {
+      if (existingLikeIndex !== -1) {
+        quote.likes.splice(existingLikeIndex, 1)
       }
-    })
-
+    }
+  })
 }
 
 const loadQuotes = () => {
@@ -217,7 +258,7 @@ const loadQuotes = () => {
       const movieQuery = searchQuery.value.substring(1)
       condition.value = 'movie'
       AxiosInstance.get(`/api/movies/?query=${movieQuery}`).then((response) => {
-        quotes.value = response.data.data.map((movie) => movie.quotes).flat()
+        movies.value = response.data.data
       })
     }
   } else {
@@ -227,10 +268,9 @@ const loadQuotes = () => {
     })
   }
 }
-onMounted(() => {
-  AxiosInstance.get('/api/user').then((response) => {
-    user.value = response.data
-  })
+
+AxiosInstance.get('/api/user').then((response) => {
+  user.value = response.data
 })
 
 const { stop } = useIntersectionObserver(

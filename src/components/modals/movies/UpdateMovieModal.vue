@@ -171,6 +171,9 @@
                 />
                 <label
                   class="bg-transparent w-full text-center sm:w-form mt-4 sm:mt-6 px-2 h-28 py-2 rounded-md"
+                  @dragover="dragover"
+                  @dragleave="dragleave"
+                  @drop="drop"
                 >
                   <p class="uppercase text-primary mb-6">{{ $t('movie.replace_photo') }}</p>
                   <IconPhoto class="inline-block" />
@@ -180,14 +183,16 @@
                   >
                     {{ $t('movie.choose_file') }}
                   </span>
-                  <Field
+                  <input
                     type="file"
+                    multiple
                     name="image"
+                    id="fileInput"
                     class="hidden"
-                    placeholder="ფილმის აღწერა"
-                    v-model="image"
-                  >
-                  </Field>
+                    @change="onChange"
+                    ref="fileInput"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                  />
                 </label>
               </div>
 
@@ -206,7 +211,7 @@
 </template>
 <script setup>
 import { Form, Field } from 'vee-validate'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
@@ -236,6 +241,11 @@ const user = ref(null)
 const modalRef = ref(null)
 const selectedGenre = ref(null)
 
+const fileInput = ref(null)
+const state = reactive({
+  files: [],
+  isDragging: false
+})
 onClickOutside(modalRef, () => {
   router.back()
 })
@@ -280,4 +290,27 @@ onMounted(async () => {
   const res = await axios.get(`${backendUrl}/api/genres`)
   genres.value = res.data.genres
 })
+
+const onChange = () => {
+  state.files.push(...fileInput.value.files)
+}
+
+const dragover = (e) => {
+  e.preventDefault()
+  state.isDragging = true
+}
+
+const dragleave = (e) => {
+  e.preventDefault()
+  state.isDragging = false
+}
+
+const drop = (e) => {
+  e.preventDefault()
+  if (e.dataTransfer.files) {
+    state.files = Array.from(e.dataTransfer.files)
+    onChange()
+  }
+  state.isDragging = false
+}
 </script>
