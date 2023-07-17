@@ -67,7 +67,7 @@ const API = {
   markAllNotificationsAsRead: () => {
     return AxiosInstance.put(`/api/notifications/mark-all-read`)
   },
-  showQuote: (quoteId) => {
+  showQuotes: (quoteId) => {
     return AxiosInstance.get(`/api/show-quotes/${quoteId}`)
   },
   getMovie: (movieId) => {

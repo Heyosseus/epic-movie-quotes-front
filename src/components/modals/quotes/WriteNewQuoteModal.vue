@@ -113,12 +113,12 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import { ref, onMounted, reactive } from 'vue'
-import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import IconChooseMovie from '@/components/icons/IconChooseMovie.vue'
+import API from '@/services/api'
 
 const router = useRouter()
 const movies = ref(null)
@@ -157,13 +157,13 @@ const AddQuote = (e) => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/movies`).then((response) => {
+  API.movies().then((response) => {
     movies.value = response.data.data
   })
 })
 
 onMounted(() => {
-  AxiosInstance.get(`/api/user`).then((res) => {
+  API.user().then((res) => {
     user.value = res.data
   })
 })

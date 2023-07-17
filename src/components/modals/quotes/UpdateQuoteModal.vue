@@ -149,6 +149,8 @@ const editQuote = () => {
 onMounted(() => {
   API.showQuotes(quoteId).then((response) => {
     quotes.value = response.data.quote
+    quote_en.value = JSON.parse(quotes.value.body).en
+    quote_ka.value = JSON.parse(quotes.value.body).ka
   })
 })
 onMounted(() => {
