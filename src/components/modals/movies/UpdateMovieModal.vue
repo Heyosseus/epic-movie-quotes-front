@@ -39,6 +39,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.en"
                   v-model="title_en"
+                  rules="english"
                 />
               </div>
 
@@ -118,6 +119,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.director).en"
                   v-model="director_en"
+                  rules="english"
                 />
               </div>
               <div
@@ -145,6 +147,7 @@
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).en"
                   v-model="description_en"
+                  rules="english"
                 />
               </div>
               <div

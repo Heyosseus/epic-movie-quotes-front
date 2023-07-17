@@ -72,7 +72,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 p-2 rounded-md text-lg"
               placeholder='"Quote in English."'
               v-model="quote_en"
-              rules="required"
+              rules="required|english"
             >
             </Field>
             <ErrorMessage name="quote_en" class="text-red-600" />

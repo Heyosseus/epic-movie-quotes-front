@@ -81,6 +81,7 @@
                 :add_comment="addComment"
                 :comment="comment"
                 :likes="likes"
+                :liked="liked"
                 @update:comment="comment = $event"
               ></news-feed-quote-data>
               <div ref="target"></div>
@@ -172,6 +173,7 @@ const target = ref(null)
 const isVisible = ref(false)
 const perPage = 2
 const isLoading = ref(false)
+const liked = ref(false)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
@@ -224,10 +226,12 @@ const addLikes = (quote) => {
     if (!quote.likes.includes(quote.user.id)) {
       API.addLikeNotification(quote.id, quote.user.id).then(() => {
         quote.likes.push(quote.user.id)
+        liked.value = true
       })
     } else {
       if (existingLikeIndex !== -1) {
         quote.likes.splice(existingLikeIndex, 1)
+        liked.value = false
       }
     }
   })

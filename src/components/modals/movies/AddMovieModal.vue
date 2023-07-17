@@ -37,7 +37,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="Movie name"
               v-model="title_en"
-              rules="required"
+              rules="required|english"
             >
             </Field>
             <ErrorMessage name="title_en" class="text-red-600 mt-2" />
@@ -97,7 +97,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 py-3 rounded-md"
               placeholder="Director"
               v-model="director_en"
-              rules="required"
+              rules="required|english"
             >
             </Field>
             <ErrorMessage name="director_en" class="text-red-600 mt-2" />
@@ -118,7 +118,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-form mt-4 sm:mt-6 px-2 h-20 p-2 rounded-md placeholder-top"
               placeholder="Movie description"
               v-model="description_en"
-              rules="required"
+              rules="required|english"
             >
             </Field>
             <ErrorMessage name="description_en" class="text-red-600 mt-2" />

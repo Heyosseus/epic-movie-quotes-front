@@ -20,7 +20,12 @@
       </div>
       <div class="flex space-x-3" v-if="quote.likes">
         <span>{{ quote.likes.length }}</span>
-        <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" />
+        <IconActiveHeart
+          @click="add_likes(quote)"
+          class="w-7 lg:w-10"
+          v-if="props.liked === true"
+        />
+        <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" v-else />
       </div>
     </div>
     <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
@@ -108,6 +113,7 @@ import { Form, Field } from 'vee-validate'
 import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
+import IconActiveHeart from '@/components/icons/IconActiveHeart.vue'
 
 const props = defineProps({
   quotes: {
@@ -140,6 +146,10 @@ const props = defineProps({
   },
   user: {
     type: Object,
+    required: true
+  },
+  liked: {
+    type: Boolean,
     required: true
   }
 })
