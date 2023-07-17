@@ -35,7 +35,6 @@
               >
                 <label for="" class="text-gray-400 text-sm w-40">Movie name:</label>
                 <Field
-                  type="text"
                   name="title_en"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.en"
@@ -48,7 +47,6 @@
               >
                 <label for="" class="text-gray-400 text-sm w-40">ფილმის სახელი:</label>
                 <Field
-                  type="text"
                   name="title_ka"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
                   :placeholder="movies.title.ka"
@@ -135,6 +133,7 @@
                   rules="georgian"
                 />
               </div>
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
               >
@@ -144,7 +143,7 @@
                   type="text"
                   name="description_en"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
-                  :placeholder="JSON.parse(movies.description).ka"
+                  :placeholder="JSON.parse(movies.description).en"
                   v-model="description_en"
                 />
               </div>
@@ -156,7 +155,7 @@
                   as="textarea"
                   type="text"
                   name="description_ka"
-                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
+                  class="outline-0 text-white bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_ka"
                   rules="georgian"
@@ -252,7 +251,7 @@ onClickOutside(modalRef, () => {
 
 const editMovie = () => {
   const formData = new FormData()
-  formData.append('poster', image.value)
+  formData.append('poster', image.value || state.files[0])
   formData.append('genre', selectedGenre.value)
   formData.append('release_date', release_date.value)
   formData.append('director_en', director_en.value)
@@ -310,6 +309,7 @@ const drop = (e) => {
   if (e.dataTransfer.files) {
     state.files = Array.from(e.dataTransfer.files)
     onChange()
+    console.log(state.files)
   }
   state.isDragging = false
 }

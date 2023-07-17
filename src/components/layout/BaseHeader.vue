@@ -131,7 +131,7 @@
             :value="locale"
             class="bg-black"
           >
-            {{ locale }}
+            {{ locale === 'en' ? 'Eng' : 'ქარ' }}
           </option>
           {{
             $i18n.locale === 'en' ? setLocale('en') : setLocale('ka')
@@ -163,8 +163,7 @@ import { useRouter } from 'vue-router'
 import { setLocale } from '@vee-validate/i18n'
 import { onClickOutside } from '@vueuse/core'
 import { useAuthUser } from '@/stores/user'
-
-import AxiosInstance from '@/config/axios/index'
+import API from '@/services/api'
 import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
 
@@ -188,13 +187,13 @@ const updateUnreadNotifications = () => {
 }
 
 const markAllAsRead = () => {
-  AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' }).then(() => {
+  API.markAllNotificationsAsRead().then(() => {
     unread.value = []
   })
 }
 
 const logout = () => {
-  AxiosInstance.post('/api/logout').then(() => {
+  API.logout().then(() => {
     router.push({ name: 'home' })
     authStore.setIsUserAuthenticated(false)
     authStore.setIsGoogleAuthenticated(false)
@@ -202,9 +201,7 @@ const logout = () => {
 }
 
 const markAsRead = async (notificationId) => {
-  await AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, {
-    _method: 'PUT'
-  }).then(() => {
+  await API.markNotificationAsRead(notificationId).then(() => {
     updateUnreadNotifications()
   })
 }
@@ -231,7 +228,7 @@ onMounted(async () => {
 })
 
 const fetchNotifications = () => {
-  AxiosInstance.get('/api/notifications').then((response) => {
+  API.notifications().then((response) => {
     notification.value = response.data
     unread.value = notification.value.filter((notification) => notification.read === 0)
   })
@@ -241,7 +238,7 @@ watch(notification, () => {
   updateUnreadNotifications()
 })
 
-AxiosInstance.get('/api/check-session').then((response) => {
+API.checkSession().then((response) => {
   const isSessionActive = response.data.isSessionActive
   const isGoogleAuthenticated = response.data.isGoogleAuthenticated
 

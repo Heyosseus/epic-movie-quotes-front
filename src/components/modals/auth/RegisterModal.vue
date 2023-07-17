@@ -106,8 +106,8 @@ import IconGoogle from '../../icons/IconGoogle.vue'
 import IconShowPassword from '../../icons/IconShowPassword.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import AxiosInstance from '@/config/axios/index'
 import { onClickOutside } from '@vueuse/core'
+import API from '@/services/api'
 
 const router = useRouter()
 const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
@@ -127,8 +127,8 @@ onClickOutside(modalRef, () => {
   router.push({ name: 'home' })
 })
 const register = async () => {
-  await AxiosInstance.get('/sanctum/csrf-cookie')
-  await AxiosInstance.post(`/api/register`, {
+  await API.sanctum()
+  await API.register({
     name: name.value,
     email: email.value,
     password: password.value,

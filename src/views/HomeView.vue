@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-between min-h-screen px-4 sm:px-6 md:px-8 pt-6 mx-auto bg-slate-950"
+    class="flex flex-col justify-between min-h-screen sm:px-6 md:px-8 lg:pt-6 mx-auto bg-slate-950"
     id="home"
   >
     <div class="bg-landingBg px-4 sm:px-8 py-4 sm:py-8 md:py-4 lg:h-[72vh] h-[60vh]">
@@ -13,7 +13,7 @@
             <select
               name=""
               id=""
-              class="bg-transparent w-12 sm:w-14 outline-0"
+              class="bg-transparent w-16 sm:w-14 outline-0"
               v-model="$i18n.locale"
             >
               <option
@@ -22,19 +22,19 @@
                 :value="locale"
                 class="bg-black"
               >
-                {{ locale }}
+                {{ locale === 'en' ? 'Eng' : 'ქარ' }}
               </option>
             </select>
             <router-link
               :to="{ name: 'register' }"
-              class="py-2 px-3 text-sm sm:px-6 bg-red-700 text-white rounded-md"
+              class="py-2 px-3 md:text-sm text-[11px] sm:px-6 bg-red-700 text-white rounded-md"
             >
               {{ $t('home.signup') }}
             </router-link>
 
             <router-link
               :to="{ name: 'login' }"
-              class="py-2 px-3 ml-1 text-sm sm:px-6 bg-transparent border border-white rounded-md"
+              class="py-2 px-3 ml-1 md:text-sm text-[11px] sm:px-6 bg-transparent border border-white rounded-md"
               @click="navigateToNewsFeed"
             >
               {{ $t('home.login') }}

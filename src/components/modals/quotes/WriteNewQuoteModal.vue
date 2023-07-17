@@ -118,7 +118,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
-import IconChooseMovie from '../../icons/IconChooseMovie.vue'
+import IconChooseMovie from '@/components/icons/IconChooseMovie.vue'
 
 const router = useRouter()
 const movies = ref(null)

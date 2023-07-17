@@ -10,7 +10,7 @@
               ><IconEdit class="cursor-pointer"
             /></router-link>
             <div class="w-[1px] bg-gray-500 h-6 ml-6"></div>
-            <IconTrash class="cursor-pointer ml-5" @click="handleDeleteQuote" />
+            <IconTrash class="cursor-pointer ml-5" @click="handleQuoteDelete(view_quotes.id)" />
             <h1 class="text-2xl mx-auto sm:pl-8">{{ $t('movie.view_quote') }}</h1>
             <IconClose @click="router.back()" />
           </div>
@@ -171,7 +171,9 @@ import IconComments from '@/components/icons/IconComments.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconClose from '@/components/icons/IconClose.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
+import { useQuoteStore } from '@/stores/quotes.js'
 
+const quoteStore = useQuoteStore()
 const router = useRouter()
 const route = useRoute()
 const view_quotes = ref(null)
@@ -254,4 +256,13 @@ onMounted(() => {
       console.log(err.response)
     })
 })
+const handleQuoteDelete = async (quoteId) => {
+  try {
+    await AxiosInstance.delete(`/api/quotes/${quoteId}`)
+    quoteStore.deleteQuote(quoteId)
+    router.back()
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>

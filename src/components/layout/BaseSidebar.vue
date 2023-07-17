@@ -57,15 +57,14 @@
 <script setup>
 import IconActiveHome from '@/components/icons/IconActiveHome.vue'
 import IconMovieList from '@/components/icons/IconMovieList.vue'
-import IconHome from '../icons/IconHome.vue'
-import IconActiveMovieList from '../icons/IconActiveMovieList.vue'
-import { ref, onMounted } from 'vue'
+import IconHome from '@/components/icons/IconHome.vue'
+import IconActiveMovieList from '@/components/icons/IconActiveMovieList.vue'
+import { ref } from 'vue'
 import { getImages } from '@/config/axios/helpers'
-import { useAuthUser } from '@/stores/user'
+import API from '@/services/api'
 
 const activeHome = ref(false)
 const activeMovieList = ref(true)
-const authUserStore = useAuthUser()
 
 const user = ref(null)
 const activeProfile = ref(false)
@@ -78,8 +77,7 @@ if (window.location.pathname === '/news-feed') {
   activeMovieList.value = !activeMovieList.value
 }
 
-onMounted(async () => {
-  await authUserStore.setAuthUser()
-  user.value = authUserStore.authUser
+API.user().then((res) => {
+  user.value = res.data
 })
 </script>

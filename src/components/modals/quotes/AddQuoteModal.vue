@@ -90,14 +90,15 @@
             <ErrorMessage name="quote_ka" class="text-red-600" />
 
             <label
-              class="hidden sm:block border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-4 h-20 items-center lg:flex rounded-md"
+              class="flex border border-gray-500 bg-transparent w-full h-20 items-center sm:w-full mt-4 sm:mt-6 px-4 py-3 rounded-md"
               @dragover="dragover"
               @dragleave="dragleave"
               @drop="drop"
             >
               <IconPhoto class="inline-block" />
 
-              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
+              <span v-if="state.isDragging">{{ $t('movie.drop_file_here') }}</span>
+              <span class="text-sm ml-2 lg:text-md" v-else>{{ $t('movie.upload_photo') }}</span>
               <span
                 class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
               >
@@ -112,34 +113,7 @@
                 class="hidden"
                 @change="onChange"
                 ref="fileInput"
-                accept=".pdf,.jpg,.jpeg,.png"
-              />
-            </label>
-
-            <label
-              class="flex sm:hidden border border-gray-500 bg-transparent w-full h-20 items-center  sm:w-form mt-4 sm:mt-6 px-4 py-3 rounded-md"
-              @dragover="dragover"
-              @dragleave="dragleave"
-              @drop="drop"
-            >
-              <IconPhoto class="inline-block" />
-
-              <span class="text-sm ml-2 lg:text-md">{{ $t('movie.upload_photo') }}</span>
-              <span
-                class="inline-block bg-[#9747FF] px-2 py-1 rounded items-center outline-0 ml-2 sm:ml-4 justify-center text-md cursor-pointer"
-              >
-                {{ $t('movie.choose_file') }}
-              </span>
-
-              <input
-                type="file"
-                multiple
-                name="image"
-                id="fileInput"
-                class="hidden"
-                @change="onChange"
-                ref="fileInput"
-                accept=".pdf,.jpg,.jpeg,.png"
+                accept=".pdf,.jpg,.jpeg,.png,.gif,"
               />
             </label>
 
@@ -159,20 +133,20 @@
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import IconPhoto from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
-import { ref, onMounted, reactive } from 'vue'
-import AxiosInstance from '@/config/axios/index'
+import { ref, onBeforeMount, reactive } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
 import { onClickOutside } from '@vueuse/core'
 import { useQuoteStore } from '@/stores/quotes.js'
 import { useAuthUser } from '@/stores/user'
+import API from '../../../services/api'
 
 const authUserStore = useAuthUser()
 const quoteStore = useQuoteStore()
 const router = useRouter()
 const movie = ref(null)
-
+const image = ref(null)
 const quote_en = ref('')
 const quote_ka = ref('')
 const user = ref(null)
@@ -189,7 +163,7 @@ onClickOutside(
 const addQuote = (e) => {
   e.preventDefault()
   const formData = new FormData()
-  formData.append('thumbnail', state.files[0])
+  formData.append('thumbnail', state.files[0] || image.value)
   formData.append('user_id', user.value.id)
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
@@ -207,17 +181,15 @@ const addQuote = (e) => {
     })
 }
 
-onMounted(() => {
-  const movieId = router.currentRoute.value.params.id
-  AxiosInstance.get(`/api/movies/${movieId}`)
-    .then((response) => {
-      movie.value = response.data.data
-      user.value = response.data.data.user
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-})
+const movieId = router.currentRoute.value.params.id
+API.getMovie(movieId)
+  .then((response) => {
+    movie.value = response.data.data
+    user.value = response.data.data.user
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 
 const fileInput = ref(null)
 const state = reactive({
@@ -249,8 +221,8 @@ const drop = (e) => {
   state.isDragging = false
 }
 
-onMounted(async () => {
-  await authUserStore.setAuthUser()
+onBeforeMount(async () => {
+  authUserStore.setAuthUser()
   user.value = authUserStore.authUser
 })
 </script>
