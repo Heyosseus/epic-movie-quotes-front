@@ -79,11 +79,18 @@
     <label S class="mt-6">{{ $t('login.password') }}</label>
     <div class="flex space-x-3 items-center">
       <div
-        class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
+        class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-[465px] text-black font-normal  placeholder-white lg:bg-field"
       >
         <p class="text-white lg:text-black"></p>
       </div>
-      <div type="button" @click="editPassword = !editPassword" class="cursor-pointer">Edit</div>
+      <div
+        type="button"
+        @click="editPassword = !editPassword"
+        v-if="shouldUpdate"
+        class="cursor-pointer"
+      >
+        Edit
+      </div>
     </div>
     <div class="block h-[1px] bg-gray-400 mt-2 lg:hidden"></div>
 

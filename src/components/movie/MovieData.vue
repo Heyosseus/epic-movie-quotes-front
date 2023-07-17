@@ -1,14 +1,16 @@
 <template>
-  <div class="w-80">
-    <div class="flex flex-col">
-      <div class="flex space-x-12 items-center mr-auto mb-10 mt-4 text-[#DDCCAA]">
+  <div class="w-80 lg:pl-20 lg:w-form">
+    <div class="flex flex-col lg:w-fit">
+      <div
+        class="flex space-x-12 items-center mr-auto mb-10 mt-4 text-[#DDCCAA] w-full justify-between"
+      >
         <div class="flex space-x-2 text-xl">
           <h1 class="uppercase w-fit">
             {{ $i18n.locale === 'en' ? props.movie.title.en : props.movie.title.ka }}
           </h1>
           <p class="">({{ props.movie.release_date }})</p>
         </div>
-        <div class="hidden sm:flex space-x-6 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer">
+        <div class="hidden sm:flex space-x-8 bg-headerBg p-4 px-7 rounded-2xl cursor-pointer">
           <router-link :to="{ name: 'update-movie' }">
             <IconEdit />
           </router-link>
@@ -16,7 +18,7 @@
           <IconTrash @click="handle_movie_delete" />
         </div>
       </div>
-      <div class="flex space-x-4 text-lg cursor-pointer">
+      <div class="flex flex-wrap gap-4 text-lg cursor-pointer w-96">
         <div
           v-for="genre in props.movie.genres"
           :key="genre.id"

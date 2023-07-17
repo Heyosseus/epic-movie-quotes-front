@@ -36,3 +36,10 @@ defineRule('georgian', (value) => {
   }
   return true
 })
+
+defineRule('english', (value) => {
+  if (!/^[a-zA-Z]+$/.test(value)) {
+    return 'This field must be english'
+  }
+  return true
+})

@@ -62,8 +62,8 @@
                       'w-24',
                       'rounded-full',
                       {
-                        'border-4': notifications.read === 0,
-                        'border-green-700': notifications.read === 0
+                        'border-4': notifications.read !== 1,
+                        'border-green-700': notifications.read !== 1
                       }
                     ]"
                   >
@@ -105,7 +105,7 @@
                       </div>
                       <div class="text-[10px] lg:text-sm w-40">
                         {{ formatTimeAgo(notifications.created_at) }}
-                        <div v-if="notifications.read === 0" class="text-green-700">
+                        <div v-if="notifications.read !== 1" class="text-green-700">
                           {{ $t('base.new') }}
                         </div>
                       </div>
@@ -131,7 +131,7 @@
             :value="locale"
             class="bg-black"
           >
-            {{ locale }}
+            {{ locale === 'en' ? 'Eng' : 'ქარ' }}
           </option>
           {{
             $i18n.locale === 'en' ? setLocale('en') : setLocale('ka')
@@ -157,24 +157,24 @@ import IconHeart from '@/components/icons/IconHeart.vue'
 import IconComment from '@/components/icons/IconComment.vue'
 import { getImages } from '@/config/axios/helpers'
 import { formatTimeAgo } from '@/config/axios/helpers'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { setLocale } from '@vee-validate/i18n'
 import { onClickOutside } from '@vueuse/core'
 import { useAuthUser } from '@/stores/user'
-
-import AxiosInstance from '@/config/axios/index'
+import API from '@/services/api'
 import MenuSidebar from '../modals/MenuSidebar.vue'
 import instantiatePusher from '@/config/helpers/instantiatePusher'
+import { useNotificationStore } from '@/stores/notification'
 
+const notificationStore = useNotificationStore()
 const authUserStore = useAuthUser()
 const authStore = useAuthStore()
 const show = ref(false)
 const showNotifications = ref(false)
 const user = ref(null)
 const notification = ref([])
-const unread = ref([])
 const modalRef = ref(null)
 
 const router = useRouter()
@@ -182,30 +182,40 @@ const router = useRouter()
 onClickOutside(modalRef, () => {
   showNotifications.value = false
 })
+const unread = computed(() => {
+  if (notification.value.length === 0) {
+    return []
+  }
+  return notification.value.filter((notification) => notification.read === 0)
+})
 
-const updateUnreadNotifications = () => {
-  unread.value = notification.value.filter((notification) => notification.read === 0)
+const markAsRead = async (notificationId) => {
+  notificationStore.markAsRead(notificationId)
+  const updatedNotification = notification.value.find(
+    (notification) => notification.id === notificationId
+  )
+  if (updatedNotification) {
+    updatedNotification.read = 1
+    unread.value = unread.value - 1
+    console.log(updatedNotification, unread.value)
+  }
+
+  await API.markNotificationAsRead(notificationId)
 }
 
-const markAllAsRead = () => {
-  AxiosInstance.post(`/api/notifications/mark-all-read`, { _method: 'PUT' }).then(() => {
-    unread.value = []
+const markAllAsRead = async () => {
+  notificationStore.markAllNotificationsAsRead()
+  notification.value.forEach((notification) => {
+    notification.read = 1
   })
-}
 
+  await API.markAllNotificationsAsRead()
+}
 const logout = () => {
-  AxiosInstance.post('/api/logout').then(() => {
+  API.logout().then(() => {
     router.push({ name: 'home' })
     authStore.setIsUserAuthenticated(false)
     authStore.setIsGoogleAuthenticated(false)
-  })
-}
-
-const markAsRead = async (notificationId) => {
-  await AxiosInstance.post(`/api/notifications/${notificationId}/mark-as-read`, {
-    _method: 'PUT'
-  }).then(() => {
-    updateUnreadNotifications()
   })
 }
 
@@ -231,17 +241,13 @@ onMounted(async () => {
 })
 
 const fetchNotifications = () => {
-  AxiosInstance.get('/api/notifications').then((response) => {
+  API.notifications().then((response) => {
     notification.value = response.data
     unread.value = notification.value.filter((notification) => notification.read === 0)
   })
 }
 
-watch(notification, () => {
-  updateUnreadNotifications()
-})
-
-AxiosInstance.get('/api/check-session').then((response) => {
+API.checkSession().then((response) => {
   const isSessionActive = response.data.isSessionActive
   const isGoogleAuthenticated = response.data.isGoogleAuthenticated
 

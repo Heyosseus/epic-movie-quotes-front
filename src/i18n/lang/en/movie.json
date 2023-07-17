@@ -19,5 +19,6 @@
   "write_a_comment_placeholder": "Write a comment...",
   "post": "Post",
   "description": "Description:",
-  "click_here_to_see": "Click here to see the movie"
+  "click_here_to_see": "Click here to see the movie",
+  "drop_file_here": "Release to drop files here."
 }

@@ -20,7 +20,12 @@
       </div>
       <div class="flex space-x-3" v-if="quote.likes">
         <span>{{ quote.likes.length }}</span>
-        <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" />
+        <IconActiveHeart
+          @click="add_likes(quote)"
+          class="w-7 lg:w-10"
+          v-if="props.liked === true"
+        />
+        <IconLikes @click="add_likes(quote)" class="w-7 lg:w-10" v-else />
       </div>
     </div>
     <div class="h-[1px] w-full lg:w-full bg-gray-600 mt-6"></div>
@@ -66,9 +71,12 @@
       </div>
     </div>
 
-    <div v-if="user" class="flex items-center mt-4 space-x-6 mb-6">
-      <div v-if="user.profile_picture" class="w-full flex space-x-3 items-center">
-        <img :src="getImages(user.profile_picture)" class="object-fit w-10 lg:w-14 rounded-full" />
+    <div v-if="props.user" class="flex items-center mt-4 space-x-6 mb-6">
+      <div v-if="props.user.profile_picture" class="w-full flex space-x-3 items-center">
+        <img
+          :src="getImages(props.user.profile_picture)"
+          class="object-fit w-10 lg:w-14 rounded-full"
+        />
         <Form class="w-full" @submit="add_comment(quote)">
           <Field
             name="comment"
@@ -105,11 +113,7 @@ import { Form, Field } from 'vee-validate'
 import { getImages } from '@/config/axios/helpers'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'
-import { onMounted, ref } from 'vue'
-import { useAuthUser } from '@/stores/user'
-
-const authUserStore = useAuthUser()
-const user = ref(null)
+import IconActiveHeart from '@/components/icons/IconActiveHeart.vue'
 
 const props = defineProps({
   quotes: {
@@ -139,11 +143,14 @@ const props = defineProps({
   movies: {
     type: Array,
     required: true
+  },
+  user: {
+    type: Object,
+    required: true
+  },
+  liked: {
+    type: Boolean,
+    required: true
   }
-})
-
-onMounted(async () => {
-  await authUserStore.setAuthUser()
-  user.value = authUserStore.authUser
 })
 </script>

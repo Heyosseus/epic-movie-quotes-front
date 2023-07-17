@@ -35,27 +35,27 @@
               >
                 <label for="" class="text-gray-400 text-sm w-40">Movie name:</label>
                 <Field
-                  type="text"
                   name="title_en"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                  :placeholder="movies.title.en"
                   v-model="title_en"
+                  rules="english"
                 />
               </div>
+              <ErrorMessage name="title_en" class="text-red-500 text-sm" />
 
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
                 <label for="" class="text-gray-400 text-sm w-40">ფილმის სახელი:</label>
                 <Field
-                  type="text"
                   name="title_ka"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                  :placeholder="movies.title.ka"
                   v-model="title_ka"
                   rules="georgian"
                 />
               </div>
+              <ErrorMessage name="title_ka" class="text-red-500 text-sm" />
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
@@ -106,10 +106,11 @@
                   type="number"
                   name="release_date"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                  :placeholder="movies.release_date"
                   v-model="release_date"
                 />
               </div>
+              <ErrorMessage name="release_date" class="text-red-500 text-sm" />
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
@@ -118,10 +119,12 @@
                   type="text"
                   name="director_en"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                  :placeholder="JSON.parse(movies.director).en"
                   v-model="director_en"
+                  rules="english"
                 />
               </div>
+              <ErrorMessage name="director_en" class="text-red-500 text-sm" />
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 p-1 rounded-md text-lg"
               >
@@ -130,11 +133,12 @@
                   type="text"
                   name="director_ka"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full px-2 p-1 rounded-md text-lg placeholder-white"
-                  :placeholder="JSON.parse(movies.director).ka"
                   v-model="director_ka"
                   rules="georgian"
                 />
               </div>
+              <ErrorMessage name="director_ka" class="text-red-500 text-sm" />
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
               >
@@ -144,10 +148,12 @@
                   type="text"
                   name="description_en"
                   class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
-                  :placeholder="JSON.parse(movies.description).ka"
                   v-model="description_en"
+                  rules="english"
                 />
               </div>
+              <ErrorMessage name="description_en" class="text-red-500 text-sm" />
+
               <div
                 class="border border-gray-500 flex items-center space-x-4 bg-transparent w-full sm:w-full mt-4 h-20 sm:mt-6 px-2 p-2 rounded-md text-lg"
               >
@@ -156,12 +162,12 @@
                   as="textarea"
                   type="text"
                   name="description_ka"
-                  class="outline-0 bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
-                  :placeholder="JSON.parse(movies.description).ka"
+                  class="outline-0 text-white bg-transparent w-40 lg:w-fit sm:w-full resize-none px-2 mt-6 rounded-md text-lg placeholder-white"
                   v-model="description_ka"
                   rules="georgian"
                 />
               </div>
+              <ErrorMessage name="description_ka" class="text-red-500 text-sm" />
 
               <div v-if="movies" class="flex mt-4">
                 <img
@@ -210,7 +216,7 @@
   </div>
 </template>
 <script setup>
-import { Form, Field } from 'vee-validate'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 import { ref, onMounted, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
@@ -234,7 +240,7 @@ const director_en = ref('')
 const director_ka = ref('')
 const description_en = ref('')
 const description_ka = ref('')
-const release_date = ref('')
+const release_date = ref()
 const image = ref(null)
 const genres = ref([])
 const user = ref(null)
@@ -252,7 +258,7 @@ onClickOutside(modalRef, () => {
 
 const editMovie = () => {
   const formData = new FormData()
-  formData.append('poster', image.value)
+  formData.append('poster', image.value || state.files[0])
   formData.append('genre', selectedGenre.value)
   formData.append('release_date', release_date.value)
   formData.append('director_en', director_en.value)
@@ -273,6 +279,15 @@ const editMovie = () => {
 onMounted(() => {
   AxiosInstance.get(`/api/movies/${movieId}`).then((response) => {
     movies.value = response.data.data
+    title_en.value = movies.value.title.en
+    title_ka.value = movies.value.title.ka
+    director_en.value = JSON.parse(movies.value.director).en
+    director_ka.value = JSON.parse(movies.value.director).ka
+    description_en.value = JSON.parse(movies.value.description).en
+    description_ka.value = JSON.parse(movies.value.description).ka
+    release_date.value = movies.value.release_date
+    image.value = movies.value.poster
+    console.log(movies.value)
   })
 })
 
@@ -310,6 +325,7 @@ const drop = (e) => {
   if (e.dataTransfer.files) {
     state.files = Array.from(e.dataTransfer.files)
     onChange()
+    console.log(state.files)
   }
   state.isDragging = false
 }

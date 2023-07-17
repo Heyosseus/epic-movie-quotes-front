@@ -4,7 +4,7 @@
     <div class="bg-[#181624] min-h-full">
       <div class="flex flex-col w-full md:flex-row">
         <BaseSidebar />
-        <div class="w-full  md:pl-16" v-if="!show">
+        <div class="w-full md:pl-16" v-if="!show">
           <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4 lg:pr-56">
             <h1 class="text-sm w-full mb-2 md:w-full md:mt-10 lg:text-xl">
               {{ $t('base.list') }} ({{ movies.length }})
@@ -21,7 +21,7 @@
                 />
               </div>
             </Form>
-            <AddMovie class="ml-1"/>
+            <AddMovie class="ml-1" />
           </div>
 
           <div
@@ -69,12 +69,12 @@ import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import AddMovie from '@/components/layout/AddMovie.vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { getImages } from '@/config/axios/helpers'
 import { useMovieStore } from '@/stores/movie.js'
 
 const movieStore = useMovieStore()
-
+const backendURL = import.meta.env.VITE_PUBLIC_BACKEND_URL
 const search = ref('')
 const movies = ref([])
 const show = ref(false)
@@ -98,19 +98,13 @@ const handleSearch = () => {
     })
 }
 
-const getMovies = () => {
-  const backendURL = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .get(`${backendURL}/api/movies`)
-    .then((res) => {
-      movies.value = res.data.data
-      movieStore.movies = res.data.data
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
-onMounted(() => {
-  getMovies()
-})
+axios
+  .get(`${backendURL}/api/movies`)
+  .then((res) => {
+    movies.value = res.data.data
+    movieStore.movies = res.data.data
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 </script>

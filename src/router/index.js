@@ -70,21 +70,18 @@ const router = createRouter({
         {
           path: '/forgot-password',
           name: 'forgot-password',
-          component: ForgotPassword,
-          beforeEnter: authGuard
+          component: ForgotPassword
         },
         {
           path: '/reset-password',
           name: 'reset-password',
-          component: ResetPassword,
-          beforeEnter: authGuard
+          component: ResetPassword
         },
         {
           path: '/update-password',
           name: 'update-password',
           props: true,
-          component: UpdatePassword,
-          beforeEnter: authGuard
+          component: UpdatePassword
         },
         {
           path: '/success',
@@ -101,13 +98,13 @@ const router = createRouter({
           path: '/link-expired',
           name: 'link-expired',
           component: LinkExpired
+        },
+        {
+          path: '/activation',
+          name: 'activation',
+          component: Activation
         }
       ]
-    },
-    {
-      path: '/activation',
-      name: 'activation',
-      component: Activation
     },
     {
       path: '/thank-you',
@@ -136,14 +133,15 @@ const router = createRouter({
           name: 'search',
           component: SearchHeader,
           props: true
+        },
+        {
+          path: '/write-quote',
+          name: 'write-quote',
+          component: WriteNewQuoteModal
         }
       ]
     },
-    {
-      path: '/write-quote',
-      name: 'write-quote',
-      component: WriteNewQuoteModal
-    },
+
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',

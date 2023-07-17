@@ -56,7 +56,7 @@
             </div>
             <div class="flex justify-between">
               <div class="space-x-2">
-                <input type="checkbox" v-model="remember_me" name="remember" />
+                <input type="checkbox" v-model="rememberMe" name="remember" />
                 <label for="remember">{{ $t('login.remember_me') }}</label>
               </div>
               <router-link :to="{ name: 'forgot-password' }" class="underline text-blue-600">{{
@@ -95,20 +95,20 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import IconInvalid from '../../icons/IconInvalid.vue'
-import IconGoogle from '../../icons/IconGoogle.vue'
+import IconInvalid from '@/components/icons/IconInvalid.vue'
+import IconGoogle from '@/components/icons/IconGoogle.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import IconShowPassword from '../../icons/IconShowPassword.vue'
+import IconShowPassword from '@/components/icons/IconShowPassword.vue'
 import { useRouter } from 'vue-router'
-import AxiosInstance from '@/config/axios/index'
 import { onClickOutside } from '@vueuse/core'
+import API from '@/services/api'
 const router = useRouter()
 
 const showPassword = ref(false)
 const emailOrName = ref(null)
 const password = ref(null)
-const remember_me = ref(false)
+const rememberMe = ref(false)
 const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
 const errors = ref({
@@ -122,11 +122,11 @@ onClickOutside(modalRef, () => {
   router.push({ name: 'home' })
 })
 const login = async () => {
-  await AxiosInstance.get('/sanctum/csrf-cookie')
+  await API.sanctum()
 
   const loginData = {
     password: password.value,
-    remember_me: remember_me.value
+    remember_me: rememberMe.value
   }
 
   if (emailOrName.value.includes('@')) {
@@ -135,7 +135,7 @@ const login = async () => {
     loginData.name = emailOrName.value
   }
 
-  await AxiosInstance.post('/api/login', loginData)
+  await API.login(loginData)
     .then(() => {
       authStore.setIsUserAuthenticated(true)
       router.push({ name: 'news-feed' })
@@ -153,8 +153,8 @@ const login = async () => {
     })
 }
 
-AxiosInstance.get('/api/cookie-credentials').then((res) => {
-  emailOrName.value = res.data.email 
+API.cookies().then((res) => {
+  emailOrName.value = res.data.email
   password.value = res.data.password
 })
 </script>

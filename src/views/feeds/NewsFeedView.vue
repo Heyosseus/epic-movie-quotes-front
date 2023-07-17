@@ -43,12 +43,6 @@
               <button class="bg-[#181624] h-14 w-28 rounded-full flex items-center justify-center">
                 <p class="text-search">{{ $t('base.search_by') }}</p>
               </button>
-              <!-- 
-              <SearchHeader
-                :search-query="searchQuery"
-                @update:searchQuery="searchQuery = $event"
-                @update:searchResults="searchResults = $event"
-              /> -->
             </div>
           </div>
           <div class="root lg:mt-6" ref="root" v-if="quotes">
@@ -62,7 +56,7 @@
                 v-if="quote.user"
                 class="flex items-center mt-2 lg:mt-6 space-x-4"
               >
-                <div v-if="quote.user.profile_picture || !null">
+                <div v-if="quote.user.profile_picture || null">
                   <img
                     :src="getImages(quote.user.profile_picture)"
                     alt=""
@@ -79,6 +73,7 @@
                 <h1>{{ quote.user.name }}</h1>
               </router-link>
               <news-feed-quote-data
+                :user="user"
                 :quotes="quotes"
                 :quote="quote"
                 :movies="movies"
@@ -86,6 +81,7 @@
                 :add_comment="addComment"
                 :comment="comment"
                 :likes="likes"
+                :liked="liked"
                 @update:comment="comment = $event"
               ></news-feed-quote-data>
               <div ref="target"></div>
@@ -158,6 +154,7 @@ import AxiosInstance from '@/config/axios/index'
 import { getImages } from '@/config/axios/helpers'
 import NewsFeedQuoteData from '@/components/quote/NewsFeedQuoteData.vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import API from '@/services/api'
 
 const quotes = ref([])
 const quoteId = ref(null)
@@ -176,6 +173,7 @@ const target = ref(null)
 const isVisible = ref(false)
 const perPage = 2
 const isLoading = ref(false)
+const liked = ref(false)
 
 const handleShow = () => {
   showSearchBar.value = !showSearchBar.value
@@ -212,36 +210,28 @@ onMounted(() => {
 const addComment = (quote) => {
   quoteId.value = quote.id
 
-  AxiosInstance.post(`/api/add-comments`, {
+  API.addComments({
     quote_id: quote.id,
     user_id: user.value.id,
     content: comment.value
+  }).then(() => {
+    comment.value = ''
+    API.commentNotification(quote.user.id, quote.id)
   })
-    .then(() => {
-      comment.value = ''
-      AxiosInstance.post(`/api/notifications/${quote.user.id}/comment`, {
-        quote_id: quote.id,
-        user_id: quote.user.id
-      })
-    })
 }
 
 const addLikes = (quote) => {
-  AxiosInstance.post(`/api/quotes/${quote.id}/like/${quote.user.id}`, {
-    quote_id: quote.id,
-    user_id: quote.user.id
-  }).then(() => {
+  API.addLike(quote.id, quote.user.id).then(() => {
     const existingLikeIndex = quote.likes.findIndex((like) => like === quote.user.id)
     if (!quote.likes.includes(quote.user.id)) {
-      AxiosInstance.post(`/api/notifications/${quote.user.id}/like`, {
-        quote_id: quote.id,
-        user_id: quote.user.id
-      }).then(() => {
+      API.addLikeNotification(quote.id, quote.user.id).then(() => {
         quote.likes.push(quote.user.id)
+        liked.value = true
       })
     } else {
       if (existingLikeIndex !== -1) {
         quote.likes.splice(existingLikeIndex, 1)
+        liked.value = false
       }
     }
   })
@@ -251,25 +241,25 @@ const loadQuotes = () => {
   if (searchQuery.value) {
     if (searchQuery.value.startsWith('#')) {
       const quoteQuery = searchQuery.value.substring(1)
-      AxiosInstance.get(`/api/quotes/?query=${quoteQuery}`).then((response) => {
+      API.searchQuotesByQuery(quoteQuery).then((response) => {
         quotes.value = response.data.data
       })
     } else if (searchQuery.value.startsWith('@')) {
       const movieQuery = searchQuery.value.substring(1)
       condition.value = 'movie'
-      AxiosInstance.get(`/api/movies/?query=${movieQuery}`).then((response) => {
+      API.searchMoviesByQuery(movieQuery).then((response) => {
         movies.value = response.data.data
       })
     }
   } else {
-    AxiosInstance.get('/api/quotes').then((response) => {
+    API.quotes().then((response) => {
       quotes.value = response.data.data
       page.value += 1
     })
   }
 }
 
-AxiosInstance.get('/api/user').then((response) => {
+API.user().then((response) => {
   user.value = response.data
 })
 

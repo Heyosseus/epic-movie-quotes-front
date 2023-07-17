@@ -40,7 +40,7 @@
               class="border border-gray-500 bg-transparent w-full sm:w-full mt-4 sm:mt-6 px-2 h-20 p-2 rounded-md text-lg"
               placeholder='"Quote in English."'
               v-model="quote_en"
-              rules="required"
+              rules="required|english"
             >
             </Field>
             <ErrorMessage name="quote_en" class="text-red-600" />
@@ -99,7 +99,6 @@
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { ref, onMounted } from 'vue'
-import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
 import { getImages } from '@/config/axios/helpers'
@@ -107,8 +106,12 @@ import { onClickOutside } from '@vueuse/core'
 import IconPhotoVue from '@/components/icons/IconPhoto.vue'
 import IconClose from '@/components/icons/IconClose.vue'
 import { useAuthUser } from '@/stores/user'
+import { useQuoteStore } from '@/stores/quotes.js'
+import API from '@/services/api'
 
 const authUserStore = useAuthUser()
+const quoteStore = useQuoteStore()
+
 const router = useRouter()
 const route = useRoute()
 const quotes = ref(null)
@@ -130,13 +133,12 @@ const editQuote = () => {
   formData.append('body_en', quote_en.value)
   formData.append('body_ka', quote_ka.value)
   formData.append('movie_id', parseInt(movieId))
-  console.log(movieId)
 
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/update-quotes/${quoteId}`, formData)
     .then((res) => {
-      console.log(res)
+      quoteStore.editQuote(res.data.quote)
       router.back()
     })
     .catch((err) => {
@@ -145,23 +147,16 @@ const editQuote = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get(`/api/show-quotes/${quoteId}`)
-    .then((response) => {
-      quotes.value = response.data.quote
-      console.log(quotes.value)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  API.showQuotes(quoteId).then((response) => {
+    quotes.value = response.data.quote
+    quote_en.value = JSON.parse(quotes.value.body).en
+    quote_ka.value = JSON.parse(quotes.value.body).ka
+  })
 })
 onMounted(() => {
-  AxiosInstance.get(`/api/movies/1`)
-    .then((res) => {
-      movie.value = res.data.movie
-    })
-    .catch((err) => {
-      console.log(err.response)
-    })
+  API.movies().then((res) => {
+    movie.value = res.data.movie
+  })
 })
 
 onMounted(async () => {
