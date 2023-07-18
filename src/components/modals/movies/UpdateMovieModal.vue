@@ -221,7 +221,7 @@ import { ref, onMounted, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/getImages'
 import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 

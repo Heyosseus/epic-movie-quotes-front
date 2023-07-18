@@ -5,25 +5,14 @@
         class="absolute w-screen h-full flex flex-col items-center justify-center bg-transparentLandingBg overflow-y-auto"
       >
         <div
-          class="flex flex-col px-6 py-12 md:px-20 md:pt-12 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4 max-h-[800px]"
+          class="flex flex-col px-6 py-12 md:px-20 md:pt-12 md:pb-16 rounded-md items-center justify-center mx-auto my-auto bg-modal space-y-4"
           ref="modalRef"
         >
           <h1 class="text-2xl md:text-4xl">{{ $t('forgot.create_new_password') }}</h1>
           <p class="text-sm md:text-base text-center mt-4 md:mt-6">
-            {{ $t('forgot.new_password') }}
+            {{ $t('forgot.new_password') }} <br /> {{ $t('forgot.previous') }}
           </p>
           <Form class="w-full space-y-6" @submit="resetPassword">
-            <div class="flex flex-col">
-              <label for="email">{{ $t('login.email') }}</label>
-              <Field
-                name="email"
-                type="email"
-                class="py-2 px-2 rounded-md outline-0 w-full text-black font-normal bg-[#CED4DA]"
-                :placeholder="$t('login.placeholder_email')"
-                v-model="email"
-              />
-              <ErrorMessage name="email" class="text-red-500 text-sm font-normal" />
-            </div>
             <div class="flex flex-col">
               <label for="update_password">{{ $t('login.password') }}</label>
               <div class="relative">
@@ -92,10 +81,11 @@ import IconShowPassword from '@/components/icons/IconShowPassword.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
-import AxiosInstance from '@/config/axios/index'
+import API from '@/services/api'
 
+const email = ref('')
 const router = useRouter()
-const email = ref()
+
 const update_password = ref(null)
 const password_confirmation = ref(null)
 
@@ -109,9 +99,10 @@ onClickOutside(modalRef, () => {
   router.push({ name: 'home' })
 })
 const resetPassword = async () => {
-  await AxiosInstance.get('/sanctum/csrf-cookie')
+  await API.sanctum()
+  await API.user().then((res) => (email.value = res.data.email))
 
-  await AxiosInstance.put(`api/reset-password`, {
+  await API.resetPassword({
     password: update_password.value,
     email: email.value
   })

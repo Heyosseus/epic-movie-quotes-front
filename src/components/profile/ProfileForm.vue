@@ -1,12 +1,13 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <Form class="w-full flex flex-col mt-6" enctype="multipart/form-data" v-if="props.user">
     <label for="username" class="mt-16 lg:mt-10">{{ $t('profile.username') }}</label>
     <div class="flex space-x-3">
-      <div
-        class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full text-black font-normal placeholder-white lg:bg-field"
-      >
-        <p class="text-white lg:text-black">{{ user.name }}</p>
-      </div>
+      <Field
+        name="username"
+        class="py-3 px-2 rounded mt-2 bg-transparent outline-0 w-full lg:text-black font-normal placeholder-white lg:bg-field"
+        v-model="user.name"
+      />
       <button type="button" @click="editUsername = !editUsername" class="hidden lg:block">
         Edit
       </button>
@@ -76,10 +77,10 @@
       <ErrorMessage name="new_email" class="text-red-600" />
     </div>
 
-    <label S class="mt-6">{{ $t('login.password') }}</label>
+    <label class="mt-6">{{ $t('login.password') }}</label>
     <div class="flex space-x-3 items-center">
       <div
-        class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-[465px] text-black font-normal  placeholder-white lg:bg-field"
+        class="py-6 px-2 rounded mt-2 bg-transparent outline-0 w-[465px] text-black font-normal placeholder-white lg:bg-field"
       >
         <p class="text-white lg:text-black"></p>
       </div>
@@ -116,7 +117,6 @@
             :placeholder="$t('profile.new_password')"
             :value="props.profile_password"
             @input="$emit('update:profile_password', $event.target.value)"
-            rules="required"
           >
           </Field>
           <IconShowPassword class="absolute right-14 top-6" @click="showPassword = !showPassword" />
@@ -143,7 +143,7 @@
         <ErrorMessage name="confirm_new_password" class="text-red-600" />
       </div>
     </div>
-  </Form>
+  </Form> 
 </template>
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
