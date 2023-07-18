@@ -42,11 +42,10 @@
 <script setup>
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { onClickOutside } from '@vueuse/core'
-
+import API from '@/services/api'
 const router = useRouter()
 const email = ref('')
 
@@ -57,14 +56,11 @@ onClickOutside(modalRef, () => {
 })
 
 const recoveryPassword = () => {
-  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/forgot-password`, {
-      email: email.value
-    })
-    .then((res) => {
-      console.log(res)
-      router.push({ name: 'reset-password' })
+  API.forgotPassword({
+    email: email.value
+  })
+    .then(() => {
+      router.push({ name: 'reset-password', params: { email: email.value } })
     })
     .catch((err) => {
       console.log(err.response)

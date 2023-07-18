@@ -97,7 +97,7 @@ import IconDots from '@/components/icons/IconDots.vue'
 import IconComments from '@/components/icons/IconComments.vue'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconEye from '@/components/icons/IconEye.vue'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
 import { onClickOutside } from '@vueuse/core'
 
 import { ref } from 'vue'

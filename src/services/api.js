@@ -28,6 +28,9 @@ const API = {
   movies: () => {
     return AxiosInstance.get('/api/movies')
   },
+  addMovies: (values) => {
+    return AxiosInstance.post('/api/add-movies', values)
+  },
   checkSession: () => {
     return AxiosInstance.get('/api/check-session')
   },
@@ -72,6 +75,12 @@ const API = {
   },
   getMovie: (movieId) => {
     return AxiosInstance.get(`/api/movies/${movieId}`)
+  },
+  resetPassword: (values) => {
+    return AxiosInstance.put('/api/reset-password', values)
+  },
+  forgotPassword: (values) => {
+    return AxiosInstance.post('/api/forgot-password', values)
   }
 }
 

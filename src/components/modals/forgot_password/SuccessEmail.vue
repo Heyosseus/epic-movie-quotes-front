@@ -14,7 +14,7 @@
             {{ $t('forgot.email_update') }}
           </p>
           <router-link
-            :to="{ name: 'login' }"
+            :to="{ name: 'news-feed' }"
             class="py-3 px-6 bg-red-700 text-white rounded-md flex w-full items-center justify-center mx-auto mt-8 md:mt-12"
           >
             {{ $t('login.login') }}

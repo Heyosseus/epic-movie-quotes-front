@@ -80,7 +80,8 @@ import { ref, onMounted } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import ProfileForm from '@/components/profile/ProfileForm.vue'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
+import API from '@/services/api'
 
 const user = ref(null)
 const editUsername = ref(false)
@@ -95,34 +96,17 @@ const profile_password = ref(null)
 
 const updateProfile = () => {
   const formData = new FormData()
-
-  if (innerWidth < 624 && localStorage.getItem('isUserAuthenticated') === 'true') {
-    formData.append('profile_picture', picture.value)
-    formData.append('password', profile_password.value)
-  } else if (
-    localStorage.getItem('isUserAuthenticated') === 'true' &&
-    new_username.value === null
-  ) {
-    formData.append('profile_picture', picture.value)
-    formData.append('password', profile_password.value)
-  } else if (
-    localStorage.getItem('isUserAuthenticated') === 'true' &&
-    new_username.value !== null
-  ) {
-    formData.append('name', new_username.value)
-    formData.append('password', profile_password.value)
-  } else {
-    formData.append('profile_picture', picture.value)
-    formData.append('name', new_username.value)
-    formData.append('email', new_email.value)
-    formData.append('password', profile_password.value)
-  }
+  formData.append('profile_picture', picture.value || user.value.profile_picture)
+  formData.append('name', new_username.value || user.value.name)
+  formData.append('email', new_email.value || user.value.email)
+  formData.append('password', profile_password.value)
 
   AxiosInstance.post(`/api/profile`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  }).then(() => {
+  }).then((res) => {
+    console.log(res.data.prpfile_picture)
     if (new_email.value === null) {
       router.push({ name: 'flash-messages' })
     } else {
@@ -132,7 +116,7 @@ const updateProfile = () => {
 }
 
 onMounted(() => {
-  AxiosInstance.get('/api/user').then((res) => {
+  API.user().then((res) => {
     user.value = res.data
   })
 })

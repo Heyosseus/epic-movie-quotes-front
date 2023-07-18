@@ -221,7 +221,7 @@ import { ref, onMounted, reactive } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/getImages'
 import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 
@@ -258,7 +258,7 @@ onClickOutside(modalRef, () => {
 
 const editMovie = () => {
   const formData = new FormData()
-  formData.append('poster', image.value || state.files[0])
+  formData.append('poster', state.files[0])
   formData.append('genre', selectedGenre.value)
   formData.append('release_date', release_date.value)
   formData.append('director_en', director_en.value)
