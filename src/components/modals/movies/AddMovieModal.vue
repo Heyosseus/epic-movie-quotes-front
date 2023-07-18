@@ -181,6 +181,7 @@ import { onClickOutside } from '@vueuse/core'
 import IconClose from '@/components/icons/IconClose.vue'
 import { useMovieStore } from '@/stores/movie.js'
 import { useAuthUser } from '@/stores/user'
+import { image } from '@vee-validate/rules'
 
 const authUserStore = useAuthUser()
 const movieStore = useMovieStore()
@@ -228,7 +229,7 @@ const selectedGenreData = () => {
 const addMovie = (e) => {
   e.preventDefault()
   const formData = new FormData()
-  formData.append('poster', state.files[0])
+  formData.append('poster', state.files[0] || image.value)
   formData.append('title_en', title_en.value)
   formData.append('title_ka', title_ka.value)
   formData.append('director_en', director_en.value)

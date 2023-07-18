@@ -28,6 +28,9 @@ const API = {
   movies: () => {
     return AxiosInstance.get('/api/movies')
   },
+  addMovies: (values) => {
+    return AxiosInstance.post('/api/add-movies', values)
+  },
   checkSession: () => {
     return AxiosInstance.get('/api/check-session')
   },

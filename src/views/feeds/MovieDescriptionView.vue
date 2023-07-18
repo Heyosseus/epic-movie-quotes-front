@@ -38,7 +38,7 @@ import { useRouter } from 'vue-router'
 import AxiosInstance from '@/config/axios/index'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
 
 import MovieData from '@/components/movie/MovieData.vue'
 import QuoteData from '@/components/quote/QuoteData.vue'

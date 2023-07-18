@@ -70,7 +70,7 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import AxiosInstance from '@/config/axios/index'
 import { onClickOutside } from '@vueuse/core'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()

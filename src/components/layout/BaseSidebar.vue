@@ -60,7 +60,7 @@ import IconMovieList from '@/components/icons/IconMovieList.vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import IconActiveMovieList from '@/components/icons/IconActiveMovieList.vue'
 import { ref } from 'vue'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
 import API from '@/services/api'
 
 const activeHome = ref(false)

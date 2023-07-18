@@ -70,11 +70,11 @@ import AddMovie from '@/components/layout/AddMovie.vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { getImages } from '@/config/axios/helpers'
+import { getImages } from '@/utils/images'
 import { useMovieStore } from '@/stores/movie.js'
+import API from '@/services/api'
 
 const movieStore = useMovieStore()
-const backendURL = import.meta.env.VITE_PUBLIC_BACKEND_URL
 const search = ref('')
 const movies = ref([])
 const show = ref(false)
@@ -98,8 +98,7 @@ const handleSearch = () => {
     })
 }
 
-axios
-  .get(`${backendURL}/api/movies`)
+API.movies()
   .then((res) => {
     movies.value = res.data.data
     movieStore.movies = res.data.data
