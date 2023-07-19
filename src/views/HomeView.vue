@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="flex flex-col justify-between min-h-screen sm:px-6 md:px-8 lg:pt-6 mx-auto bg-slate-950"
-    id="home"
-  >
+  <div class="flex flex-col justify-between min-h-screen mx-auto bg-slate-950" id="home">
     <div class="bg-landingBg px-4 sm:px-8 py-4 sm:py-8 md:py-4 lg:h-[72vh] h-[60vh]">
       <div>
-        <nav class="flex justify-between items-center">
+        <nav class="flex justify-between items-center ">
           <h1 class="text-[12px] uppercase text-primary font-extrabold lg:text-lg">
             {{ $t('home.title') }}
           </h1>
