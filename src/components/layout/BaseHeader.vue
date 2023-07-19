@@ -2,12 +2,11 @@
   <div
     class="bg-headerBg h-full flex flex-col sm:flex-row justify-between z-0 items-center px-6 sm:px-14 py-3 sm:py-5"
   >
-    <router-link
-      :to="{ name: 'home' }"
+    <p
       class="hidden sm:block text-[#DDCCAA] uppercase cursor-pointer"
     >
       movie quotes
-    </router-link>
+    </p>
     <div class="flex items-center justify-between w-full sm:w-64 sm:mt-0">
       <IconMenu class="block cursor-pointer sm:hidden" @click="show = true" />
       <div v-if="show"><MenuSidebar /></div>
@@ -197,7 +196,6 @@ const markAsRead = async (notificationId) => {
   if (updatedNotification) {
     updatedNotification.read = 1
     unread.value = unread.value - 1
-    console.log(updatedNotification, unread.value)
   }
 
   await API.markNotificationAsRead(notificationId)

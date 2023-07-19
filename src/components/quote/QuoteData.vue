@@ -17,7 +17,7 @@
         <router-view />
       </div>
     </div>
-    <div v-if="props.quote" class="lg:w-form mt-10">
+    <div v-if="props.quote" class="lg:w-form mt-8">
       <div class="w-full lg:w-[900px] relative">
         <div
           v-for="quote in props.quote"
