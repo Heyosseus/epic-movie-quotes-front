@@ -201,7 +201,21 @@ onMounted(() => {
     }
   })
   window.Echo.channel('like-notification').listen('LikeNotification', (data) => {
-    likes.push(data.like)
+    const quoteId = data.quoteId
+    const likeData = data.like
+    const action = data.action
+
+    const quoteToUpdate = quotes.value.find((quote) => quote.id === quoteId)
+    if (quoteToUpdate) {
+      if (action === 'like') {
+        quoteToUpdate.likes.push(likeData.id)
+      } else {
+        const existingLikeIndex = quoteToUpdate.likes.findIndex((like) => like === likeData.id)
+        if (existingLikeIndex !== -1) {
+          quoteToUpdate.likes.splice(existingLikeIndex, 1)
+        }
+      }
+    }
   })
 
   loadQuotes()
@@ -225,12 +239,10 @@ const addLikes = (quote) => {
     const existingLikeIndex = quote.likes.findIndex((like) => like === quote.user.id)
     if (!quote.likes.includes(quote.user.id)) {
       API.addLikeNotification(quote.id, quote.user.id).then(() => {
-        quote.likes.push(quote.user.id)
         liked.value = true
       })
     } else {
       if (existingLikeIndex !== -1) {
-        quote.likes.splice(existingLikeIndex, 1)
         liked.value = false
       }
     }
