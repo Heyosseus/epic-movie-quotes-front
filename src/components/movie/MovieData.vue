@@ -18,7 +18,7 @@
           <IconTrash @click="handle_movie_delete" />
         </div>
       </div>
-      <div class="flex flex-wrap gap-4 text-lg cursor-pointer w-96">
+      <div class="flex flex-wrap gap-4 text-lg cursor-pointer w-96 lg:w-full">
         <div
           v-for="genre in props.movie.genres"
           :key="genre.id"

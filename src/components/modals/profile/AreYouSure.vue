@@ -30,23 +30,32 @@
   </div>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import API from '@/services/api'
 const router = useRouter()
+const email = ref('')
+const password = ref('')
+const profile = ref('')
 const props = defineProps({
   username: String
 })
-import axios from 'axios'
-
+API.user().then((res) => {
+  email.value = res.data.email
+  password.value = res.data.password
+  profile.value = res.data.profile
+})
 const updateProfile = () => {
   const formData = new FormData()
   formData.append('name', props.username)
-  const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
-  axios
-    .post(`${backendUrl}/api/profile`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+  formData.append('email', email.value)
+  formData.append('password', password.value)
+  formData.append('profile', profile.value)
+  API.profile(formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
     .then(() => {
       router.push({ name: 'flash-messages' })
     })

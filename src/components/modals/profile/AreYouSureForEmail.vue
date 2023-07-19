@@ -30,16 +30,28 @@
   </div>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+import API from '@/services/api'
 const router = useRouter()
 const props = defineProps({
   email: String
 })
-import axios from 'axios'
+
+const name = ref('')
+const profile = ref('')
+
+API.user().then((res) => {
+  name.value = res.data.name
+  profile.value = res.data.profile
+})
 
 const updateProfile = () => {
   const formData = new FormData()
   formData.append('email', props.email)
+  formData.append('name', name.value)
+  formData.append('profile', profile.value)
   const backendUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
   axios
     .post(`${backendUrl}/api/profile`, formData, {

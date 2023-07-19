@@ -125,7 +125,7 @@ const modalRef = ref(null)
 const movie = ref(null)
 
 onClickOutside(modalRef, () => {
-  router.push({ name: 'movie-list' })
+  router.back()
 })
 const editQuote = () => {
   const formData = new FormData()
