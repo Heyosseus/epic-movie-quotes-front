@@ -81,6 +81,9 @@ const API = {
   },
   forgotPassword: (values) => {
     return AxiosInstance.post('/api/forgot-password', values)
+  },
+  profile: (values) => {
+    return AxiosInstance.post('/api/profile', values)
   }
 }
 

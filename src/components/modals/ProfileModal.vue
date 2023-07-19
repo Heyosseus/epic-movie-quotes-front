@@ -77,7 +77,6 @@ import { useRouter } from 'vue-router'
 import BaseHeader from '@/components/layout/BaseHeader.vue'
 import BaseSidebar from '@/components/layout/BaseSidebar.vue'
 import { ref, onMounted } from 'vue'
-import AxiosInstance from '@/config/axios/index'
 import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import ProfileForm from '@/components/profile/ProfileForm.vue'
 import { getImages } from '@/utils/images'
@@ -101,7 +100,7 @@ const updateProfile = () => {
   formData.append('email', new_email.value || user.value.email)
   formData.append('password', profile_password.value)
 
-  AxiosInstance.post(`/api/profile`, formData, {
+  API.profile(formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

@@ -27,7 +27,7 @@
           <router-link to="/profile" class="bg-transparent">{{ $t('profile.cancel') }}</router-link>
 
           <router-link
-            :to="{ name: 'are-you-sure-for-email' }"
+           to="/email-update"
             class="bg-red-700 py-3 px-4 rounded"
           >
             {{ $t('profile.save') }}
