@@ -33,6 +33,7 @@ const AreYouSure = () => import('@/components/modals/profile/AreYouSure.vue')
 const FlashMessages = () => import('@/components/modals/profile/FlashMessages.vue')
 const AreYouSureForEmail = () => import('@/components/modals/profile/AreYouSureForEmail.vue')
 const ThanksForGoogle = () => import('@/views/ThanksForGoogle.vue')
+const CheckEmail = () => import('@/components/modals/profile/CheckEmail.vue')
 
 const authGuard = (to, from, next) => {
   const authStore = useAuthStore()
@@ -187,6 +188,11 @@ const router = createRouter({
           path: '/flash-messages',
           name: 'flash-messages',
           component: FlashMessages
+        },
+        {
+          path: '/check-email',
+          name: 'check-email',
+          component: CheckEmail
         }
       ]
     },
@@ -242,6 +248,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta.statusCode === 403) {
     next({ name: 'forbidden' })
+  } else {
+    next()
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const isUserAuthenticated = authStore.getIsUserAuthenticated
+  const isGoogleAuthenticated = authStore.getIsGoogleAuthenticated
+  if ((to.path === '/' && isUserAuthenticated) || isGoogleAuthenticated) {
+    next({ name: 'news-feed' })
   } else {
     next()
   }

@@ -5,7 +5,7 @@
       <div class="flex flex-col w-full md:flex-row">
         <BaseSidebar />
         <div class="w-full md:pl-16" v-if="!show">
-          <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4 lg:pr-56">
+          <div class="flex items-center w-full justify-between mt-8 md:mt-0 pl-4 lg:pr-14">
             <h1 class="text-sm w-full mb-2 md:w-full md:mt-10 lg:text-xl">
               {{ $t('base.list') }} ({{ movies.length }})
             </h1>

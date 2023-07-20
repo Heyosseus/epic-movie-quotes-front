@@ -109,7 +109,6 @@
 </template>
 <script setup>
 import { Form, Field } from 'vee-validate'
-
 import { getImages } from '@/utils/images'
 import IconLikes from '@/components/icons/IconLikes.vue'
 import IconComments from '@/components/icons/IconComments.vue'

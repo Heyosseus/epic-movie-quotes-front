@@ -84,7 +84,7 @@ const API = {
   },
   profile: (values) => {
     return AxiosInstance.post('/api/profile', values)
-  }
+  },
 }
 
 export default API

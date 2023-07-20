@@ -81,6 +81,7 @@ import IconArrowBack from '@/components/icons/IconArrowBack.vue'
 import ProfileForm from '@/components/profile/ProfileForm.vue'
 import { getImages } from '@/utils/images'
 import API from '@/services/api'
+import axios from 'axios'
 
 const user = ref(null)
 const editUsername = ref(false)
@@ -100,18 +101,20 @@ const updateProfile = () => {
   formData.append('email', new_email.value || user.value.email)
   formData.append('password', profile_password.value)
 
-  API.profile(formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  }).then((res) => {
-    console.log(res.data.prpfile_picture)
-    if (new_email.value === null) {
-      router.push({ name: 'flash-messages' })
-    } else {
-      router.push({ name: 'reset-password' })
-    }
-  })
+  const backendURL = import.meta.env.VITE_PUBLIC_BACKEND_URL
+  axios
+    .post(`${backendURL}/api/profile`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(() => {
+      if (new_email.value === null) {
+        router.push({ name: 'flash-messages' })
+      } else {
+        router.push({ name: 'check-email' })
+      }
+    })
 }
 
 onMounted(() => {
